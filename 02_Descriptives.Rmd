@@ -21,7 +21,7 @@ This survey explores the mental health and well-being of mid-level academic staf
 ```{r}
 library(tidyverse)
 library(ggplot2)
-load("../data/SWiMS2024_Data_2024-10-21.RProj")
+load("../data/SWiMS2024_Data_2024-10-21.RData")
 ```
 
 

@@ -45,4 +45,4 @@ table(dat$jobSatisfaction)
 
 ## save data as rdata object
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v2.xlsx")
-save(dat, codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RProj"))
+save(dat, codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))
