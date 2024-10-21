@@ -1,0 +1,111 @@
+---
+title: "SWiMS 2024 Descriptive Analyses"
+author: "TE + BB"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This survey explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal of this survey is to identify problems and areas for improvement in working conditions and research environments.
+
+## loading data and R packages
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+load("../data/SWiMS2024_Data_2024-10-21.RProj")
+```
+
+
+# Descriptive Analyses
+
+## Responses by Institution
+
+```{r}
+# Calculate the number of participants for each institution
+institution_counts <- dat %>%
+  group_by(institution) %>%
+  summarise(count = n()) %>%
+  filter(count > 20) %>%
+  arrange(count)  # Arrange by count in ascending order
+
+# Filter the data to include only institutions with more than 20 participants
+filtered_dat <- dat %>%
+  filter(institution %in% institution_counts$institution)
+
+# Get the maximum count to set y-axis limit
+max_count <- max(institution_counts$count)
+sum_count <- sum(institution_counts$count)
+
+# Create the plot
+# TODO: Order by response count
+ggplot(filtered_dat, aes(x = reorder(factor(institution), table(institution)[factor(institution)]), y = after_stat(count))) +  
+  geom_bar(fill = "steelblue", alpha = 0.7) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 14, face = "bold"),
+    axis.title.y = element_text(size = 14, face = "bold"),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
+  ) +
+  labs(
+    x = "Institution Name",
+    y = "Number of Responses",
+    caption = paste("Date:", Sys.Date(), "\n", "Total count: ", sum_count, "\n",
+                    "Only institutions with more than 20 participants are displayed.")
+  ) +
+  geom_text(stat = 'count', aes(label = after_stat(count)), hjust = -0.1, size = 3.5) +
+  ylim(c(0, max_count + 30)) +
+  coord_flip()  # Flip the coordinates for a horizontal bar chart
+
+
+#ggsave(paste0("../plots/SWiMS_responses_",Sys.Date(),".pdf"), height = 7, width = 8)
+```
+
+## Responses by Date
+
+```{r}
+# plot responses by date
+# Count the number of responses per date
+response_counts <- dat %>%
+  group_by(date, institution) %>%
+  summarise(count = n())
+
+# Create the plot
+ggplot(response_counts, aes(x = date, y = count, fill = factor(institution))) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Number of Responses by Date",
+       x = "Date",
+       y = "Number of Responses") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+
+```
+
+## Duration 
+```{r}
+ggplot(dat[dat$duration/3600 < 2,], aes(x = duration/3600)) +
+  geom_histogram() +
+  xlab("duration in h")
+```
+
+
+TODO: what does -1 duration mean? please check in unipark documentation!
+
+```{r}
+ggplot(dat[dat$duration/60 < 30,], aes(x = duration/60)) +
+  geom_histogram() +
+  xlab("duration in min")
+```
+
+TODO: Compute average duration and SD for those who used less than 1 h.
