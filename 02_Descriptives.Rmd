@@ -109,3 +109,12 @@ ggplot(dat[dat$duration/60 < 30,], aes(x = duration/60)) +
 ```
 
 TODO: Compute average duration and SD for those who used less than 1 h.
+TODO: Compute depression score based on Brown et al. 1997 as a new variable depression.
+TODO: Compare values of existing questionnaires in the survey with averages in the general population and if there is data on this also of other academics (see job satisfaction item by Dolbier et al., 2005, stress item by [Elo et al., 2003] depression items by [Brown et al., 1997] and burnout item by [West et al., 2009], see references below for details)
+
+
+References 
+Brown, T. A., Chorpita, B. F., Korotitsch, W., & Barlow, D. H. (1997). Psychometric properties of the Depression Anxiety Stress Scales (DASS) in clinical samples. Behaviour research and therapy, 35(1), 79-89.
+Dolbier, C. L., Webster, J. A., McCalister, K. T., Mallon, M. W., & Steinhardt, M. A. (2005). Reliability and validity of a single-item measure of job satisfaction. American journal of health promotion : AJHP, 19(3), 194–198. https://doi.org/10.4278/0890-1171-19.3.194
+Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
+West, C. P., Dyrbye, L. N., Sloan, J. A., & Shanafelt, T. D. (2009). Single item measures of emotional exhaustion and depersonalization are useful for assessing burnout in medical professionals. Journal of general internal medicine, 24(12), 1318–1321. https://doi.org/10.1007/s11606-009-1129-z 
