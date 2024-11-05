@@ -101,18 +101,230 @@ ggplot(dat[dat$duration/3600 < 2,], aes(x = duration/3600)) +
 
 
 TODO: what does -1 duration mean? please check in unipark documentation!
+      --> -1 does mean that the participant interrupted the survey and later completed it. For these participant the value of the dispcode value is "Beendet nach Unterbrechung (32)". 
 
 ```{r}
+##Number of people with the value -1 in the variable duration
+# Count the number of participants with a duration of -1
+num_negative_duration <- sum(dat$duration == -1, na.rm = TRUE)
+
+# Print the result
+print(paste("Number of participants with a duration of -1:", num_negative_duration))
+
+##Plot of duration in min
 ggplot(dat[dat$duration/60 < 30,], aes(x = duration/60)) +
   geom_histogram() +
   xlab("duration in min")
 ```
 
 TODO: Compute average duration and SD for those who used less than 1 h.
-TODO: Compute depression score based on Brown et al. 1997 as a new variable depression.
+```{r}
+# Filter data for participants who used less than 1 hour (3600 seconds)
+under_1h <- dat[dat$duration < 3600, ]
+
+# Calculate the mean and standard deviation in minutes
+average_duration <- mean(under_1h$duration / 60, na.rm = TRUE)
+sd_duration <- sd(under_1h$duration / 60, na.rm = TRUE)
+
+# Print the results in minutes
+print(paste("Average duration for participants who used less than 1 hour:", round(average_duration, 2), "minutes"))
+print(paste("Standard deviation of duration for participants who used less than 1 hour:", round(sd_duration, 2), "minutes"))
+
+```
+
+TODO: Compute depression score based on Brown et al. 1997 as a new variable depression --> using the short version of the DASS-21 with the depression subscale consisting of 7 items. Scoring: add scores and x2 to get comparable measures as the DASS-42 questionnaire
+```{r}
+
+# List of the variables
+variables <- c("positiveFeeling", "initiative", "future", 
+               "feelingDown", "enthusiasm", "selfworth", "meaning")
+
+# Convert specified variables to numeric
+dat$positiveFeeling <- as.numeric(as.character(dat$positiveFeeling))
+dat$initiative <- as.numeric(as.character(dat$initiative))
+dat$future <- as.numeric(as.character(dat$future))
+dat$feelingDown <- as.numeric(as.character(dat$feelingDown))
+dat$enthusiasm <- as.numeric(as.character(dat$enthusiasm))
+dat$selfworth <- as.numeric(as.character(dat$selfworth))
+dat$meaning <- as.numeric(as.character(dat$meaning))
+
+# Create the new variable 'depression' by summing up the specified columns and multiplying by 2
+dat$depression <- 2 * (dat$positiveFeeling + dat$initiative + dat$future + 
+                            dat$feelingDown + dat$enthusiasm + dat$selfworth + 
+                            dat$meaning)
+summary(dat$depression)
+
+###missings depression --> calculation only for 22 people possible, 1%???
+# Calculate the total number of observations
+total_obs_depr <- nrow(dat)
+
+# Count non-missing values in 'depressionscore'
+num_non_missing <- sum(!is.na(dat$depression))                   # Absolute count of non-missing values
+perc_non_missing <- (num_non_missing / total_obs_depr) * 100               # Percentage of non-missing values
+
+# Display the result
+cat("Non-missing count for depressionscore:", num_non_missing, "\n")
+cat("Percentage of non-missing values for depressionscore:", round(perc_non_missing, 2), "%\n")
+
+# Filter rows with no missing values in any of the specified columns
+complete_cases <- dat[complete.cases(dat[variables]), ]
+
+# Display the rows with no missing values
+complete_cases
+
+###missings of the relevant variables --> we have a lot of missing variables, 98%???
+
+# Calculate the total number of observations
+total_obs <- nrow(dat)
+
+# Function to count missing values and calculate percentage for specified variables
+missing_summary <- sapply(dat[variables], function(x) {
+  num_missing <- sum(is.na(x))                   # Absolute number of missing values
+  perc_missing <- (num_missing / total_obs) * 100  # Percentage of missing values
+  c("Missing Count" = num_missing, "Percentage" = perc_missing)
+})
+
+# Convert to a data frame for easier viewing
+missing_summary_df <- as.data.frame(t(missing_summary))
+missing_summary_df <- round(missing_summary_df, 2) # Round percentages to 2 decimal places
+
+# Display the missing summary
+missing_summary_df
+
+```
+
+
 TODO: Compare values of existing questionnaires in the survey with averages in the general population and if there is data on this also of other academics (see job satisfaction item by Dolbier et al., 2005, stress item by [Elo et al., 2003] depression items by [Brown et al., 1997] and burnout item by [West et al., 2009], see references below for details)
 
+```{r}
+###job satisfaction --> I did not find a population score with that exact item expect for the original study
 
+## Population mean and SD from Dolbier et al. (2005)
+population_mean_js <- 5.31
+population_sd_js <- 1.21
+
+# Convert jobSatisfaction to numeric in case it is a factor
+dat$jobSatisfaction <- as.numeric(as.character(dat$jobSatisfaction))
+
+# Calculate mean and SD for job satisfaction in your data
+survey_mean_js <- mean(dat$jobSatisfaction, na.rm = TRUE)
+survey_sd_js <- sd(dat$jobSatisfaction, na.rm = TRUE)
+
+# Perform a t-test to compare the survey data with the population mean
+t_test_result <- t.test(dat$jobSatisfaction, mu = population_mean_js)
+
+# Display the results
+cat("Survey Mean:", survey_mean_js, "\n")
+cat("Survey SD:", survey_sd_js, "\n")
+cat("Population Mean:", population_mean_js, "\n")
+cat("Population SD:", population_sd_js, "\n")
+cat("T-test Result:\n")
+print(t_test_result)
+
+##Comparison with following paper: 
+#Castellacci, F., & Viñas-Bardolet, C. (2020). Permanent contracts and job satisfaction in academia: evidence from European countries. Studies in Higher Education, 46, 1866 - 1880. https://doi.org/10.1080/03075079.2019.1711041.
+
+# Given mean and SD from the comparison paper
+comparison_mean_js <- 10.01
+comparison_sd_js <- 2.64
+
+# Convert your survey scores to Z-scores based on your survey’s own mean and SD
+dat$jobSatisfaction_z <- (dat$jobSatisfaction - survey_mean_js) / survey_sd_js
+
+# Calculate the Z-score of the comparison paper’s mean relative to your survey’s distribution
+comparison_z_in_survey_context <- (comparison_mean_js - survey_mean_js) / survey_sd_js
+
+# Perform a one-sample t-test comparing your survey's Z-scores to the comparison Z-score
+t_test_result <- t.test(dat$jobSatisfaction_z, mu = comparison_z_in_survey_context)
+
+# Display the comparison Z-score and t-test result
+cat("The Z-score of the comparison mean in the context of your survey’s distribution is:", 
+    round(comparison_z_in_survey_context, 2), "\n")
+cat("One-sample t-test comparing survey Z-scores to the comparison Z-score:\n")
+print(t_test_result)
+
+##--> This indicates that the mean from the comparison paper (10.01) is 4.3 standard deviations above your survey's mean.
+
+```
+```{r}
+##Stress -->I did not find a comparison paper with raw mean and sds to compare it with with the exact item
+
+# Convert 'stress' to numeric
+dat$stress <- as.numeric(as.character(dat$stress))
+
+# Calculate the mean, standard deviation, and range for 'stress'
+stress_mean <- mean(dat$stress, na.rm = TRUE)
+stress_sd <- sd(dat$stress, na.rm = TRUE)
+stress_min <- min(dat$stress, na.rm = TRUE)
+stress_max <- max(dat$stress, na.rm = TRUE)
+
+# Display the results
+cat("Mean of stress:", stress_mean, "\n")
+cat("Standard deviation of stress:", stress_sd, "\n")
+cat("Range of stress:", stress_min, "to", stress_max, "\n")
+
+```
+
+
+```{r}
+##Burnout -->I did not find a comparison paper with raw mean and sds to compare it with
+
+# Convert 'burnout' to numeric
+dat$burnout <- as.numeric(as.character(dat$burnout))
+
+# Calculate the mean, standard deviation, and range for 'burnout'
+burnout_mean <- mean(dat$burnout, na.rm = TRUE)
+burnout_sd <- sd(dat$burnout, na.rm = TRUE)
+burnout_min <- min(dat$burnout, na.rm = TRUE)
+burnout_max <- max(dat$burnout, na.rm = TRUE)
+
+# Display the results
+cat("Mean of burnout:", burnout_mean, "\n")
+cat("Standard deviation of burnout:", burnout_sd, "\n")
+cat("Range of burnout:", burnout_min, "to", burnout_max, "\n")
+
+```
+
+
+```{r}
+###Depression --> no papers found specifically about academia
+
+##comparison paper: Henry, J., & Crawford, J. (2005). The short-form version of the Depression Anxiety Stress Scales (DASS-21): construct validity and normative data in a large non-clinical sample.. The British journal of clinical psychology, 44 Pt 2, 227-39 . https://doi.org/10.1348/014466505X29657.
+
+#participants: 1,794 members of the general adult UKpopulation (979 female, 815 male)
+
+# Given mean and standard deviation from the comparison paper
+comparison_mean_depr1 <- 3.87
+comparison_sd_depr1 <- 0.83  
+
+# Convert 'depression' to numeric in case it's not already
+dat$depression <- as.numeric(as.character(dat$depression))
+
+# Calculate the mean and standard deviation for your survey's depression variable
+survey_mean_depr <- mean(dat$depression, na.rm = TRUE)
+survey_sd_depr <- sd(dat$depression, na.rm = TRUE)
+
+# Display the results
+cat("Survey Mean (depression):", survey_mean_depr, "\n")
+cat("Survey SD (depression):", survey_sd_depr, "\n")
+cat("Comparison Mean:", comparison_mean_depr1, "\n")
+cat("Comparison SD:", comparison_sd_depr1, "\n")
+
+##comparison paper: Crawford, J., Cayley, C., Lovibond, P., Wilson, P., & Hartley, C. (2011). Percentile Norms and Accompanying Interval Estimates from an Australian General Adult Population Sample for Self‐Report Mood Scales (BAI, BDI, CRSD, CES‐D, DASS, DASS‐21, STAI‐X, STAI‐Y, SRDS, and SRAS). Australian Psychologist, 46, 3 - 14. https://doi.org/10.1111/J.1742-9544.2010.00003.X.
+
+#partipants: N = 497, female = 221, male = 276 of the Australian General Population
+
+# Given mean and standard deviation from the comparison paper
+comparison_mean_depr2 <- 42.14
+comparison_sd_depr2 <- 17.93
+
+# Display the results
+cat("Survey Mean (depression):", survey_mean_depr, "\n")
+cat("Survey SD (depression):", survey_sd_depr, "\n")
+cat("Comparison Mean:", comparison_mean_depr2, "\n")
+cat("Comparison SD:", comparison_sd_depr2, "\n")
+
+```
 References 
 Brown, T. A., Chorpita, B. F., Korotitsch, W., & Barlow, D. H. (1997). Psychometric properties of the Depression Anxiety Stress Scales (DASS) in clinical samples. Behaviour research and therapy, 35(1), 79-89.
 Dolbier, C. L., Webster, J. A., McCalister, K. T., Mallon, M. W., & Steinhardt, M. A. (2005). Reliability and validity of a single-item measure of job satisfaction. American journal of health promotion : AJHP, 19(3), 194–198. https://doi.org/10.4278/0890-1171-19.3.194
