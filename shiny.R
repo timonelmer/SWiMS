@@ -6,7 +6,7 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 
-load("../data/SWiMS2024_Data_2024-10-21.RData")
+load("../data/SWiMS2024_Data_2024-11-07.RData")
 
 # Extract variable labels
 var_labels <- attr(dat, "variable.labels")

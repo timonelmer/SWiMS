@@ -21,9 +21,9 @@ This survey explores the mental health and well-being of mid-level academic staf
 ```{r}
 library(tidyverse)
 library(ggplot2)
-load("../data/SWiMS2024_Data_2024-10-21.RData")
+rm(list = ls())
+load("../data/SWiMS2024_Data_2024-11-07.RData")
 ```
-
 
 # Descriptive Analyses
 
@@ -100,8 +100,7 @@ ggplot(dat[dat$duration/3600 < 2,], aes(x = duration/3600)) +
 ```
 
 
-TODO: what does -1 duration mean? please check in unipark documentation!
-      --> -1 does mean that the participant interrupted the survey and later completed it. For these participant the value of the dispcode value is "Beendet nach Unterbrechung (32)". 
+-1 means that the participant interrupted the survey and later completed it. For these participant the value of the dispcode value is "Beendet nach Unterbrechung (32)". 
 
 ```{r}
 ##Number of people with the value -1 in the variable duration
@@ -140,21 +139,21 @@ variables <- c("positiveFeeling", "initiative", "future",
                "feelingDown", "enthusiasm", "selfworth", "meaning")
 
 # Convert specified variables to numeric
-dat$positiveFeeling <- as.numeric(as.character(dat$positiveFeeling))
-dat$initiative <- as.numeric(as.character(dat$initiative))
-dat$future <- as.numeric(as.character(dat$future))
-dat$feelingDown <- as.numeric(as.character(dat$feelingDown))
-dat$enthusiasm <- as.numeric(as.character(dat$enthusiasm))
-dat$selfworth <- as.numeric(as.character(dat$selfworth))
-dat$meaning <- as.numeric(as.character(dat$meaning))
+dat$positiveFeeling_num <- as.numeric(dat$positiveFeeling)-1
+#View(dat[,c("positiveFeeling","positiveFeeling_num")]) # check if conversion from factor to numeric is correct
+dat$initiative_num <- as.numeric(dat$initiative)-1
+dat$future_num <- as.numeric(dat$future)-1
+dat$feelingDown_num <- as.numeric(dat$feelingDown)-1
+dat$enthusiasm_num <- as.numeric(dat$enthusiasm)-1
+dat$selfworth_num <- as.numeric(dat$selfworth)-1
+dat$meaning_num <- as.numeric(dat$meaning)-1
 
-# Create the new variable 'depression' by summing up the specified columns and multiplying by 2
-dat$depression <- 2 * (dat$positiveFeeling + dat$initiative + dat$future + 
-                            dat$feelingDown + dat$enthusiasm + dat$selfworth + 
-                            dat$meaning)
+# Create the new variable 'depression' by summing up the specified columns and multiplying by 2 (due to short version)
+dat$depression <- 2 * (dat$positiveFeeling_num + dat$initiative_num + dat$future_num + 
+                            dat$feelingDown_num + dat$enthusiasm_num + dat$selfworth_num + 
+                            dat$meaning_num)
 summary(dat$depression)
 
-###missings depression --> calculation only for 22 people possible, 1%???
 # Calculate the total number of observations
 total_obs_depr <- nrow(dat)
 
@@ -204,14 +203,15 @@ population_mean_js <- 5.31
 population_sd_js <- 1.21
 
 # Convert jobSatisfaction to numeric in case it is a factor
-dat$jobSatisfaction <- as.numeric(as.character(dat$jobSatisfaction))
+head(data.frame(dat$jobSatisfaction,as.numeric(dat$jobSatisfaction)-1),20)
+dat$jobSatisfaction_num <- as.numeric(dat$jobSatisfaction)-1
 
 # Calculate mean and SD for job satisfaction in your data
-survey_mean_js <- mean(dat$jobSatisfaction, na.rm = TRUE)
-survey_sd_js <- sd(dat$jobSatisfaction, na.rm = TRUE)
+survey_mean_js <- mean(dat$jobSatisfaction_num, na.rm = TRUE)
+survey_sd_js <- sd(dat$jobSatisfaction_num, na.rm = TRUE)
 
 # Perform a t-test to compare the survey data with the population mean
-t_test_result <- t.test(dat$jobSatisfaction, mu = population_mean_js)
+t_test_result <- t.test(dat$jobSatisfaction_num, mu = population_mean_js)
 
 # Display the results
 cat("Survey Mean:", survey_mean_js, "\n")
@@ -229,7 +229,7 @@ comparison_mean_js <- 10.01
 comparison_sd_js <- 2.64
 
 # Convert your survey scores to Z-scores based on your survey’s own mean and SD
-dat$jobSatisfaction_z <- (dat$jobSatisfaction - survey_mean_js) / survey_sd_js
+dat$jobSatisfaction_z <- (dat$jobSatisfaction_num - survey_mean_js) / survey_sd_js
 
 # Calculate the Z-score of the comparison paper’s mean relative to your survey’s distribution
 comparison_z_in_survey_context <- (comparison_mean_js - survey_mean_js) / survey_sd_js
@@ -265,12 +265,14 @@ cat("Range of stress:", stress_min, "to", stress_max, "\n")
 
 ```
 
+TODO Timon: Skalen anschauen und comparison paper
 
 ```{r}
 ##Burnout -->I did not find a comparison paper with raw mean and sds to compare it with
 
 # Convert 'burnout' to numeric
-dat$burnout <- as.numeric(as.character(dat$burnout))
+
+dat$burnout <- as.numeric(as.character(dat$burnout))  # TODO: as.numeric anschauen
 
 # Calculate the mean, standard deviation, and range for 'burnout'
 burnout_mean <- mean(dat$burnout, na.rm = TRUE)
@@ -297,9 +299,6 @@ cat("Range of burnout:", burnout_min, "to", burnout_max, "\n")
 comparison_mean_depr1 <- 3.87
 comparison_sd_depr1 <- 0.83  
 
-# Convert 'depression' to numeric in case it's not already
-dat$depression <- as.numeric(as.character(dat$depression))
-
 # Calculate the mean and standard deviation for your survey's depression variable
 survey_mean_depr <- mean(dat$depression, na.rm = TRUE)
 survey_sd_depr <- sd(dat$depression, na.rm = TRUE)
@@ -325,8 +324,10 @@ cat("Comparison Mean:", comparison_mean_depr2, "\n")
 cat("Comparison SD:", comparison_sd_depr2, "\n")
 
 ```
+
 References 
 Brown, T. A., Chorpita, B. F., Korotitsch, W., & Barlow, D. H. (1997). Psychometric properties of the Depression Anxiety Stress Scales (DASS) in clinical samples. Behaviour research and therapy, 35(1), 79-89.
 Dolbier, C. L., Webster, J. A., McCalister, K. T., Mallon, M. W., & Steinhardt, M. A. (2005). Reliability and validity of a single-item measure of job satisfaction. American journal of health promotion : AJHP, 19(3), 194–198. https://doi.org/10.4278/0890-1171-19.3.194
 Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
 West, C. P., Dyrbye, L. N., Sloan, J. A., & Shanafelt, T. D. (2009). Single item measures of emotional exhaustion and depersonalization are useful for assessing burnout in medical professionals. Journal of general internal medicine, 24(12), 1318–1321. https://doi.org/10.1007/s11606-009-1129-z 
+

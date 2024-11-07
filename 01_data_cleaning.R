@@ -7,7 +7,7 @@ library(dplyr)
 library(sjPlot)
 
 # Read the SPSS data (adjust the file path as necessary)
-dat <- foreign::read.spss("../data/data_project_22944_2024_10_18.sav", to.data.frame = TRUE, use.value.labels = TRUE)
+dat <- foreign::read.spss("../data/data_project_22944_2024_11_07.sav", to.data.frame = TRUE, use.value.labels = TRUE)
 
 ### compute some variables ###
 dat$datetime <- as.POSIXct(dat$datetime, format = "%Y-%m-%d %H:%M:%S")
@@ -20,15 +20,7 @@ table(dat$institutionother)
 
 # Filter the data: remove rows without institution or with fewer than 10 observations per institution
 table(dat$institution %in% c("0","Prefer not to say",NA))
-dat <- dat %>%
-  filter(!is.na(institution) & 
-           institution != "0" & 
-           institution != "Prefer not to say") %>%
-  group_by(institution) %>%
-  filter(n() >= 10) %>%
-  ungroup()
 
-### TODO: How many observations were removed due to less than 10 observations per institution?
 ##institution which were removed, because of less than 10 observations
 # Count the number of observations per institution in the original dataset
 institution_counts <- dat %>%
@@ -45,13 +37,14 @@ removed_institutions <- institution_counts %>%
 
 # Display the institutions removed and their counts --> none were removed
 removed_institutions
+sum(removed_institutions$count)
 
 ##number of institutions removed because of less than 10 observations
 # Original number of rows in the dataset
 original_count <- nrow(dat)
 
 # Filter the data to remove institutions with fewer than 10 observations
-dat_filtered <- dat %>%
+dat <- dat %>%
   filter(!is.na(institution) & 
            institution != "0" & 
            institution != "Prefer not to say") %>%
@@ -60,12 +53,12 @@ dat_filtered <- dat %>%
   ungroup()
 
 # Count the number of rows in the filtered dataset
-filtered_count <- nrow(dat_filtered)
+filtered_count <- nrow(dat)
 
 # Calculate the number of observations removed
 observations_removed <- original_count - filtered_count
 cat("Number of observations removed due to institutions with fewer than 10 observations:", observations_removed, "\n")
-
+# 20 because of institution = 0 or prefer not to say or NA, 39 because of < 10 institution count
 
 # remove responses before 2024-05-13 (the official start of the survey)
 table(dat$date >= as.Date("2024-05-13"))
@@ -74,33 +67,30 @@ dat <- dat %>%
   filter(as.Date(date, format = "%d.%m.%Y") >= as.Date("2024-05-13"))
 
 
-### TODO: why are there data values 0, for example jobsatisfaciton, should be between 1 and 7
+### TODO: "hallo das ist Bianca Test"
 ##table with job satisfaction frequencies
-job_satisfaction_table <- dat %>%
-  group_by(jobSatisfaction) %>%
-  summarise(Frequency = n()) %>%
-  arrange(desc(Frequency))  # Optional: Sort by frequency, if desired
-
-print(job_satisfaction_table)
+table(dat$jobSatisfaction)
 
 # Filter rows where jobSatisfaction is 0
 zero_job_satisfaction <- dat %>%
   filter(jobSatisfaction == 0)
 
 # Display the rows with jobSatisfaction = 0
-print(zero_job_satisfaction)
+#View(zero_job_satisfaction)
 
 
 ### TODO: determine which participants just clicked through and are thus invalid
+### TODO: count number of NA's and number of 0s per person and show distribution
+### TODO: if 0s are like NA's for specific variables then make NA's out of them (with the help of the codebook)
 # Set the threshold for minimum duration (e.g. 60 seconds)
-min_duration_threshold <- 60
+min_duration_threshold <- 4*60
 
 # Filter participants who have a duration below the threshold
 clicked_through_participants <- dat %>%
-  filter(duration < min_duration_threshold)
+  filter(duration < min_duration_threshold & duration > -1)
 
 # Display these participants
-print(clicked_through_participants)
+#View(clicked_through_participants)
 
 # Count the number of excluded participants --> 151
 num_excluded <- nrow(clicked_through_participants)
@@ -128,7 +118,6 @@ dat_filtered_institution <- dat %>%
   ungroup()
 
 # Exclude based on duration below threshold
-min_duration_threshold <- 60
 excluded_duration <- dat_filtered_institution %>%
   filter(duration < min_duration_threshold)
 num_excluded_duration <- nrow(excluded_duration)
@@ -153,6 +142,7 @@ exclusion_summary <- tibble(
                  (remaining_observations / total_observations) * 100)
 )
 
+# TODO: check numbers again 
 # Display the table using sjPlot
 sjPlot::tab_df(exclusion_summary, title = "Exclusion Summary", show.rownames = FALSE)
 
