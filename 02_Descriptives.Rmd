@@ -22,7 +22,7 @@ This survey explores the mental health and well-being of mid-level academic staf
 library(tidyverse)
 library(ggplot2)
 rm(list = ls())
-load("../data/SWiMS2024_Data_2024-11-07.RData")
+load("../data/SWiMS2024_Data_2024-11-14.RData")
 ```
 
 # Descriptive Analyses
@@ -38,7 +38,7 @@ institution_counts <- dat %>%
   arrange(count)  # Arrange by count in ascending order
 
 # Filter the data to include only institutions with more than 20 participants
-filtered_dat <- dat %>%
+dat <- dat %>%
   filter(institution %in% institution_counts$institution)
 
 # Get the maximum count to set y-axis limit
@@ -47,7 +47,7 @@ sum_count <- sum(institution_counts$count)
 
 # Create the plot
 # TODO: Order by response count
-ggplot(filtered_dat, aes(x = reorder(factor(institution), table(institution)[factor(institution)]), y = after_stat(count))) +  
+ggplot(dat, aes(x = reorder(factor(institution), table(institution)[factor(institution)]), y = after_stat(count))) +  
   geom_bar(fill = "steelblue", alpha = 0.7) +
   theme_minimal(base_size = 12) +
   theme(
@@ -74,7 +74,7 @@ ggplot(filtered_dat, aes(x = reorder(factor(institution), table(institution)[fac
 
 ## Responses by Date
 
-```{r}
+```{r, fig.width= 10}
 # plot responses by date
 # Count the number of responses per date
 response_counts <- dat %>%
@@ -131,64 +131,30 @@ print(paste("Standard deviation of duration for participants who used less than 
 
 ```
 
-TODO: Compute depression score based on Brown et al. 1997 as a new variable depression --> using the short version of the DASS-21 with the depression subscale consisting of 7 items. Scoring: add scores and x2 to get comparable measures as the DASS-42 questionnaire
+TODO:Compute depression score based on Brown et al. 1997 as a new variable depression --> using the short version of the DASS-21 with the depression subscale consisting of 7 items. Scoring: add scores and x2 to get comparable measures as the DASS-42 questionnaire(Henry & Crawford, 2005)
 ```{r}
 
 # List of the variables
 variables <- c("positiveFeeling", "initiative", "future", 
                "feelingDown", "enthusiasm", "selfworth", "meaning")
 
-# Convert specified variables to numeric
-dat$positiveFeeling_num <- as.numeric(dat$positiveFeeling)-1
-#View(dat[,c("positiveFeeling","positiveFeeling_num")]) # check if conversion from factor to numeric is correct
-dat$initiative_num <- as.numeric(dat$initiative)-1
-dat$future_num <- as.numeric(dat$future)-1
-dat$feelingDown_num <- as.numeric(dat$feelingDown)-1
-dat$enthusiasm_num <- as.numeric(dat$enthusiasm)-1
-dat$selfworth_num <- as.numeric(dat$selfworth)-1
-dat$meaning_num <- as.numeric(dat$meaning)-1
+# Modify the dat data frame in place by mapping categorical responses to numerical scale
+dat <- dat %>%
+  mutate(across(all_of(variables), ~ recode(.,
+    "Did not apply to me at all" = 0,
+    "Applied to me to some degree, or some of the time" = 1,
+    "Applied to me to a considerable degree, or a good part of time" = 2,
+    "Applied to me very much, or most of the time" = 3
+  )))
+
 
 # Create the new variable 'depression' by summing up the specified columns and multiplying by 2 (due to short version)
-dat$depression <- 2 * (dat$positiveFeeling_num + dat$initiative_num + dat$future_num + 
-                            dat$feelingDown_num + dat$enthusiasm_num + dat$selfworth_num + 
-                            dat$meaning_num)
-summary(dat$depression)
+dat <- dat %>%
+  mutate(depression = rowSums(select(., all_of(variables)), na.rm = TRUE) * 2)
 
-# Calculate the total number of observations
-total_obs_depr <- nrow(dat)
-
-# Count non-missing values in 'depressionscore'
-num_non_missing <- sum(!is.na(dat$depression))                   # Absolute count of non-missing values
-perc_non_missing <- (num_non_missing / total_obs_depr) * 100               # Percentage of non-missing values
-
-# Display the result
-cat("Non-missing count for depressionscore:", num_non_missing, "\n")
-cat("Percentage of non-missing values for depressionscore:", round(perc_non_missing, 2), "%\n")
-
-# Filter rows with no missing values in any of the specified columns
-complete_cases <- dat[complete.cases(dat[variables]), ]
-
-# Display the rows with no missing values
-complete_cases
-
-###missings of the relevant variables --> we have a lot of missing variables, 98%???
-
-# Calculate the total number of observations
-total_obs <- nrow(dat)
-
-# Function to count missing values and calculate percentage for specified variables
-missing_summary <- sapply(dat[variables], function(x) {
-  num_missing <- sum(is.na(x))                   # Absolute number of missing values
-  perc_missing <- (num_missing / total_obs) * 100  # Percentage of missing values
-  c("Missing Count" = num_missing, "Percentage" = perc_missing)
-})
-
-# Convert to a data frame for easier viewing
-missing_summary_df <- as.data.frame(t(missing_summary))
-missing_summary_df <- round(missing_summary_df, 2) # Round percentages to 2 decimal places
-
-# Display the missing summary
-missing_summary_df
+# Display the updated data frame with the new 'depression' variable
+#dat$depression
+psych::describe(dat$depression)
 
 ```
 
@@ -198,102 +164,139 @@ TODO: Compare values of existing questionnaires in the survey with averages in t
 ```{r}
 ###job satisfaction --> I did not find a population score with that exact item expect for the original study
 
-## Population mean and SD from Dolbier et al. (2005)
+## Population mean and SD from Dolbier et al. (2005) from 745 workers at the Texas Department of Human Services.
 population_mean_js <- 5.31
 population_sd_js <- 1.21
 
-# Convert jobSatisfaction to numeric in case it is a factor
-head(data.frame(dat$jobSatisfaction,as.numeric(dat$jobSatisfaction)-1),20)
-dat$jobSatisfaction_num <- as.numeric(dat$jobSatisfaction)-1
+# Modify the dat data frame in place by mapping categorical responses to numerical scale --> 0 (skipped question) were converted to NA
+dat <- dat %>%
+  mutate(jobSatisfaction = case_when(
+    jobSatisfaction == "0" ~ NA_character_,
+    jobSatisfaction == "1 - extremely dissatisfied" ~ "1",
+    jobSatisfaction == "2" ~ "2",
+    jobSatisfaction == "3" ~ "3",
+    jobSatisfaction == "4" ~ "4",
+    jobSatisfaction == "5" ~ "5",
+    jobSatisfaction == "6" ~ "6",
+    jobSatisfaction == "7 - extremely satisfied" ~ "7",
+    TRUE ~ jobSatisfaction
+  )) %>% mutate(jobSatisfaction = as.numeric(jobSatisfaction))
+
 
 # Calculate mean and SD for job satisfaction in your data
-survey_mean_js <- mean(dat$jobSatisfaction_num, na.rm = TRUE)
-survey_sd_js <- sd(dat$jobSatisfaction_num, na.rm = TRUE)
+survey_mean_js <- mean(dat$jobSatisfaction, na.rm = TRUE)
+survey_sd_js <- sd(dat$jobSatisfaction, na.rm = TRUE)
 
 # Perform a t-test to compare the survey data with the population mean
-t_test_result <- t.test(dat$jobSatisfaction_num, mu = population_mean_js)
+t_test_result <- t.test(dat$jobSatisfaction, mu = population_mean_js)
+t_test_result
 
-# Display the results
-cat("Survey Mean:", survey_mean_js, "\n")
-cat("Survey SD:", survey_sd_js, "\n")
-cat("Population Mean:", population_mean_js, "\n")
-cat("Population SD:", population_sd_js, "\n")
-cat("T-test Result:\n")
-print(t_test_result)
-
-##Comparison with following paper: 
-#Castellacci, F., & Viñas-Bardolet, C. (2020). Permanent contracts and job satisfaction in academia: evidence from European countries. Studies in Higher Education, 46, 1866 - 1880. https://doi.org/10.1080/03075079.2019.1711041.
-
-# Given mean and SD from the comparison paper
-comparison_mean_js <- 10.01
-comparison_sd_js <- 2.64
-
-# Convert your survey scores to Z-scores based on your survey’s own mean and SD
-dat$jobSatisfaction_z <- (dat$jobSatisfaction_num - survey_mean_js) / survey_sd_js
-
-# Calculate the Z-score of the comparison paper’s mean relative to your survey’s distribution
-comparison_z_in_survey_context <- (comparison_mean_js - survey_mean_js) / survey_sd_js
-
-# Perform a one-sample t-test comparing your survey's Z-scores to the comparison Z-score
-t_test_result <- t.test(dat$jobSatisfaction_z, mu = comparison_z_in_survey_context)
-
-# Display the comparison Z-score and t-test result
-cat("The Z-score of the comparison mean in the context of your survey’s distribution is:", 
-    round(comparison_z_in_survey_context, 2), "\n")
-cat("One-sample t-test comparing survey Z-scores to the comparison Z-score:\n")
-print(t_test_result)
-
-##--> This indicates that the mean from the comparison paper (10.01) is 4.3 standard deviations above your survey's mean.
+# Display t-test result in a table with sjPlot
+sjPlot::tab_df(
+  data.frame(
+    Group = c("Survey", "Population"),
+    Mean = c(survey_mean_js, population_mean_js),
+    SD = c(survey_sd_js, population_sd_js),
+    "t-test" = t_test_result$statistic,
+    "df" = t_test_result$parameter,
+    "t-test p-value" = t_test_result$p.value
+  ),
+  title = "Descriptive Statistics and T-test Result"
+)
 
 ```
+
+## Stress
+
+Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
+
 ```{r}
-##Stress -->I did not find a comparison paper with raw mean and sds to compare it with with the exact item
+##Stress
 
-# Convert 'stress' to numeric
-dat$stress <- as.numeric(as.character(dat$stress))
 
-# Calculate the mean, standard deviation, and range for 'stress'
-stress_mean <- mean(dat$stress, na.rm = TRUE)
-stress_sd <- sd(dat$stress, na.rm = TRUE)
-stress_min <- min(dat$stress, na.rm = TRUE)
-stress_max <- max(dat$stress, na.rm = TRUE)
 
-# Display the results
-cat("Mean of stress:", stress_mean, "\n")
-cat("Standard deviation of stress:", stress_sd, "\n")
-cat("Range of stress:", stress_min, "to", stress_max, "\n")
+# Modify the dat data frame in place by mapping categorical responses to numerical scale --> 0 (skipped question) were converted to NA
+dat <- dat %>%
+  mutate(stress = recode(as.character(stress),
+    "1 - not at all" = 1,
+    "2" = 2,
+    "3" = 3,
+    "4" = 4,
+    "5 - very much" = 5
+  ))
+
+# Check data
+dat$stress
+summary(dat$stress)
+
+# Calculate mean and SD for job satisfaction 
+survey_median_stress <- median(dat$stress, na.rm = TRUE)
+survey_sd_stress <- sd(dat$stress, na.rm = TRUE)
+
+#Arapovic-Johansson, B., Wåhlin, C., Kwak, L., Björklund, C., & Jensen, I. (2017). Work-related stress assessed by a text message single-item stress question. Occupational medicine (Oxford, England), 67(8), 601–608. https://doi.org/10.1093/occmed/kqx111 --> is with SMS and only median.
+
+# N = 118, Participants were employed at three team-based primary health care facilities, so not really represantive
+
+# ## Population median and SD from Arapovic-Johansson (2017)
+# population_median_stress <- 3
+# 
+# # Perform a Wilcoxon signed-rank test to compare the sample median with the population median
+# wilcox_test_result_stress <- wilcox.test(dat$stress, mu = population_median_stress, exact = FALSE)
+# 
+# # Display Wilcoxon test result in a table with sjPlot
+# sjPlot::tab_df(
+#   data.frame(
+#     Group = c("Survey", "Population"),
+#     Median = c(survey_median_stress, population_median_stress),
+#     "Wilcoxon test" = wilcox_test_result_stress$statistic,
+#     "Wilcoxon p-value" = wilcox_test_result_stress$p.value
+#   ),
+#   title = "Descriptive Statistics and Wilcoxon Test Result"
+# )
 
 ```
 
 TODO Timon: Skalen anschauen und comparison paper
 
+check values in 
+Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
+
+## Burnout
+
+West, C. P., Dyrbye, L. N., Sloan, J. A., & Shanafelt, T. D. (2009). Single item measures of emotional exhaustion and depersonalization are useful for assessing burnout in medical professionals. Journal of general internal medicine, 24(12), 1318–1321. https://doi.org/10.1007/s11606-009-1129-z 
+
+Emotional exhaustion item
+
 ```{r}
-##Burnout -->I did not find a comparison paper with raw mean and sds to compare it with
+##Burnout --> scale 0-6
 
-# Convert 'burnout' to numeric
+unique(dat$burnOut)
 
-dat$burnout <- as.numeric(as.character(dat$burnout))  # TODO: as.numeric anschauen
+# Modify the dat data frame in place by mapping categorical responses to numerical scale --> 0 (skipped question) were converted to NA
+dat <- dat %>%
+  mutate(burnOut = recode(as.character(burnOut),
+    "Never" = 0,
+    "A few times a year or less" = 1,
+    "Once a month or less" = 2,
+    "A few times a month" = 3,
+    "Once a week" = 4,
+    "A few times a week" = 5,
+    "Everyday" = 6
+  ))
 
-# Calculate the mean, standard deviation, and range for 'burnout'
-burnout_mean <- mean(dat$burnout, na.rm = TRUE)
-burnout_sd <- sd(dat$burnout, na.rm = TRUE)
-burnout_min <- min(dat$burnout, na.rm = TRUE)
-burnout_max <- max(dat$burnout, na.rm = TRUE)
-
-# Display the results
-cat("Mean of burnout:", burnout_mean, "\n")
-cat("Standard deviation of burnout:", burnout_sd, "\n")
-cat("Range of burnout:", burnout_min, "to", burnout_max, "\n")
+hist(dat$burnOut)
 
 ```
 
 
+## Depression 
+
 ```{r}
 ###Depression --> no papers found specifically about academia
 
-##comparison paper: Henry, J., & Crawford, J. (2005). The short-form version of the Depression Anxiety Stress Scales (DASS-21): construct validity and normative data in a large non-clinical sample.. The British journal of clinical psychology, 44 Pt 2, 227-39 . https://doi.org/10.1348/014466505X29657.
+##comparison paper: Henry, J., & Crawford, J. (2005). The short-form version of the Depression Anxiety Stress Scales (DASS-21): construct validity and normative data in a large non-clinical sample. The British journal of clinical psychology, 44 Pt 2, 227-39 . https://doi.org/10.1348/014466505X29657.
 
-#participants: 1,794 members of the general adult UKpopulation (979 female, 815 male)
+#participants: 1,794 members of the general adult UKpopulation non clinical (979 female, 815 male)
 
 # Given mean and standard deviation from the comparison paper
 comparison_mean_depr1 <- 3.87
@@ -303,25 +306,47 @@ comparison_sd_depr1 <- 0.83
 survey_mean_depr <- mean(dat$depression, na.rm = TRUE)
 survey_sd_depr <- sd(dat$depression, na.rm = TRUE)
 
-# Display the results
-cat("Survey Mean (depression):", survey_mean_depr, "\n")
-cat("Survey SD (depression):", survey_sd_depr, "\n")
-cat("Comparison Mean:", comparison_mean_depr1, "\n")
-cat("Comparison SD:", comparison_sd_depr1, "\n")
+# Perform a t-test to compare the survey data with the population mean
+t_test_result_depr <- t.test(dat$depression, mu = comparison_mean_depr1)
+t_test_result_depr
 
-##comparison paper: Crawford, J., Cayley, C., Lovibond, P., Wilson, P., & Hartley, C. (2011). Percentile Norms and Accompanying Interval Estimates from an Australian General Adult Population Sample for Self‐Report Mood Scales (BAI, BDI, CRSD, CES‐D, DASS, DASS‐21, STAI‐X, STAI‐Y, SRDS, and SRAS). Australian Psychologist, 46, 3 - 14. https://doi.org/10.1111/J.1742-9544.2010.00003.X.
+# Display t-test result in a table with sjPlot
+sjPlot::tab_df(
+  data.frame(
+    Group = c("Survey", "Population"),
+    Mean = c(survey_mean_depr, comparison_mean_depr1),
+    SD = c(survey_sd_depr, comparison_sd_depr1),
+    "t-test" = t_test_result_depr$statistic,
+    "df" = t_test_result_depr$parameter,
+    "t-test p-value" = t_test_result_depr$p.value
+  ),
+  title = "Descriptive Statistics and T-test Result"
+)
 
-#partipants: N = 497, female = 221, male = 276 of the Australian General Population
+##comparison paper: Sinclair, S. J., Siefert, C. J., Slavin-Mulford, J. M., Stein, M. B., Renna, M., & Blais, M. A. (2012). Psychometric evaluation and normative data for the depression, anxiety, and stress scales-21 (DASS-21) in a nonclinical sample of U.S. adults. Evaluation & the health professions, 35(3), 259–279. https://doi.org/10.1177/0163278711424282
+
+#partipants: N = 499 non-clinical sample of US adults
 
 # Given mean and standard deviation from the comparison paper
-comparison_mean_depr2 <- 42.14
-comparison_sd_depr2 <- 17.93
+comparison_mean_depr2 <- 5.70
+comparison_sd_depr2 <- 8.20
 
-# Display the results
-cat("Survey Mean (depression):", survey_mean_depr, "\n")
-cat("Survey SD (depression):", survey_sd_depr, "\n")
-cat("Comparison Mean:", comparison_mean_depr2, "\n")
-cat("Comparison SD:", comparison_sd_depr2, "\n")
+# Perform a t-test to compare the survey data with the population mean
+t_test_result_depr2 <- t.test(dat$depression, mu = comparison_mean_depr2)
+t_test_result_depr2
+
+# Display t-test result in a table with sjPlot
+sjPlot::tab_df(
+  data.frame(
+    Group = c("Survey", "Population"),
+    Mean = c(survey_mean_depr, comparison_mean_depr2),
+    SD = c(survey_sd_depr, comparison_sd_depr2),
+    "t-test" = t_test_result_depr2$statistic,
+    "df" = t_test_result_depr2$parameter,
+    "t-test p-value" = t_test_result_depr2$p.value
+  ),
+  title = "Descriptive Statistics and T-test Result"
+)
 
 ```
 
