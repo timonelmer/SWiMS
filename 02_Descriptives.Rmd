@@ -1,6 +1,6 @@
 ---
 title: "SWiMS 2024 Descriptive Analyses"
-author: "TE + BB"
+author: "TE "
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -213,8 +213,6 @@ Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measu
 ```{r}
 ##Stress
 
-
-
 # Modify the dat data frame in place by mapping categorical responses to numerical scale --> 0 (skipped question) were converted to NA
 dat <- dat %>%
   mutate(stress = recode(as.character(stress),
@@ -226,12 +224,46 @@ dat <- dat %>%
   ))
 
 # Check data
-dat$stress
+#dat$stress
 summary(dat$stress)
 
 # Calculate mean and SD for job satisfaction 
-survey_median_stress <- median(dat$stress, na.rm = TRUE)
+survey_mean_stress <- mean(dat$stress, na.rm = TRUE)
 survey_sd_stress <- sd(dat$stress, na.rm = TRUE)
+
+# Natalie Pennington, Amanda J. Holmstrom & Jeffrey A. Hall (2022) The Toll
+# of Technology while Working from Home during COVID-19, Communication Reports, 35:1,
+# 25-37, DOI: 10.1080/08934215.2021.1993947
+#we commissioned the Siena College Research Institute (SCRI) and the panel company, Lucid, to survey American adults in May 2020. Participants were recruited to establish a quota sample of age, sex, political affiliation, region of the country, and race and ethnicity. 
+jeff_M = 2.89
+jeff_SD = 1.22
+#N = 540
+
+
+# Perform a t-test to compare the survey data with the population mean
+#t_test_result <- t.test(survey_mean_stress, mu = jeff_M)
+# #t_test_result
+# 
+# # Display t-test result in a table with sjPlot
+# sjPlot::tab_df(
+#   data.frame(
+#     Group = c("Survey", "Population"),
+#     Mean = c(survey_mean_stress, jeff_M),
+#     SD = c(survey_sd_stress, jeff_SD),
+#     "t-test" = t_test_result$statistic,
+#     "df" = t_test_result$parameter,
+#     "t-test p-value" = t_test_result$p.value
+#   ),
+#   title = "Descriptive Statistics and T-test Result"
+# )
+
+
+#more numbers from: Elo, A. L., Ervasti, J., Kuosma, E., & Mattila, P. (2008). Evaluation of an organizational stress management program in a municipal public works organization. Journal of occupational health psychology, 13(1), 10–23. https://doi.org/10.1037/1076-8998.13.1.10
+mean_pre <- 2.30
+sd_pre <- 1.10
+n = 218
+
+
 
 #Arapovic-Johansson, B., Wåhlin, C., Kwak, L., Björklund, C., & Jensen, I. (2017). Work-related stress assessed by a text message single-item stress question. Occupational medicine (Oxford, England), 67(8), 601–608. https://doi.org/10.1093/occmed/kqx111 --> is with SMS and only median.
 
@@ -256,10 +288,6 @@ survey_sd_stress <- sd(dat$stress, na.rm = TRUE)
 
 ```
 
-TODO Timon: Skalen anschauen und comparison paper
-
-check values in 
-Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
 
 ## Burnout
 
@@ -350,9 +378,100 @@ sjPlot::tab_df(
 
 ```
 
-References 
+```{r}
+# Create an empty list to store each summary
+summary_list <- list()
+
+# Function to create a summary dataframe for tab_df and add it to the summary list
+create_summary <- function(group, mean, sd, t_stat, df, p_value, title, reference) {
+  summary_list <<- append(summary_list, list(
+    data.frame(
+      Group = group,
+      Mean = mean,
+      SD = sd,
+      `t-test` = t_stat,
+      `df` = df,
+      `t-test p-value` = p_value,
+      Title = title,
+      Reference = reference
+    )
+  ))
+}
+
+# Summary for Job Satisfaction
+create_summary(
+  group = c("SWiMS Survey", "Population"),
+  mean = c(survey_mean_js, population_mean_js),
+  sd = c(survey_sd_js, population_sd_js),
+  t_stat = t_test_result$statistic,
+  df = t_test_result$parameter,
+  p_value = t_test_result$p.value,
+  title = "Job Satisfaction",
+  reference = "Dolbier et al., 2005"
+)
+
+# Summary for Stress
+create_summary(
+  group = c("SWiMS Survey", "Population"),
+  mean = c(survey_mean_stress, jeff_M),
+  sd = c(survey_sd_stress, jeff_SD),
+  t_stat = t_test_result$statistic,
+  df = t_test_result$parameter,
+  p_value = t_test_result$p.value,
+  title = "Stress",
+  reference = "Pennington et al., 2022"
+)
+
+# Summary for Depression (using comparison from Henry & Crawford, 2005)
+create_summary(
+  group = c("SWiMS Survey", "Population"),
+  mean = c(survey_mean_depr, comparison_mean_depr1),
+  sd = c(survey_sd_depr, comparison_sd_depr1),
+  t_stat = t_test_result_depr$statistic,
+  df = t_test_result_depr$parameter,
+  p_value = t_test_result_depr$p.value,
+  title = "Depression",
+  reference = "Henry & Crawford, 2005"
+)
+
+# Summary for Depression (using comparison from Sinclair et al., 2012)
+create_summary(
+  group = c("SWiMS Survey", "Population"),
+  mean = c(survey_mean_depr, comparison_mean_depr2),
+  sd = c(survey_sd_depr, comparison_sd_depr2),
+  t_stat = t_test_result_depr2$statistic,
+  df = t_test_result_depr2$parameter,
+  p_value = t_test_result_depr2$p.value,
+  title = "Depression",
+  reference = "Sinclair et al., 2012"
+)
+
+# Combine all summaries into a single data frame
+combined_summary <- do.call(rbind, summary_list)
+
+# Display the combined summary using sjPlot::tab_df
+sjPlot::tab_df(
+  combined_summary,
+  title = "Summary of Descriptive Statistics and T-test Results for All Analyses"
+)
+
+```
+
+# References 
+
 Brown, T. A., Chorpita, B. F., Korotitsch, W., & Barlow, D. H. (1997). Psychometric properties of the Depression Anxiety Stress Scales (DASS) in clinical samples. Behaviour research and therapy, 35(1), 79-89.
+
 Dolbier, C. L., Webster, J. A., McCalister, K. T., Mallon, M. W., & Steinhardt, M. A. (2005). Reliability and validity of a single-item measure of job satisfaction. American journal of health promotion : AJHP, 19(3), 194–198. https://doi.org/10.4278/0890-1171-19.3.194
+
 Elo, A. L., Leppänen, A., & Jahkola, A. (2003). Validity of a single-item measure of stress symptoms. Scandinavian journal of work, environment & health, 444-451.
 West, C. P., Dyrbye, L. N., Sloan, J. A., & Shanafelt, T. D. (2009). Single item measures of emotional exhaustion and depersonalization are useful for assessing burnout in medical professionals. Journal of general internal medicine, 24(12), 1318–1321. https://doi.org/10.1007/s11606-009-1129-z 
+
+Elo, A. L., Ervasti, J., Kuosma, E., & Mattila, P. (2008). Evaluation of an organizational stress management program in a municipal public works organization. Journal of occupational health psychology, 13(1), 10–23. https://doi.org/10.1037/1076-8998.13.1.10
+
+Henry, J., & Crawford, J. (2005). The short-form version of the Depression Anxiety Stress Scales (DASS-21): construct validity and normative data in a large non-clinical sample. The British journal of clinical psychology, 44 Pt 2, 227-39 . https://doi.org/10.1348/014466505X29657.
+
+Natalie Pennington, Amanda J. Holmstrom & Jeffrey A. Hall (2022) The Toll of Technology while Working from Home during COVID-19, Communication Reports, 35:1,
+25-37, DOI: 10.1080/08934215.2021.1993947
+
+Sinclair, S. J., Siefert, C. J., Slavin-Mulford, J. M., Stein, M. B., Renna, M., & Blais, M. A. (2012). Psychometric evaluation and normative data for the depression, anxiety, and stress scales-21 (DASS-21) in a nonclinical sample of U.S. adults. Evaluation & the health professions, 35(3), 259–279. https://doi.org/10.1177/0163278711424282
 
