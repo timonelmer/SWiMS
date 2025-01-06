@@ -1,0 +1,134 @@
+---
+title: "Institution Report: SWiMS 2024 Data"
+author: "actionuni Survey Team"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\includegraphics[width=4cm]{actionuni_logo_klein.png}}
+  - \fancyhead[C]{}
+  - \fancyhead[R]{Institution Report}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+```
+
+```{r load-data, include=FALSE}
+rm(list = ls())
+# Load data
+load("../data/SWiMS2024_Data_2024-11-18.RData")
+
+# Set target institution index manually
+target_index <- 1  # Change this value to select the institution
+institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
+target_institution <- institution_labels[target_index]
+remaining_institutions <- setdiff(institution_labels, target_institution)
+
+```
+
+# Introduction
+
+The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the institution **`r target_institution`**, comparing its responses to those from other institutions.
+
+---
+  
+  # Sample Description
+  
+  ## Key Demographics
+  
+  The table below summarizes the key demographic characteristics of respondents from **`r target_institution`** compared to all other institutions.
+
+```{r sample-description}
+# Select demographic variables
+demographic_vars <- c("age", "gender", "mainPosition", "researchDiscipline", "phd")
+
+demographics_summary <- dat %>%
+  mutate(group = ifelse(institution == target_institution, "Target Institution", "Other Institutions")) %>%
+  select(group, all_of(demographic_vars)) %>%
+  pivot_longer(cols = all_of(demographic_vars), names_to = "Variable", values_to = "Value") %>%
+  group_by(group, Variable, Value) %>%
+  summarise(Count = n(), .groups = "drop") %>%
+  group_by(group, Variable) %>%
+  mutate(Proportion = round(Count / sum(Count),2))
+
+# Create a table
+summary_table <- demographics_summary %>%
+  pivot_wider(names_from = group, values_from = c(Count, Proportion))
+
+summary_table %>%
+  kbl(caption = "Demographic Summary") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+```
+
+---
+  
+  # Key Variables
+  
+  The following plots compare the responses to key survey variables between **`r target_institution`** and all other institutions.
+
+```{r key-variables}
+# Select key variables
+key_vars <- c("stress", "jobSatisfaction", "burnOut")
+
+# Generate plots
+for (var in key_vars) {
+  # Use variable label if available
+  x_label <- strsplit(codebook[codebook$VarName %in% var,"Labels"],"//")[[1]]
+  
+  # Prepare data for plotting
+  plot_data <- dat %>%
+    mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+    filter(!is.na(!!sym(var)), !is.na(group)) %>%
+    group_by(group, !!sym(var)) %>%
+    summarise(count = n(), .groups = "drop") %>%
+    group_by(group) %>%
+    mutate(proportion = count / sum(count))
+  
+  # Create plot
+  ggplot(plot_data, aes_string(x = var, y = "proportion", fill = "group")) +
+    geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+    scale_y_continuous(labels = scales::percent, limits = c(0,max(plot_data$proportion+.05))) +
+    labs(
+      x = var,
+      y = "Proportion",
+      fill = "Institution",
+      title = paste("Distribution of", var)
+    ) +
+    scale_fill_manual(values = c("#1f77b4", "#ff7f0e")) +
+    geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = 4) +
+    theme_minimal() +
+    theme(
+      text = element_text(size = 12),
+      axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
+      axis.text.y = element_text(size = 10),
+      axis.title = element_text(size = 12),
+      legend.text = element_text(size = 10),
+      legend.title = element_text(size = 10),
+      plot.title = element_text(size = 14, hjust = 0.5)
+    )
+}
+```
+
+---
+  
+  # Appendix
+  
+  ## Codebook
+  
+  The following table provides an overview of the variable names and their corresponding labels.
+
+```{r codebook}
+codebook %>%
+  kbl(caption = "Codebook") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE)
