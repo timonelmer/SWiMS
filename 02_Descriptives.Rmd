@@ -48,7 +48,7 @@ sum_count <- sum(institution_counts$count)
 # Create the plot
 # TODO: Order by response count
 ggplot(dat, aes(x = reorder(factor(institution), table(institution)[factor(institution)]), y = after_stat(count))) +  
-  geom_bar(fill = "steelblue", alpha = 0.7) +
+  geom_bar(fill = myblue, alpha = 0.7) +
   theme_minimal(base_size = 12) +
   theme(
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
@@ -61,7 +61,8 @@ ggplot(dat, aes(x = reorder(factor(institution), table(institution)[factor(insti
   labs(
     x = "Institution Name",
     y = "Number of Responses",
-    caption = paste("Date:", Sys.Date(), "\n", "Total count: ", sum_count, "\n",
+    caption = paste(#"Date:", Sys.Date(), "\n", 
+                    "Total count: ", sum_count, "\n",
                     "Only institutions with more than 20 participants are displayed.")
   ) +
   geom_text(stat = 'count', aes(label = after_stat(count)), hjust = -0.1, size = 3.5) +
@@ -132,6 +133,7 @@ print(paste("Standard deviation of duration for participants who used less than 
 ```
 
 TODO:Compute depression score based on Brown et al. 1997 as a new variable depression --> using the short version of the DASS-21 with the depression subscale consisting of 7 items. Scoring: add scores and x2 to get comparable measures as the DASS-42 questionnaire(Henry & Crawford, 2005)
+
 ```{r}
 
 # List of the variables

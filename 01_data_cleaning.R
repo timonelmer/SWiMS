@@ -282,7 +282,7 @@ dat <- dat %>%
   ))
 
 ## some codebook processing
-codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v3.xlsx")
+codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v4.xlsx")
 codebook$question <- gsub(pattern = " \\(q_.*$", replacement = "", codebook$Item)
 
 ## save data as rdata object
