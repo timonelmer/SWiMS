@@ -80,7 +80,7 @@ summary_table %>%
 
 ## Job Satisfaction 
 
-Job satisfaction item by @dolbier_reliability_2005.
+Job satisfaction item by @dolbier_reliability_2005. 
 
 ```{r job satisfaction}
 swims.plot <- function(var, institution = target_institution, category = "distribution", data = dat, codeb = codebook){
@@ -132,14 +132,14 @@ swims.plot <- function(var, institution = target_institution, category = "distri
   
   plot(g)
 }
-swims.plot(var = "jobSatisfaction")
+#swims.plot(var = "jobSatisfaction")
 
 ```
 
 ## Supervisor
 ```{r supervisor}
 
-swims.plot(category = "supervisor")
+#swims.plot(category = "supervisor")
 
 ```
 

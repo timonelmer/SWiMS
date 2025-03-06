@@ -1,0 +1,73 @@
+---
+title: "National Report: SWiMS 2024 Data"
+author: "actionuni Survey Team"
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\includegraphics[width=4cm]{actionuni_logo_klein.png}}
+  - \fancyhead[C]{}
+  - \fancyhead[R]{Institution Report}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+```
+
+```{r load-data, include=FALSE}
+rm(list = ls())
+# Load data
+load("../data/SWiMS2024_Data_2024-11-18.RData")
+source("99_helpers.R")
+
+
+institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
+
+```
+
+# Introduction
+
+The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the national level description of the data.
+
+---
+  
+  # Sample Description
+  
+  ## Key Demographics
+  
+  The table below summarizes the key demographic characteristics of all parttaking institutions.
+
+```{r sample-description}
+
+```
+
+---
+  
+  # Key Variables
+
+```{r key-variables}
+
+```
+
+---
+  
+  # Appendix
+  
+  ## Codebook
+  
+  The following table provides an overview of the variable names and their corresponding labels.
+
+```{r codebook}
+codebook %>%
+  kbl(caption = "Codebook") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE)
