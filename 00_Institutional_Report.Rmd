@@ -40,15 +40,19 @@ remaining_institutions <- setdiff(institution_labels, target_institution)
 
 ```
 
+# TODO
+
+- bei plots einbauen, dass kleine zellgrössen nicht geplotted / getabled werden
+
 # Introduction
 
 The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the institution **`r target_institution`**, comparing its responses to those from other institutions.
 
 ---
   
-  # Sample Description
+# Sample Description
   
-  ## Key Demographics
+## Key Demographics
   
   The table below summarizes the key demographic characteristics of respondents from **`r target_institution`** compared to all other institutions.
 
@@ -83,7 +87,7 @@ summary_table %>%
 Job satisfaction item by @dolbier_reliability_2005. 
 
 ```{r job satisfaction}
-swims.plot <- function(var, institution = target_institution, category = "distribution", data = dat, codeb = codebook){
+swims.plot.distribution <- function(var, institution = target_institution, category = "distribution", data = dat, codeb = codebook){
   
   if(category == "distribution"){
     # Ensure var exists in the codeb
@@ -106,7 +110,7 @@ swims.plot <- function(var, institution = target_institution, category = "distri
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion", fill = "group")) +
       geom_bar(stat = "identity", position = "dodge", width = 0.8) +
-      scale_y_continuous(labels = scales::percent, limits = c(0,max(plot_dataa$proportion+.05))) +
+      scale_y_continuous(labels = scales::percent, limits = c(0,max(plot_data$proportion+.05))) +
       labs(
         x = var,
         y = "Proportion",

@@ -277,7 +277,8 @@ dat <- dat %>%
   mutate(gender = case_when(
     male == "quoted" & female == "not quoted" & nonbinary == "not quoted" ~ "male",
     female == "quoted" & male == "not quoted" & nonbinary == "not quoted" ~ "female",
-    (nonbinary == "quoted") | (male == "quoted" & female == "quoted") | genderNA == "quoted" ~ "other",
+    (nonbinary == "quoted") | (male == "quoted" & female == "quoted")  ~ "other",
+    genderNA == "quoted" ~ NA_character_,
     TRUE ~ NA_character_  # Any other combinations are assigned as NA
   ))
 
