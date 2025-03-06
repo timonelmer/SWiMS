@@ -23,12 +23,13 @@ library(tidyverse)
 library(kableExtra)
 library(ggplot2)
 library(readxl)
+library(dplyr)
 ```
 
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-01-07.RData")
+load("../data/SWiMS2024_Data_2025-03-06.RData")
 source("99_helpers.R")
 
 
@@ -136,7 +137,92 @@ swims.plot.distribution <- function(var, institution = target_institution, categ
   
   plot(g)
 }
-#swims.plot(var = "jobSatisfaction")
+#swims.plot.distribution(var = "jobSatisfaction")
+
+
+swims.plot.multibar <- function(var, 
+                                institution = target_institution, 
+                                data = dat, 
+                                codeb = codebook
+                                ){
+
+    # Define variable
+    var_org <- var
+    var <- codeb[codeb$Category %in% var,"VarName"]
+    var_text <- data.frame("variable" = var,"text" = codeb[codeb$VarName %in% var,"Label"])
+    
+    # Ensure var exists in the codeb
+    if (!all(var %in% codeb$VarName)) {
+      stop(paste("Variable", var, "not found in the codeb."))
+    }
+    
+    # Use variable label if available
+    x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
+    
+    # Prepare data for plotting
+    plot_data <- data %>%
+      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = factor(group, levels = c("Other Institutions", setdiff(levels(factor(group)), "Other Institutions")))) %>%
+      filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
+      pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
+      group_by(group, variable, value) %>%
+      summarise(count = n(), .groups = "drop") %>%
+      group_by(group, variable) %>%
+      mutate(proportion = count / sum(count)) %>% 
+      ungroup() 
+      
+    # Change values for varName
+    plot_data <- plot_data %>%
+      left_join(var_text, by = "variable") %>%
+      select(-variable) %>% 
+      mutate(text = str_wrap(text, width = 20))
+    
+    # Create plot
+    plot_function <- function(plot_data) {
+
+      # Plot erstellen
+      g <- ggplot(plot_data, aes(x = group, y = proportion, fill = value)) +  
+        geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
+        scale_y_continuous(labels = scales::percent) +  
+        labs(
+          x = NULL,   # Entferne x-Achsen-Beschriftung
+          y = "Proportion",
+          fill = "Response",
+          title = paste0("Comparison of Responses by Institution: ", var_org)
+        ) +
+        scale_fill_manual(values = c(myblue, myorange, myyellow, mypurple, mygreen)) +  
+        facet_wrap(~ text, ncol = 2, strip.position = "left") +  # Zwei-Spalten-Layout
+        coord_flip() +  # Dreht das Diagramm (horizontal)
+        
+        # Füge Gruppenlabels für beide Balken korrekt hinzu
+        geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
+                  aes(x = group, y = 0.05, label = group),  
+                  inherit.aes = FALSE, 
+                  size = 5, fontface = "bold",
+                  hjust = 0,
+                  position = position_nudge(x = -0.5)) +
+        
+        theme_minimal() +
+        theme(
+          text = element_text(size = 12),
+          strip.text.y.left = element_text(size = 14, face = "bold", angle = 0),  # Lesbare Facet-Titel
+          axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
+          axis.text.x = element_blank(),  # Entferne die x-Achsen-Beschriftungen
+          axis.title.x = element_blank(), # Entferne x-Achsen-Titel komplett
+          axis.title = element_text(size = 12),
+          legend.text = element_text(size = 10),
+          legend.title = element_text(size = 10),
+          plot.title = element_text(size = 14, hjust = 0.5)
+        )
+      
+      return(g)
+    }
+    
+    plot_function(plot_data)
+    
+}
+
+#swims.plot.multibar(var = "supervisor")
 
 ```
 
