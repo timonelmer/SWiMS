@@ -282,6 +282,13 @@ dat <- dat %>%
     TRUE ~ NA_character_  # Any other combinations are assigned as NA
   ))
 
+# Create the new 'carework' variable
+dat <- dat %>%
+  mutate(carework = case_when(
+    careNo == "quoted"  ~ 0,
+    careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ 1
+  ))
+
 ## some codebook processing
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v4.xlsx")
 codebook$question <- gsub(pattern = " \\(q_.*$", replacement = "", codebook$Item)
