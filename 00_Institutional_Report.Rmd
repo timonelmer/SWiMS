@@ -29,7 +29,7 @@ library(dplyr)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-06.RData")
+load("../data/SWiMS2024_Data_2025-03-12.RData")
 source("99_helpers.R")
 
 
@@ -88,9 +88,8 @@ summary_table %>%
 Job satisfaction item by @dolbier_reliability_2005. 
 
 ```{r job satisfaction}
-swims.plot.distribution <- function(var, institution = target_institution, category = "distribution", data = dat, codeb = codebook){
-  
-  if(category == "distribution"){
+swims.plot.distribution <- function(var, institution = target_institution,  data = dat, codeb = codebook){
+
     # Ensure var exists in the codeb
     if (!var %in% codeb$VarName) {
       stop(paste("Variable", var, "not found in the codeb."))
@@ -130,20 +129,25 @@ swims.plot.distribution <- function(var, institution = target_institution, categ
         legend.title = element_text(size = 10),
         plot.title = element_text(size = 14, hjust = 0.5)
       )
-  }
-  
-  
-  
-  
+
   plot(g)
 }
 #swims.plot.distribution(var = "jobSatisfaction")
 
 
+
+```
+
+## Supervisor
+```{r supervisor}
+
+
 swims.plot.multibar <- function(var, 
                                 institution = target_institution, 
                                 data = dat, 
-                                codeb = codebook
+                                codeb = codebook, 
+                                fill_colors = NULL,
+                                colors_set = "Set1"
                                 ){
 
     # Define variable
@@ -177,6 +181,12 @@ swims.plot.multibar <- function(var,
       select(-variable) %>% 
       mutate(text = str_wrap(text, width = 20))
     
+    
+    if(is.null(fill_colors)){
+      fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$value)), 9), name = colors_set)
+    } 
+      
+      #c(myblue, myorange, myyellow, mypurple, mygreen)
     # Create plot
     plot_function <- function(plot_data) {
 
@@ -190,7 +200,7 @@ swims.plot.multibar <- function(var,
           fill = "Response",
           title = paste0("Comparison of Responses by Institution: ", var_org)
         ) +
-        scale_fill_manual(values = c(myblue, myorange, myyellow, mypurple, mygreen)) +  
+        scale_fill_manual(values = fill_colors) +  
         facet_wrap(~ text, ncol = 2, strip.position = "left") +  # Zwei-Spalten-Layout
         coord_flip() +  # Dreht das Diagramm (horizontal)
         
@@ -222,14 +232,16 @@ swims.plot.multibar <- function(var,
     
 }
 
-#swims.plot.multibar(var = "supervisor")
+swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
+
 
 ```
 
-## Supervisor
-```{r supervisor}
+## Discrimination 
 
-#swims.plot(category = "supervisor")
+```{r}
+swims.plot.multibar(var = "discrimination", fill_colors = c("lightgreen","orange","darkorange","red3"))
+swims.plot.multibar(var = "discrimination_type", fill_colors = c("lightgreen","red3"))
 
 ```
 
