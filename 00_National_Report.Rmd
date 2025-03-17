@@ -27,7 +27,7 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2024-11-18.RData")
+load("../data/SWiMS2024_Data_2025-03-17.RData")
 source("99_helpers.R")
 
 
@@ -41,19 +41,124 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
 
 ---
   
-  # Sample Description
-  
-  ## Key Demographics
-  
-  The table below summarizes the key demographic characteristics of all parttaking institutions.
+# Sample Description
 
-```{r sample-description}
+The analyzed sample consist of `r nrow(dat)`. For details on data cleaning, see section XX.
+
+Section XX
+Only institutions with more than 10 responses were considered in this report. 43 participants of 16 institution with a mean of 2.7 (SD = 1.81) participants were removed from the dataset. We also exculded participants that took shorter than 4 minutes to respond (n = 4). 
+62 additional responses were removed because institution "Other" (n = 44), "Prefer not to say" (n = 15), or were missing (n = 3) were indicated. In total, `r nrow(dat)` responses were part of this report.
+
+
+## Parttaking institutions and response
+
+```{r, echo = F}
+
+# Calculate the number of participants for each institution
+institution_counts <- dat %>%
+  group_by(inst) %>%
+  summarise(count = n()) %>%
+  filter(count > 10)
+
+# Filter the data to include only institutions with more than 20 participants
+filtered_dat <- dat %>%
+  filter(inst %in% institution_counts$inst)
+
+# Get the maximum count to set y-axis limit
+max_count <- max(institution_counts$count)
+sum_count <- sum(institution_counts$count)
+
+# Create the plot
+ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y = ..count..)) +  
+  geom_bar(fill = "steelblue", alpha = 0.7) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 14, face = "bold"),
+    axis.title.y = element_text(size = 14, face = "bold"),
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
+  ) +
+  labs(
+   # title = "Number of Responses by Institution",
+    x = "Institution Name",
+    y = "Number of Responses",
+    caption = paste("Total count: ",sum_count ,"\n",
+                    "Only institutions with more than 10 participants are displayed.")
+  ) +
+  geom_text(stat = 'count', aes(label = ..count..), hjust = -0.1, size = 3.5) +
+  ylim(c(0, max_count + 30)) +
+  coord_flip()
+
+#ggsave(paste0("../plots/SWiMS_responses_",date ,".pdf"), height = 7, width = 8)
+```
+
+The average duration of responding to the survey was `r round(mean(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)` minutes (SD = `r round(sd(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)`).
+
+### Response Rate
+
+TODO: do we want to do this? it will just look bad!
+
+```{r}
+
 
 ```
 
+
+## Sample description 
+  
+The figures below summarize the key demographic characteristics of all parttaking institutions.
+
+### Age
+
+```{r age}
+swims.plot.distribution("age")
+```
+### Gender
+
+```{r gender}
+swims.plot.distribution("gender")
+```
+
+### Research Discipline
+
+```{r }
+swims.plot.distribution("researchDiscipline") 
+
+```
+
+### Position Type
+
+```{r }
+swims.plot.distribution("mainPosition")  + 
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
+
+```
+
+### Funding soruce
+
+```{r }
+swims.plot.distribution("funding")
+```
+
+
+### Residence status
+
+```{r }
+swims.plot.distribution("residenceStatus")
+```
+
+### Care work
+
+```{r }
+swims.plot.distribution("carework")
+```
+
+
 ---
   
-  # Key Variables
+# Key Variables
 
 ```{r key-variables}
 
@@ -61,13 +166,8 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
 
 ---
   
-  # Appendix
+# Appendix
   
-  ## Codebook
+## Codebook
   
-  The following table provides an overview of the variable names and their corresponding labels.
-
-```{r codebook}
-codebook %>%
-  kbl(caption = "Codebook") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = TRUE)
+Detailed variable names, item formulations, etc. can be found in the codebook [link]
