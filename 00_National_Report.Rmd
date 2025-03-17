@@ -46,8 +46,7 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
 The analyzed sample consist of `r nrow(dat)`. For details on data cleaning, see section XX.
 
 Section XX
-Only institutions with more than 10 responses were considered in this report. 43 participants of 16 institution with a mean of 2.7 (SD = 1.81) participants were removed from the dataset. We also exculded participants that took shorter than 4 minutes to respond (n = 4). 
-62 additional responses were removed because institution "Other" (n = 44), "Prefer not to say" (n = 15), or were missing (n = 3) were indicated. In total, `r nrow(dat)` responses were part of this report.
+Only institutions with more than 10 responses were considered in this report. 43 participants of 16 institution with a mean of 2.7 (SD = 1.81) participants were removed from the dataset. 62 additional responses were removed because institution "Other" (n = 44), "Prefer not to say" (n = 15), or were missing (n = 3) were indicated. We also exculded participants that took shorter than 4 minutes to respond (n = 4). In total, `r nrow(dat)` responses were part of this report.  
 
 
 ## Parttaking institutions and response

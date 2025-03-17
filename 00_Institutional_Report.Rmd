@@ -89,7 +89,7 @@ Job satisfaction item by @dolbier_reliability_2005.
 
 ```{r job satisfaction}
 
-#swims.plot.distribution(var = "jobSatisfaction")
+swims.plot.distribution(var = "jobSatisfaction", institution = target_institution)
 
 
 
@@ -273,7 +273,9 @@ swims.plot.aggregation <- function(vars,
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Propoprtion",
           fill = "Response",
-          title = paste0("Comparison of Responses by Institution: ", var_org)
+          title = ""
+         # title = paste0("Comparison of Responses by Institution: ", var_org
+         #)
         ) +
         scale_fill_manual(values = fill_colors) +  
         theme_minimal() +
@@ -296,7 +298,14 @@ swims.plot.aggregation <- function(vars,
     
 }
 
-swims.plot.aggregation(var = "discrimination_type")
+# TODO: 
+#left bar is institution, dann other ->TE
+# proportion is percentage -> TE
+# response order like in coebook -> TE
+# alpha for other _> ZK
+
+
+swims.plot.aggregation(var = "discrimination_type", institution = target_institution)
 
 ```
 
