@@ -138,12 +138,12 @@ ggplot(dat[dat$duration/60 < 30,], aes(x = duration/60)) +
 
 TODO: Compute average duration and SD for those who used less than 1 h.
 ```{r}
-# Filter data for participants who used less than 1 hour (3600 seconds)
-under_1h <- dat[dat$duration < 3600, ]
+# Filter data for participants who used less than 2 hour (2x3600 seconds)
+under_2h <- dat[dat$duration < 2*3600, ]
 
 # Calculate the mean and standard deviation in minutes
-average_duration <- mean(under_1h$duration / 60, na.rm = TRUE)
-sd_duration <- sd(under_1h$duration / 60, na.rm = TRUE)
+average_duration <- mean(under_2h$duration / 60, na.rm = TRUE)
+sd_duration <- sd(under_2h$duration / 60, na.rm = TRUE)
 
 # Print the results in minutes
 print(paste("Average duration for participants who used less than 1 hour:", round(average_duration, 2), "minutes"))

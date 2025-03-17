@@ -124,6 +124,21 @@ summary_table <- data.frame(
 tab_df(summary_table, title = "Observations Summary", show.rownames = FALSE)
 
 
+# recode institution
+inst.code <- xlsx::read.xlsx("../codebook_project_22944_2024_05_13.xlsx",2, header = F)
+dat$inst <- dat$institution
+for(i in 1:nrow(inst.code)){
+  dat[dat$institution %in% i,"inst"] <- inst.code[inst.code$X1 %in% i,"X2"]
+}
+
+## remove participants without an institution 
+nrow(dat[dat$inst %in% c("Other"),])
+nrow(dat[dat$institution %in% c(NA),])
+nrow(dat[dat$institution %in% 0,])
+nrow(dat[dat$inst %in% c("Prefer not to say"),])
+dat <- dat[!(dat$inst %in% c("Other", NA, "Prefer not to say")) ,]
+dat <- dat[!(dat$institution %in% 0) ,]
+
 ### TODO: count number of NA's and number of 0s per person and show distribution
 # Count the number of NA's and 0's per person
 dat$na_count <- apply(dat, 1, function(x) sum(is.na(x)))
@@ -285,9 +300,10 @@ dat <- dat %>%
 # Create the new 'carework' variable
 dat <- dat %>%
   mutate(carework = case_when(
-    careNo == "quoted"  ~ 0,
-    careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ 1
+    careNo == "quoted"  ~ "no care work",
+    careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ "care work"
   ))
+
 
 ## some codebook processing
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v5.xlsx")
