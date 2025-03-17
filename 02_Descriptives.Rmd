@@ -23,6 +23,7 @@ library(tidyverse)
 library(ggplot2)
 rm(list = ls())
 load("../data/SWiMS2024_Data_2024-11-14.RData")
+source("99_helpers.R")
 ```
 
 # Descriptive Analyses
@@ -90,6 +91,24 @@ ggplot(response_counts, aes(x = date, y = count, fill = factor(institution))) +
        x = "Date",
        y = "Number of Responses") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+
+#ggsave("../plots/resoponses_by_date.pdf", height = 7, width = 13)
+
+
+# Create the university specific plot
+ggplot(response_counts, aes(x = date, y = count, fill = institution)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(
+    values = c("Universität Zürich, UZH" = "blue", "Other" = "gray"),
+    breaks = c("Universität Zürich, UZH")  # Ensures only relevant legend entries
+  ) +
+  theme_minimal() +
+  labs(title = "Number of Responses by Date",
+       x = "Date",
+       y = "Number of Responses") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        legend.position = "none")
+ggsave("../plots/resoponses_by_date_uzh.pdf", height = 7, width = 13)
 
 ```
 
