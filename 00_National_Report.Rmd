@@ -74,8 +74,8 @@ ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y
   theme(
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
     axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 14, face = "bold"),
-    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
     plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
   ) +
@@ -112,13 +112,13 @@ ggplot(institution_counts, aes(x = reorder(inst, count))) +
   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)), 
             hjust = -0.1, size = 3.5) +
   labs(x = "Institution Name", 
-       y = "Number of Members (in gray) and \nResponses (in blue)") + 
+       y = "Number of estimated Members (in gray) and \nResponses (in blue)") + 
   theme_minimal(base_size = 12) + 
   theme(
     axis.text.x = element_text(size = 10),
     axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 14, face = "bold"),
-    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
   ) +
   coord_flip() +
