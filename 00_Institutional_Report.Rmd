@@ -18,7 +18,7 @@ header-includes:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE)
 library(tidyverse)
 library(kableExtra)
 library(ggplot2)
@@ -29,7 +29,7 @@ library(dplyr)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-12.RData")
+load("../data/SWiMS2024_Data_2025-03-18.RData")
 source("99_helpers.R")
 
 
@@ -79,7 +79,24 @@ summary_table %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
 ```
 
----
+## Response Rate
+
+```{r}
+
+institution_counts <- dat %>%
+  group_by(inst) %>%
+  summarise(count = n()) %>%
+  filter(count > 10)
+
+institution_counts <- institution_counts %>%
+  left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers
+institution_counts$response_rate <- institution_counts$count/institution_counts$Members
+
+
+
+```
+
+`r institution_counts[institution_counts$inst %in% target_institution,"count"]` responses were collected from `r target_institution` with a total number of members estimated at `r institution_counts[institution_counts$inst %in% target_institution,"Members"]` (taken from the actionuni reports on memberships), corresponding to a participation rate of `r round(institution_counts[institution_counts$inst %in% target_institution,"response_rate"]*100,1)`%.
 
 # Key Variables
 
@@ -206,20 +223,22 @@ swims.plot.multibar(var = "discrimination_type", fill_colors = c("lightgreen","r
 
 ```{r}
 
-swims.plot.aggregation <- function(vars, 
+swims.plot.aggregation <- function(var, 
                                 institution = target_institution, 
                                 data = dat, 
                                 codeb = codebook, 
                                 fill_colors = NULL,
-                                colors_set = "Set1"
+                                colors_set = "Set1", 
+                                showCount = F
                                 ){
 
-  
-  var <- "discrimination_type"
-  data = dat
-  codeb = codebook
-  fill_colors = NULL
-  colors_set = "Set1"
+  # 
+  #vars <- "discrimination_type"
+  #data = dat
+  #codeb = codebook
+  #fill_colors = NULL
+  #colors_set = "Set1"
+  #showCount = T
   
   # Define variable
     var_org <- var
@@ -239,20 +258,23 @@ swims.plot.aggregation <- function(vars,
     # Prepare data for plotting
     plot_data <- data %>%
       mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
-      mutate(group = factor(group, levels = c("Other Institutions", setdiff(levels(factor(group)), "Other Institutions")))) %>%
+      mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
       pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
       group_by(group, variable, value) %>%
       summarise(count = n(), .groups = "drop") %>%
       group_by(group, variable) %>%
-      mutate(proportion = count / sum(count)) %>% 
       ungroup() 
       
     # Change values for varName
     plot_data <- plot_data %>%
       left_join(var_text, by = "variable") %>%
       select(-variable) %>% 
-      mutate(text = str_wrap(text, width = 20))
+    mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
+      mutate(text = str_wrap(text, width = 20)) %>% 
+      filter(value %in% "quoted") %>% 
+      group_by(group) %>%
+    mutate(Percentage = count / sum(count))
     
     
     if(is.null(fill_colors)){
@@ -263,6 +285,7 @@ swims.plot.aggregation <- function(vars,
     } 
       #c(myblue, myorange, myyellow, mypurple, mygreen)
     
+
     # Create plot
     plot_function <- function(plot_data) {
 
@@ -271,13 +294,15 @@ swims.plot.aggregation <- function(vars,
         geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
         labs(
           x = NULL,   # Entferne x-Achsen-Beschriftung
-          y = "Propoprtion",
-          fill = "Response",
+          y = "Percentage of Among All Named Categories",
+          fill = "Category",
           title = ""
          # title = paste0("Comparison of Responses by Institution: ", var_org
          #)
         ) +
         scale_fill_manual(values = fill_colors) +  
+        scale_y_continuous(labels = scales::percent)  +
+        
         theme_minimal() +
         theme(
           text = element_text(size = 12),
@@ -291,27 +316,30 @@ swims.plot.aggregation <- function(vars,
           plot.title = element_text(size = 14, hjust = 0.5)
         )
       
+      if(showCount){return(g+
+                             geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = 2, color = "white")) 
+        }else{
       return(g)
+      }
     }
     
     plot_function(plot_data)
     
 }
 
+
+
 # TODO: 
-#left bar is institution, dann other ->TE
-# proportion is percentage -> TE
-# response order like in coebook -> TE
 # alpha for other _> ZK
 
 
-swims.plot.aggregation(var = "discrimination_type", institution = target_institution)
+swims.plot.aggregation(var = "discrimination_type", institution = target_institution, showCount = T) # showCount = T only for testing
 
 ```
 
 ---
   
-  # Key Variables
+# Key Variables
   
   The following plots compare the responses to key survey variables between **`r target_institution`** and all other institutions.
 

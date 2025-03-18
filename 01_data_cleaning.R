@@ -309,5 +309,9 @@ dat <- dat %>%
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v5.xlsx")
 codebook$question <- gsub(pattern = " \\(q_.*$", replacement = "", codebook$Item)
 
+## data on institutions
+dat.meta <- openxlsx::read.xlsx("SWiMS_institutions.xlsx")
+
+
 ## save data as rdata object
-save(dat, codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))
+save(dat, dat.meta,  codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))
