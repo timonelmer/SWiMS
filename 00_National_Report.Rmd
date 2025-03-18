@@ -106,13 +106,25 @@ institution_counts <- institution_counts %>%
 institution_counts$response_rate <- institution_counts$count/institution_counts$Members
 
 # Create the bar chart
-ggplot(institution_counts, aes(x = reorder(inst, -Members))) + 
-  geom_bar(aes(y = Members), stat = "identity", fill = "gray", alpha = 0.6) + 
-  geom_bar(aes(y = count), stat = "identity", fill = "blue", alpha = 0.6) + 
-  geom_text(aes(y = Members, label = sprintf("%.1f%%", response_rate * 100)), vjust = -0.5, size = 3) +
-  labs(x = "Institution", y = "Number of Members (in gray) and \n Responses (in blue)") + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(institution_counts, aes(x = reorder(inst, count))) + 
+  geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) + 
+  geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) + 
+  geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)), 
+            hjust = -0.1, size = 3.5) +
+  labs(x = "Institution Name", 
+       y = "Number of Members (in gray) and \nResponses (in blue)") + 
+  theme_minimal(base_size = 12) + 
+  theme(
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 14, face = "bold"),
+    axis.title.y = element_text(size = 14, face = "bold"),
+    plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
+  ) +
+  coord_flip() +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+
+#ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8)
 
 ```
 
