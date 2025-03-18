@@ -112,7 +112,7 @@ ggplot(institution_counts, aes(x = reorder(inst, count))) +
   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)), 
             hjust = -0.1, size = 3.5) +
   labs(x = "Institution Name", 
-       y = "Number of estimated Members (in gray) and \nResponses (in blue)") + 
+       y = "Number of estimated Members (in gray)\n and Responses (in blue)") + 
   theme_minimal(base_size = 12) + 
   theme(
     axis.text.x = element_text(size = 10),
