@@ -37,7 +37,31 @@ institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Lab
 
 # Introduction
 
-The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the national level description of the data.
+
+The SWiMS 2024 Survey examines the mental health and well-being of mid-level academic staff across Switzerland, including doctoral researchers, scientific associates, and postdocs. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving institutional policies and support systems.
+
+This report presents the national-level findings, offering insights into stressors, mental health outcomes, and available resources. By highlighting systemic issues and institutional differences, the data provide a basis for further discussions on how to improve well-being in academia.
+
+## Background and Motivation
+Mid-level academic staff are essential to research, teaching, and student supervision, making up approximately 48% of the academic workforce in Switzerland (Federal Statistical Office, 2024). Despite their crucial role, many experience high levels of stress and job insecurity, which can negatively impact both their mental health and the quality of academic work.
+
+Several factors contribute to these challenges, including intense workload, administrative responsibilities, publication pressure, and uncertain career prospects due to the prevalence of temporary contracts. These stressors are well-documented in international research, with studies indicating that 30-40% of early career researchers report mental health issues (Divaris et al., 2012; Gloria & Steinhardt, 2016; Levecque et al., 2017; Evans et al., 2018). Burnout, depression, and anxiety are particularly prevalent, threatening both individual well-being and the sustainability of academic careers (Bolotnyy et al., 2022; Boone et al., 2022; Satinsky et al., 2021).
+
+Despite growing awareness of these issues, Switzerland lacks comprehensive national data on the mental health of mid-level academic staff. While some institutions have conducted internal surveys (e.g., ETH Zurich’s employee survey), a coordinated, nationwide effort has been missing. The reluctance of universities to engage in comparisons—possibly due to reputational concerns—may contribute to this gap. Yet, without broad-based data, it is difficult to develop effective interventions or institution-wide improvements.
+
+## The Swiss-Wide Mental Health Survey (SWiMS)
+
+To address this gap, actionuni, in collaboration with 12 mid-level academic staff associations, launched SWiMS 2024 as a bottom-up initiative. The survey provides the first nationwide assessment of mental health among early career researchers in Switzerland, highlighting both stressors and protective factors.
+
+By systematically analyzing the collected data, the project aims to:
+
+- Expand the knowledge base on mental health in academia.
+- Identify key stress factors affecting mid-level academic staff.
+- Enable institutions to learn from best practices, improving support systems.
+- Provide an evidence-based foundation for discussions on mental health policies.
+
+Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia.
+
 
 ---
   
