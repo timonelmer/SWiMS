@@ -38,7 +38,7 @@ institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Lab
 # Introduction
 
 
-The SWiMS 2024 Survey examines the mental health and well-being of mid-level academic staff across Switzerland, including doctoral researchers, scientific associates, and postdocs. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving institutional policies and support systems.
+The SWiMS 2024 Survey examines the mental health and well-being of mid-level academic staff across Switzerland, including doctoral researchers, scientific associates, and postdocs. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions (HEIs).
 
 This report presents the national-level findings, offering insights into stressors, mental health outcomes, and available resources. By highlighting systemic issues and institutional differences, the data provide a basis for further discussions on how to improve well-being in academia.
 

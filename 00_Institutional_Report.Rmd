@@ -55,7 +55,7 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
   
 ## Key Demographics
   
-  The table below summarizes the key demographic characteristics of respondents from **`r target_institution`** compared to all other institutions.
+  The table below summarizes the key demographic characteristics of respondents from **`r target_institution`** compared to all other institution.
 
 ```{r sample-description}
 # Select demographic variables
