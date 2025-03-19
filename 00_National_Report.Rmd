@@ -10,9 +10,9 @@ header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  - \fancyhead[L]{\includegraphics[width=4cm]{actionuni_logo_klein.png}}
+  - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
   - \fancyhead[C]{}
-  - \fancyhead[R]{Institution Report}
+  - \fancyhead[R]{SWiMS 2024 National Report}
 ---
 
 
@@ -67,9 +67,7 @@ Ultimately, fostering a healthier academic work environment benefits not only ea
   
 # Sample Description
 
-The analyzed sample consist of `r nrow(dat)`. For details on data cleaning, see section XX.
-
-Section XX
+## Data cleaning 
 Only institutions with more than 10 responses were considered in this report. 43 participants of 16 institution with a mean of 2.7 (SD = 1.81) participants were removed from the dataset. 62 additional responses were removed because institution "Other" (n = 44), "Prefer not to say" (n = 15), or were missing (n = 3) were indicated. We also exculded participants that took shorter than 4 minutes to respond (n = 4). In total, `r nrow(dat)` responses were part of this report.  
 
 
@@ -202,19 +200,82 @@ swims.plot.distribution("residenceStatus")
 swims.plot.distribution("carework")
 ```
 
+### Other demographic variables
+
+These variables will not be used for group comparisons later, thus the name "other".
+
+#### Employment Status
+
+```{r }
+swims.plot.distribution("employmentStatus")
+```
+@ Zoran: Do you think we should fix the y-axis to 0% to 100% percent? I think it is fine like this. But it is not so "neutral" then.
+
+#### Employment Percentage
+
+```{r }
+swims.plot.distribution("workloadMainjob")
+```
+
+
+#### Additional Non-Academic Job  
+
+```{r }
+swims.plot.distribution("nonacademicJob")
+```
 
 ---
   
 # Key Variables
 
-```{r key-variables}
+## Job Satistfaction
+
+```{r Job Satistfaction}
+
+swims.plot.distribution("jobSatisfaction")
 
 ```
+Item formulation: 
 
----
+*Taking everything into consideration, how satisfied do you feel about your job as a whole?*
+
+item by Dolbier et al., 2005 (REF)
+
+## Institution
+
+```{r Institution}
+swims.plot.multibar(var = "institution", colors_set = "RdYlGn")
+```
+
+## Workgroup
+
+These workgroup-related were answered if they indicated to be in a working group `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
+
+```{r Workgroup}
+
+swims.plot.multibar(var = "workgroup", colors_set = "RdYlGn")
+```
+
+## Supervisor
+
+```{r Supervisor}
+
+swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
+```
+
+
+## Discrimination
+
+```{r Discrimination}
+
+#swims.plot.multibar(var = "discrmination", colors_set = "RdYlGn")
+```
+
+
   
 # Appendix
   
 ## Codebook
   
 Detailed variable names, item formulations, etc. can be found in the codebook [link]
+
