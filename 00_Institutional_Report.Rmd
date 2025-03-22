@@ -24,12 +24,13 @@ library(kableExtra)
 library(ggplot2)
 library(readxl)
 library(dplyr)
+library(ggpattern)
 ```
 
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-18.RData")
+load("../data/SWiMS2024_Data_2025-03-06.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
 source("99_helpers.R")
 
 

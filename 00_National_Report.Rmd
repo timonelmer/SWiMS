@@ -27,7 +27,7 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-18.RData")
+load("../data/SWiMS2024_Data_2025-03-06.RData")
 source("99_helpers.R")
 
 
@@ -244,7 +244,7 @@ item by Dolbier et al., 2005 (REF)
 ## Institution
 
 ```{r Institution}
-swims.plot.multibar(var = "institution", colors_set = "RdYlGn")
+swims.plot.multibar(var = "institution", fill_color_set = our_color)
 ```
 
 ## Workgroup
@@ -267,8 +267,7 @@ swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
 ## Discrimination
 
 ```{r Discrimination}
-
-#swims.plot.multibar(var = "discrmination", colors_set = "RdYlGn")
+swims.plot.multibar(var = "discrmination", colors_set = "RdYlGn")
 ```
 
 
