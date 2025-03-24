@@ -11,6 +11,18 @@ break_labels <- function(labels, Z = 20) {
   })
 }
 
+# Function to add an fake level for space
+insert_level <- function(fct, new_level, position) {
+  old_levels <- levels(fct)
+  if (new_level %in% old_levels) {
+    warning("Level already exists. Returning original factor.")
+    return(fct)
+  }
+  
+  new_levels <- append(old_levels, new_level, after = position - 1)
+  factor(fct, levels = new_levels)
+}
+
 
 #### SWIMS Plots #####
 
@@ -58,6 +70,8 @@ swims.plot.distribution <- function(var, institution = NULL,  data = dat, codeb 
       axis.title = element_text(size = 12),
       legend.text = element_text(size = 10),
       legend.title = element_text(size = 10),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
       plot.title = element_text(size = 14, hjust = 0.5)
     ) + 
     scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
@@ -89,6 +103,8 @@ swims.plot.distribution <- function(var, institution = NULL,  data = dat, codeb 
         axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
         axis.text.y = element_text(size = 10),
         axis.title = element_text(size = 12),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
         plot.title = element_text(size = 14, hjust = 0.5)
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
@@ -108,7 +124,9 @@ swims.plot.multibar <- function(
     ncol_plot = 1,
     fill_color_set = NULL,
     fontSize = 12,
-    colors_set = "RdYlGn"
+    fontsize_inplot_text = 4,
+    colors_set = "RdYlGn",
+    space4comp = F
 ){
 
   # Preparations ####
@@ -252,10 +270,69 @@ swims.plot.multibar <- function(
   # Plotting ####
   if(!is.null(institution) & !is.null(divider)){ # Institution and divider
     
+    if(space4comp){
+      plot_data$x_pos <- plot_data$interaction_lab
+      
+      plot_data$x_pos <- as.numeric(plot_data$x_pos)
+      
+      plot_data$x_pos[
+        plot_data$x_pos > length(levels(plot_data$interaction_lab))/2] <- plot_data$x_pos[
+          plot_data$x_pos > length(levels(plot_data$interaction_lab))/2] + 1
+      
+      g <- ggplot(plot_data, aes(x = x_pos, y = proportion, fill = value, alpha = group)) + 
+        geom_bar(stat = "identity", position = "fill", width = 0.6) +
+        # Aussehen
+        scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs),
+                           guide = guide_legend(reverse = TRUE)) +
+        scale_y_continuous(labels = scales::percent) + 
+        scale_x_continuous(breaks = plot_data$x_pos,
+                           labels = plot_data$interaction_lab) +
+        scale_fill_manual(values = fill_colors,
+                          guide = guide_legend(reverse = TRUE)) + 
+        facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
+        coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
+        # Text
+        labs(
+          x = NULL,   # Entferne x-Achsen-Beschriftung
+          y = "Proportion",
+          fill = "Response",
+          alpha = "Institution Type (Transparency)",
+          #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
+          subtitle = range_text
+        ) +
+        theme_minimal() +
+        theme(
+          text = element_text(size = fontSize),
+          strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
+          axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
+          axis.title = element_text(size = fontSize),
+          legend.text = element_text(size = fontSize),
+          legend.position = "bottom",
+          legend.title = element_text(size = fontSize),
+          plot.title = element_text(size = fontSize, hjust = 0.5),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          panel.spacing.x = unit(2, "lines")
+        ) +
+        #swims_watermark +
+        geom_text(data = plot_data,
+                  aes(x = x_pos, y = 0.01, label = divider),
+                  inherit.aes = FALSE,
+                  size = fontsize_inplot_text,
+                  hjust = 0) +
+        geom_text(data = plot_data,
+                  aes(x = x_pos, y = 1.01, 
+                      label = paste0("N = ", n_total)),
+                  inherit.aes = FALSE,
+                  size = fontsize_inplot_text,
+                  hjust = 0)
+      
+    } else {
+    
     g <- ggplot(plot_data, aes(x = interaction_lab, y = proportion, fill = value, alpha = group)) + 
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
       # Aussehen
-      scale_alpha_manual(values = setNames(c(0.6, 1), alpha_labs),
+      scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs),
                          guide = guide_legend(reverse = TRUE)) +
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
@@ -289,15 +366,16 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data,
                 aes(x = interaction_lab, y = 0.01, label = divider),
                 inherit.aes = FALSE,
-                size = 4,
+                size = fontsize_inplot_text,
                 hjust = 0) +
       geom_text(data = plot_data,
                 aes(x = interaction_lab, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = 4,
+                size = fontsize_inplot_text,
                 hjust = 0)
     
+    }
     
   } else if (!is.null(institution) & is.null(divider)){ # Institution and no-divider
     
@@ -323,7 +401,7 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
                 aes(x = group, y = 0.05, label = group),  
                 inherit.aes = FALSE, 
-                size = 5, #fontface = "bold",
+                size = fontsize_inplot_text, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
@@ -345,7 +423,7 @@ swims.plot.multibar <- function(
                 aes(x = group, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = 4,
+                size = fontsize_inplot_text,
                 hjust = 0)
     
   } else if (is.null(institution) & !is.null(divider)){ # no-Institution and divider
@@ -371,7 +449,7 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
                 aes(x = divider, y = 0.05, label = divider),  
                 inherit.aes = FALSE, 
-                size = 5, #fontface = "bold",
+                size = fontsize_inplot_text, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
@@ -392,7 +470,7 @@ swims.plot.multibar <- function(
                 aes(x = divider, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = 4,
+                size = fontsize_inplot_text,
                 hjust = 0)
     
   } else if (is.null(institution) & is.null(divider)){ # no-Institution and no-divider
@@ -449,7 +527,7 @@ swims.plot.aggregation <- function(var,
 ){
   
   # 
-  #vars <- "discrimination_type"
+  # vars <- "discrimination_type"
   # data = dat
   # codeb = codebook
   # fill_colors = NULL

@@ -2,11 +2,13 @@
 title: "Institution Report: SWiMS 2024 Data"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
+params:
+  object.inst: "Default"
 output:
   pdf_document:
     toc: true
     toc_depth: 3
-bibliography: references.bib 
+# bibliography: references.bib 
 classoption: landscape
 header-includes:
   - \usepackage{graphicx}
@@ -20,8 +22,6 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
-                      fig.width = 12, 
-                      fig.height = 5, 
                       out.width = "100%", 
                       dpi = 300)
 library(tidyverse)
