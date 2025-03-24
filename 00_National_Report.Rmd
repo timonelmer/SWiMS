@@ -124,8 +124,6 @@ The average duration of responding to the survey was `r round(mean(dat[dat$durat
 
 ### Response Rate
 
-TODO: do we want to do this? it will just look bad!
-
 ```{r}
 
 institution_counts <- institution_counts %>%
@@ -155,8 +153,7 @@ ggplot(institution_counts, aes(x = reorder(inst, count))) +
 
 ```
 
-
-## Sample description 
+## Demographics 
   
 The figures below summarize the key demographic characteristics of all parttaking institutions.
 
@@ -166,11 +163,23 @@ The figures below summarize the key demographic characteristics of all parttakin
 swims.plot.distribution("age")
 ```
 
+
+Grouped original age brackets into three categories: "18-30," "31-40," and ">41." Respondents unwilling to disclose their age were coded as missing.
+
+
+
+
+
+
 ### Gender
 
 ```{r gender}
 swims.plot.distribution("gender")
 ```
+
+
+
+Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). Ambiguous responses were coded as missing (NA).
 
 ### Research Discipline
 
@@ -179,13 +188,17 @@ swims.plot.distribution("researchDiscipline")
 
 ```
 
+Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Social Sciences", and "Humanities". "Prefer not to say" responses coded as NA.
+
 ### Position Type
 
 ```{r }
-swims.plot.distribution("mainPosition")  + 
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
+swims.plot.distribution("mainPosition") # + 
+    #scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
 
 ```
+
+Recoded positions into three broad groups: "Researcher aiming for a PhD,", "Researcher with a PhD", and "Other". "Prefer not to say" responses coded as NA.
 
 ### Funding soruce
 
@@ -194,11 +207,16 @@ swims.plot.distribution("funding")
 ```
 
 
+Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing (NA).
+
 ### Residence status
 
 ```{r }
 swims.plot.distribution("residenceStatus")
 ```
+
+Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits." Non-disclosed or unclear responses coded as NA.
+
 
 ### Care work
 
@@ -206,12 +224,14 @@ swims.plot.distribution("residenceStatus")
 swims.plot.distribution("carework")
 ```
 
+Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
+
 ### Other demographic variables
 
 These variables will not be used for group comparisons later, thus the name "other".
 
 #### Employment Status
-
+<br>
 
 ```{r }
 
@@ -219,11 +239,11 @@ swims.plot.distribution("employmentStatus")
 
 ```
 
-@ Zoran: Do you think we should fix the y-axis to 0% to 100% percent? I think it is fine like this. But it is not so "neutral" then.
 
 #### Employment Percentage
 
-```{r }
+
+```{r}
 
 swims.plot.distribution("workloadMainjob")
 
@@ -231,6 +251,7 @@ swims.plot.distribution("workloadMainjob")
 
 
 #### Additional Non-Academic Job  
+<br>
 
 ```{r, fig.height= 3 }
 
@@ -238,11 +259,94 @@ swims.plot.distribution("nonacademicJob")
 
 ```
 
----
-  
-# Key Variables
+# Mental Health
 
-## Job Satistfaction
+## General Mental Health
+
+- overall distribution
+```{r}
+
+```
+
+
+
+### General Mental Health by Age
+
+```{r}
+
+```
+
+### General Mental Health by Gender
+
+```{r}
+
+```
+
+### General Mental Health by Research Discipline
+
+```{r}
+
+```
+
+### General Mental Health by Funding Source (national only)
+
+```{r}
+
+```
+
+### General Mental Health by Position Type
+
+```{r}
+
+```
+
+
+### General Mental Health by Care Work
+
+```{r}
+
+```
+
+
+### General Mental Health by Residence (national only)
+
+```{r}
+
+```
+
+## Depression
+
+## Burnout
+
+## Awarenes Resources 
+
+# Job Satisfaction 
+
+## Quitting Intentions
+
+# Stressors
+
+## System
+
+## Supervisor
+
+## Colleagues
+
+## Self-Management
+
+## Private
+
+# Supervisor
+
+# Institution 
+
+# Work-Group
+
+# Discrimination
+
+# Questionable Research Practices
+
+
 
 ```{r Job Satistfaction}
 
@@ -253,7 +357,7 @@ Item formulation:
 
 *Taking everything into consideration, how satisfied do you feel about your job as a whole?*
 
-item by Dolbier et al., 2005 (REF)
+item by @dolbier_reliability_2005. 
 
 ## Institution
 

@@ -305,6 +305,64 @@ dat <- dat %>%
     careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ "care work"
   ))
 
+# create the new 'Discipline' variable
+dat <- dat %>%
+  mutate(discipline = case_when(
+    researchDiscipline == "Discipline of natural sciences and engineering" ~   "Natural Sciences and Dngineering" ,                                 
+    researchDiscipline == "Discipline of medicine" ~ "Medicine" ,                          
+    researchDiscipline == "Disciplines of social sciences incl. psychology, economy, educational science, law" ~ "Social Sciences",
+    researchDiscipline == "Discipline of humanities incl. arts, history, literature and theology" ~"Humanities" ,          
+    researchDiscipline == "Prefer not to say" ~ NA 
+  ))
+
+# create the new 'Age' variable
+dat <- dat %>%
+  mutate(age2 = case_when(
+    age == "18-30" ~ "18-30",
+    age == "31-40" ~  "31-40",
+    age == "41-60" ~ ">41",
+    age == "> 60" ~ ">41",
+    age == "Prefer not to say" ~ NA
+  ))
+
+# create the new 'Position' variable
+dat <- dat %>%
+  mutate(position_type = case_when(
+    mainPosition == "Researcher aiming for a PhD" ~ "Researcher aiming for a PhD" ,
+    mainPosition == "Postdoctoral researcher"  ~ "Researcher with a PhD",
+    mainPosition == "Researcher with a PhD degree (not doing a postdoc)" ~ "Researcher with a PhD" ,
+    mainPosition == "Researcher above postdoc (habilitated or equivalent)" ~ "Researcher with a PhD" ,
+    mainPosition == "Supportive positions (e.g., administrative personnel, technical staff)" ~ "Other",
+    mainPosition == "Lecturing only" ~ "Other",
+    mainPosition == "Prefer not to say" ~ NA
+  ))
+
+
+# create the new 'funding' variable
+dat <- dat %>%
+  mutate(funding2 = case_when(
+    funding == "Swiss National Science Foundation (SNSF)"  ~ "Swiss National Science Foundation (SNSF)" ,
+    funding == "non-SNSF project funding" ~  "Non-SNSF funding",
+    funding == "University / Higher education institute" ~ "University / Higher education institute",
+    funding == "Other" ~ "Non-SNSF funding",
+    funding ==  "I don't know" ~ NA,
+    funding == "Prefer not to say" ~ NA
+  ))
+
+
+# create the new 'residence' variable
+dat <- dat %>%
+  mutate(residence = case_when(
+    residenceStatus == "Swiss citizenship"  ~ "Swiss citizenship + Permit C",
+    residenceStatus == "Permit C (EU/EFTA permanent residence permit)" ~  "Swiss citizenship + Permit C",
+    residenceStatus == "Permit G (EU/EFTA cross-border permit)"  ~ "Other Permits",
+    residenceStatus == "Permit B (residence and work permit)" ~ "Other Permits",
+    residenceStatus == "Student Permit B (EU/EFTA)" ~ "Other Permits",
+    residenceStatus == "Student Permit B (Non-EU/Non-EFTA)"  ~ "Other Permits",
+    residenceStatus == "Permit L (short-term residence permit)" ~ "Other Permits",
+    residenceStatus == "Prefer not to say" ~ NA
+  ))
+
 
 ## some codebook processing
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v5.xlsx")
@@ -316,5 +374,5 @@ dat.meta <- openxlsx::read.xlsx("SWiMS_institutions.xlsx")
 
 ## save data as rdata object
 save(dat, 
-     #dat.meta,  
+     dat.meta,  
      codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))
