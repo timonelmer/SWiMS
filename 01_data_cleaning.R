@@ -126,7 +126,7 @@ tab_df(summary_table, title = "Observations Summary", show.rownames = FALSE)
 
 
 # recode institution
-inst.code <- xlsx::read.xlsx("../codebook_project_22944_2024_05_13.xlsx",2, header = F)
+inst.code <- xlsx::read.xlsx("../codebook_project_22944_2024_09_30.xlsx",1, header = F)
 dat$inst <- dat$institution
 for(i in 1:nrow(inst.code)){
   dat[dat$institution %in% i,"inst"] <- inst.code[inst.code$X1 %in% i,"X2"]
@@ -315,4 +315,6 @@ dat.meta <- openxlsx::read.xlsx("SWiMS_institutions.xlsx")
 
 
 ## save data as rdata object
-save(dat, dat.meta,  codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))
+save(dat, 
+     #dat.meta,  
+     codebook, file = paste0("../data/SWiMS2024_Data_",Sys.Date(),".RData"))

@@ -27,7 +27,7 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-06.RData")
+load("../data/SWiMS2024_Data_2025-03-24.RData")
 source("99_helpers.R")
 
 
@@ -261,13 +261,17 @@ swims.plot.multibar(var = "workgroup", colors_set = "RdYlGn")
 ```{r Supervisor}
 
 swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
+
+swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn", divider = "phd")
+
 ```
 
 
 ## Discrimination
 
 ```{r Discrimination}
-swims.plot.multibar(var = "discrmination", colors_set = "RdYlGn")
+
+swims.plot.multibar(var = "discrimination")
 ```
 
 

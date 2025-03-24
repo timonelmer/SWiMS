@@ -48,7 +48,7 @@ swims.plot.distribution <- function(var, institution = NULL,  data = dat, codeb 
       fill = "Institution",
       title = paste("Distribution of", var)
     ) +
-    scale_fill_manual(values = c(myblue, myorange)) +
+    scale_fill_manual(values = c(our_color[1], our_color[2])) +
     geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = 4) +
     theme_minimal() +
     theme(
@@ -75,7 +75,7 @@ swims.plot.distribution <- function(var, institution = NULL,  data = dat, codeb 
     
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion")) +
-      geom_bar(stat = "identity", fill = myblue, width = 0.8) +
+      geom_bar(stat = "identity", fill = our_color[1], width = 0.8) +
       scale_y_continuous(labels = scales::percent, limits = c(0, max(plot_data$proportion + 0.05))) +
       labs(
         x = "",
@@ -105,6 +105,7 @@ swims.plot.multibar <- function(
     divider = NULL,
     data = dat,
     codeb = codebook,
+    ncol_plot = 1,
     fill_color_set = NULL,
     colors_set = "RdYlGn"
 ){
@@ -258,7 +259,7 @@ swims.plot.multibar <- function(
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         guide = guide_legend(reverse = TRUE)) + 
-      facet_wrap(~ text, ncol = 2, strip.position = "left") +  # Zwei-Spalten-Layout
+      facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       # Text
       labs(
@@ -266,7 +267,7 @@ swims.plot.multibar <- function(
         y = "Proportion",
         fill = "Response",
         alpha = "Institution Type (Transparency)",
-        title = paste0("Comparison of Responses by Institution: ", var_org),
+        title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
         subtitle = range_text
       ) +
       theme_minimal() +
@@ -305,7 +306,7 @@ swims.plot.multibar <- function(
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         guide = guide_legend(reverse = TRUE)) +  
-      facet_wrap(~ text, ncol = 2, strip.position = "left") +  # Zwei-Spalten-Layout
+      facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       #swims_watermark +
       # Text
@@ -313,7 +314,7 @@ swims.plot.multibar <- function(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
         fill = "Response",
-        title = paste0("Comparison of Responses by Institution: ", var_org),
+        title = paste0("Comparison of Responses to ", var_org, " by specific Institution"),
         subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
@@ -352,7 +353,7 @@ swims.plot.multibar <- function(
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         guide = guide_legend(reverse = TRUE)) +  
-      facet_wrap(~ text, ncol = 2, strip.position = "left") +  # Zwei-Spalten-Layout
+      facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       #swims_watermark +
       # Text
@@ -360,7 +361,7 @@ swims.plot.multibar <- function(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
         fill = "Response",
-        title = paste0("Comparison of Responses by Institution: ", var_org),
+        title = paste0("Comparison of Responses to ", var_org, " by ", divider),
         subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu

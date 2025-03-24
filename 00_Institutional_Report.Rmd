@@ -30,7 +30,7 @@ library(ggpattern)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-06.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
+load("../data/SWiMS2024_Data_2025-03-24.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
 source("99_helpers.R")
 
 
@@ -117,7 +117,8 @@ swims.plot.distribution(var = "jobSatisfaction", institution = target_institutio
 ```{r supervisor}
 
 
-swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn")
+swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn",
+                    ncol_plot = 4)
 
 
 ```
@@ -125,8 +126,8 @@ swims.plot.multibar(var = "supervisor", institution = target_institution, colors
 ## Discrimination 
 
 ```{r}
-swims.plot.multibar(var = "discrimination", institution = target_institution, fill_colors = c("lightgreen","orange","darkorange","red3"))
-swims.plot.multibar(var = "discrimination_type", institution = target_institution, fill_colors = c("lightgreen","red3"))
+swims.plot.multibar(var = "discrimination", institution = target_institution)
+swims.plot.multibar(var = "discrimination_type", institution = target_institution)
 
 ```
 
@@ -240,8 +241,6 @@ swims.plot.aggregation <- function(var,
 
 
 
-# TODO: 
-# alpha for other _> ZK
 
 
 swims.plot.aggregation(var = "discrimination_type", institution = target_institution, showCount = T) # showCount = T only for testing
