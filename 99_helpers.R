@@ -45,8 +45,8 @@ swims.plot.distribution <- function(var, institution = NULL,  data = dat, codeb 
     labs(
       x = var,
       y = "Proportion",
-      fill = "Institution",
-      title = paste("Distribution of", var)
+      fill = "Institution"#,
+      #title = paste("Distribution of", var)
     ) +
     scale_fill_manual(values = c(our_color[1], our_color[2])) +
     geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = 4) +
@@ -107,6 +107,7 @@ swims.plot.multibar <- function(
     codeb = codebook,
     ncol_plot = 1,
     fill_color_set = NULL,
+    fontSize = 12,
     colors_set = "RdYlGn"
 ){
 
@@ -267,18 +268,19 @@ swims.plot.multibar <- function(
         y = "Proportion",
         fill = "Response",
         alpha = "Institution Type (Transparency)",
-        title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
+        #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
         subtitle = range_text
       ) +
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        strip.text.y.left = element_text(size = 14, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = fontSize),
+        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        plot.title = element_text(size = 14, hjust = 0.5),
+        axis.title = element_text(size = fontSize),
+        legend.text = element_text(size = fontSize),
+        legend.position = "bottom",
+        legend.title = element_text(size = fontSize),
+        plot.title = element_text(size = fontSize, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -314,25 +316,26 @@ swims.plot.multibar <- function(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
         fill = "Response",
-        title = paste0("Comparison of Responses to ", var_org, " by specific Institution"),
+        #title = paste0("Comparison of Responses to ", var_org, " by specific Institution"),
         subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
       geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
                 aes(x = group, y = 0.05, label = group),  
                 inherit.aes = FALSE, 
-                size = 5, fontface = "bold",
+                size = 5, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        strip.text.y.left = element_text(size = 14, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = fontSize),
+        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        plot.title = element_text(size = 14, hjust = 0.5),
+        axis.title = element_text(size = fontSize),
+        legend.text = element_text(size = fontSize),
+        legend.position = "bottom",
+        legend.title = element_text(size = fontSize),
+        plot.title = element_text(size = fontSize, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -361,25 +364,26 @@ swims.plot.multibar <- function(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
         fill = "Response",
-        title = paste0("Comparison of Responses to ", var_org, " by ", divider),
+        #title = paste0("Comparison of Responses to ", var_org, " by ", divider),
         subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
       geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
                 aes(x = divider, y = 0.05, label = divider),  
                 inherit.aes = FALSE, 
-                size = 5, fontface = "bold",
+                size = 5, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        strip.text.y.left = element_text(size = 14, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = fontSize),
+        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        plot.title = element_text(size = 14, hjust = 0.5),
+        axis.title = element_text(size = fontSize),
+        legend.text = element_text(size = fontSize),
+        legend.position = "bottom",
+        legend.title = element_text(size = fontSize),
+        plot.title = element_text(size = fontSize, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -411,14 +415,15 @@ swims.plot.multibar <- function(
       annotate("text", x = Inf, y = Inf, label = range_text, size = 4, hjust = 1, vjust = 1) +  
       theme_minimal() +  
       theme(
-        text = element_text(size = 12),
-        strip.text.y.left = element_text(size = 14, face = "bold", angle = 0),  
-        axis.text.y = element_text(size = 12),  
-        axis.text.x = element_text(size = 12),  
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        plot.title = element_text(size = 14, hjust = 0.5),
+        text = element_text(size = fontSize),
+        strip.text.y.left = element_text(size = fontSize, face = "bold", angle = 0),  
+        axis.text.y = element_text(size = fontSize),  
+        axis.text.x = element_text(size = fontSize),  
+        axis.title = element_text(size = fontSize),
+        legend.text = element_text(size = fontSize),
+        legend.position = "bottom",
+        legend.title = element_text(size = fontSize),
+        plot.title = element_text(size = fontSize, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -431,6 +436,115 @@ swims.plot.multibar <- function(
   
 }
 
+## aggregation plot
+
+
+swims.plot.aggregation <- function(var, 
+                                   institution = target_institution, 
+                                   data = dat, 
+                                   codeb = codebook, 
+                                   fill_colors = NULL,
+                                   colors_set = "Set1", 
+                                   showCount = F
+){
+  
+  # 
+  #vars <- "discrimination_type"
+  # data = dat
+  # codeb = codebook
+  # fill_colors = NULL
+  # colors_set = "Set1"
+  # showCount = T
+  # 
+  # Define variable
+  var_org <- var
+  var <- codeb[codeb$Category %in% var,"VarName"]
+  var_text <- data.frame("variable" = var,"text" = codeb[codeb$VarName %in% var,"Label"])
+  
+  # Ensure var exists in the codeb
+  if (!all(var %in% codeb$VarName)) {
+    stop(paste("Variable", var, "not found in the codeb."))
+  }
+  
+  data.m <- reshape2::melt(data[,c("institution",var)], id.vars = "institution")
+  
+  # Use variable label if available
+  x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
+  
+  # Prepare data for plotting
+  plot_data <- data %>%
+    mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+    mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
+    filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
+    pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
+    group_by(group, variable, value) %>%
+    summarise(count = n(), .groups = "drop") %>%
+    group_by(group, variable) %>%
+    ungroup() 
+  
+  # Change values for varName
+  plot_data <- plot_data %>%
+    left_join(var_text, by = "variable") %>%
+    select(-variable) %>% 
+    mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
+    mutate(text = str_wrap(text, width = 20)) %>% 
+    filter(value %in% "quoted") %>% 
+    group_by(group) %>%
+    mutate(Percentage = count / sum(count))
+  
+  
+  if(is.null(fill_colors)){
+    fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
+    if (length(unique(plot_data$text)) > 9) {
+      fill_colors <- colorRampPalette(fill_colors)(length(unique(plot_data$text)))
+    }
+  } 
+  #c(myblue, myorange, myyellow, mypurple, mygreen)
+  
+  
+  # Create plot
+  plot_function <- function(plot_data) {
+    
+    # Plot erstellen
+    g <- ggplot(plot_data[plot_data$value %in% "quoted",], aes(x = group, y = count, fill = text)) +  
+      geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
+      labs(
+        x = NULL,   # Entferne x-Achsen-Beschriftung
+        y = "Percentage of Among All Named Categories",
+        fill = "Category",
+        title = ""
+        # title = paste0("Comparison of Responses by Institution: ", var_org
+        #)
+      ) +
+      scale_fill_manual(values = fill_colors) +  
+      scale_y_continuous(labels = scales::percent)  +
+      
+      theme_minimal() +
+      theme(
+        text = element_text(size = 12),
+        strip.text.y.left = element_text(size = 14, face = "bold", angle = 0),  # Lesbare Facet-Titel
+        #axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
+        #axis.text.x = element_blank(),  # Entferne die x-Achsen-Beschriftungen
+        #axis.title.x = element_blank(), # Entferne x-Achsen-Titel komplett
+        axis.title = element_text(size = 12),
+        legend.text = element_text(size = 10),
+        legend.title = element_text(size = 10),
+        plot.title = element_text(size = 14, hjust = 0.5)
+      )
+    
+    if(showCount){return(g+
+                           geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = 2, color = "white")) 
+    }else{
+      return(g)
+    }
+  }
+  
+  plot_function(plot_data)
+  
+}
+
+
 
 #### colors ####
 our_color <- c("#1f77b4", "#ff7f0e", "forestgreen", "yellow", "purple", "grey", "red")
+

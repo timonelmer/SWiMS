@@ -6,6 +6,7 @@ output:
   pdf_document:
     toc: true
     toc_depth: 2
+classoption: landscape
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
@@ -17,7 +18,11 @@ header-includes:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
+                      fig.width = 9, 
+                      fig.height = 5, 
+                      out.width = "100%", 
+                      dpi = 300)
 library(tidyverse)
 library(kableExtra)
 library(ggplot2)
@@ -160,6 +165,7 @@ The figures below summarize the key demographic characteristics of all parttakin
 ```{r age}
 swims.plot.distribution("age")
 ```
+
 ### Gender
 
 ```{r gender}
@@ -196,7 +202,7 @@ swims.plot.distribution("residenceStatus")
 
 ### Care work
 
-```{r }
+```{r , fig.height=3}
 swims.plot.distribution("carework")
 ```
 
@@ -206,22 +212,30 @@ These variables will not be used for group comparisons later, thus the name "oth
 
 #### Employment Status
 
+
 ```{r }
+
 swims.plot.distribution("employmentStatus")
+
 ```
+
 @ Zoran: Do you think we should fix the y-axis to 0% to 100% percent? I think it is fine like this. But it is not so "neutral" then.
 
 #### Employment Percentage
 
 ```{r }
+
 swims.plot.distribution("workloadMainjob")
+
 ```
 
 
 #### Additional Non-Academic Job  
 
-```{r }
+```{r, fig.height= 3 }
+
 swims.plot.distribution("nonacademicJob")
+
 ```
 
 ---
@@ -243,38 +257,44 @@ item by Dolbier et al., 2005 (REF)
 
 ## Institution
 
-```{r Institution}
-swims.plot.multibar(var = "institution", fill_color_set = our_color)
+```{r Institution, fig.height= 10}
+
+swims.plot.multibar(var = "institution", colors_set = "RdYlGn")
+
 ```
 
 ## Workgroup
 
 These workgroup-related were answered if they indicated to be in a working group `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
 
-```{r Workgroup}
+```{r Workgroup, fig.height= 5}
 
 swims.plot.multibar(var = "workgroup", colors_set = "RdYlGn")
 ```
 
 ## Supervisor
 
-```{r Supervisor}
+```{r Supervisor, fig.height= 10}
 
 swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
 
-swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn", divider = "phd")
+#swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn", divider = "phd")
 
 ```
 
 
 ## Discrimination
 
-```{r Discrimination}
+```{r Discrimination , fig.height= 15}
 
 swims.plot.multibar(var = "discrimination")
 ```
 
-
+## Results by Age
+  
+```{r age_institution, fig.height=13}
+swims.plot.multibar(var = "institution", colors_set = "RdYlGn", divider = "age")
+```
   
 # Appendix
   
@@ -282,3 +302,4 @@ swims.plot.multibar(var = "discrimination")
   
 Detailed variable names, item formulations, etc. can be found in the codebook [link]
 
+# References 

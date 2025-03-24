@@ -5,8 +5,9 @@ date: "`r Sys.Date()`"
 output:
   pdf_document:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
 bibliography: references.bib 
+classoption: landscape
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
@@ -18,7 +19,11 @@ header-includes:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
+                      fig.width = 12, 
+                      fig.height = 5, 
+                      out.width = "100%", 
+                      dpi = 300)
 library(tidyverse)
 library(kableExtra)
 library(ggplot2)
@@ -35,7 +40,7 @@ source("99_helpers.R")
 
 
 # Set target institution index manually
-target_index <- 1  # Change this value to select the institution
+target_index <- 4  # Change this value to select the institution
 institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
 target_institution <- institution_labels[target_index]
 remaining_institutions <- setdiff(institution_labels, target_institution)
@@ -45,6 +50,25 @@ remaining_institutions <- setdiff(institution_labels, target_institution)
 # TODO
 
 - bei plots einbauen, dass kleine zellgrössen nicht geplotted / getabled werden
+- wieso schneidet es die plots rechts ab? -> Zoran
+- 0 as answer category set to NA -> data_ceaning script -> Timon
+- age > 3 categories (41+ category) -> Timon
+- discipline -> 4 categories, prefer not to say as NA, remove "Discipline of" and "incl." -> Timon
+- position type: PhD, (Postdoc, above psotdoc), other (res with PhD, supportive, lecturing) -> Timon
+- funding: SNF, non-SNF (inc. other), Uni -> Timon
+- residence status: swiss + permit C vs. other permit -> Timon
+- discrimination color manual -> Timon
+- levels discrimination aggreagation plot, order -> Zoran
+- aggregation plot minor grids, einheitlich --> Zoran
+- fontsize of divider -_> Zoran
+- trenn-space bei mutlibar institution mit divider -> Zoran
+
+Big stuff:
+
+- blanko struktur vom RMD -> Timon
+- Institutional -> Zoran
+- National <- Timon
+
 
 # Introduction
 
@@ -54,32 +78,6 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
   
 # Sample Description
   
-## Key Demographics
-  
-  The table below summarizes the key demographic characteristics of respondents from **`r target_institution`** compared to all other institution.
-
-```{r sample-description}
-# Select demographic variables
-demographic_vars <- c("age", "gender", "mainPosition", "researchDiscipline", "phd")
-
-demographics_summary <- dat %>%
-  mutate(group = ifelse(institution == target_institution, "Target Institution", "Other Institutions")) %>%
-  select(group, all_of(demographic_vars)) %>%
-  pivot_longer(cols = all_of(demographic_vars), names_to = "Variable", values_to = "Value") %>%
-  group_by(group, Variable, Value) %>%
-  summarise(Count = n(), .groups = "drop") %>%
-  group_by(group, Variable) %>%
-  mutate(Proportion = round(Count / sum(Count),2))
-
-# Create a table
-summary_table <- demographics_summary %>%
-  pivot_wider(names_from = group, values_from = c(Count, Proportion))
-
-summary_table %>%
-  kbl(caption = "Demographic Summary") %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
-```
-
 ## Response Rate
 
 ```{r}
@@ -99,9 +97,180 @@ institution_counts$response_rate <- institution_counts$count/institution_counts$
 
 `r institution_counts[institution_counts$inst %in% target_institution,"count"]` responses were collected from `r target_institution` with a total number of members estimated at `r institution_counts[institution_counts$inst %in% target_institution,"Members"]` (taken from the actionuni reports on memberships), corresponding to a participation rate of `r round(institution_counts[institution_counts$inst %in% target_institution,"response_rate"]*100,1)`%.
 
-# Key Variables
 
-## Job Satisfaction 
+## Demographics 
+  
+The figures below summarize the key demographic characteristics of all parttaking institutions.
+
+### Age
+
+```{r age}
+swims.plot.distribution("age", institution = target_institution)
+```
+
+### Gender
+
+```{r gender}
+swims.plot.distribution("gender", institution = target_institution)
+```
+
+### Research Discipline
+
+```{r }
+swims.plot.distribution("researchDiscipline", institution = target_institution) 
+
+```
+
+### Position Type
+
+```{r }
+swims.plot.distribution("mainPosition", institution = target_institution) # + 
+    #scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
+
+```
+
+### Funding soruce
+
+```{r }
+swims.plot.distribution("funding", institution = target_institution)
+```
+
+
+### Residence status
+
+```{r }
+swims.plot.distribution("residenceStatus", institution = target_institution)
+```
+
+### Care work
+
+```{r , fig.height=3}
+swims.plot.distribution("carework", institution = target_institution)
+```
+
+### Other demographic variables
+
+These variables will not be used for group comparisons later, thus the name "other".
+
+#### Employment Status
+<br>
+
+```{r }
+
+swims.plot.distribution("employmentStatus", institution = target_institution)
+
+```
+
+
+#### Employment Percentage
+
+
+```{r}
+
+swims.plot.distribution("workloadMainjob", institution = target_institution)
+
+```
+
+
+#### Additional Non-Academic Job  
+<br>
+
+```{r, fig.height= 3 }
+
+swims.plot.distribution("nonacademicJob", institution = target_institution)
+
+```
+
+# Mental Health
+
+## General Mental Health
+
+- overall distribution
+```{r}
+
+```
+
+
+
+### General Mental Health by Age
+
+```{r}
+
+```
+
+### General Mental Health by Gender
+
+```{r}
+
+```
+
+### General Mental Health by Research Discipline
+
+```{r}
+
+```
+
+### General Mental Health by Funding Source (national only)
+
+```{r}
+
+```
+
+### General Mental Health by Position Type
+
+```{r}
+
+```
+
+
+### General Mental Health by Care Work
+
+```{r}
+
+```
+
+
+### General Mental Health by Residence (national only)
+
+```{r}
+
+```
+
+## Depression
+
+## Burnout
+
+## Awarenes Resources 
+
+# Job Satisfaction 
+
+## Quitting Intentions
+
+# Stressors
+
+## System
+
+## Supervisor
+
+## Colleagues
+
+## Self-Management
+
+## Private
+
+# Supervisor
+
+# Institution 
+
+# Work-Group
+
+# Discrimination
+
+# Questionable Research Practices
+
+
+
+
 
 Job satisfaction item by @dolbier_reliability_2005. 
 
@@ -114,11 +283,11 @@ swims.plot.distribution(var = "jobSatisfaction", institution = target_institutio
 ```
 
 ## Supervisor
-```{r supervisor}
+
+```{r supervisor, fig.height = 7}
 
 
-swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn",
-                    ncol_plot = 4)
+swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn")
 
 
 ```
@@ -127,133 +296,42 @@ swims.plot.multibar(var = "supervisor", institution = target_institution, colors
 
 ```{r}
 swims.plot.multibar(var = "discrimination", institution = target_institution)
-swims.plot.multibar(var = "discrimination_type", institution = target_institution)
 
 ```
 
-## Aggregation function
+## Discrimination
 
 ```{r}
+swims.plot.multibar(var = "discrimination", institution = target_institution)
 
-swims.plot.aggregation <- function(var, 
-                                institution = target_institution, 
-                                data = dat, 
-                                codeb = codebook, 
-                                fill_colors = NULL,
-                                colors_set = "Set1", 
-                                showCount = F
-                                ){
-
-  # 
-  #vars <- "discrimination_type"
-  #data = dat
-  #codeb = codebook
-  #fill_colors = NULL
-  #colors_set = "Set1"
-  #showCount = T
-  
-  # Define variable
-    var_org <- var
-    var <- codeb[codeb$Category %in% var,"VarName"]
-    var_text <- data.frame("variable" = var,"text" = codeb[codeb$VarName %in% var,"Label"])
-    
-    # Ensure var exists in the codeb
-    if (!all(var %in% codeb$VarName)) {
-      stop(paste("Variable", var, "not found in the codeb."))
-    }
-    
-    data.m <- reshape2::melt(data[,c("institution",var)], id.vars = "institution")
-    
-    # Use variable label if available
-    x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
-    
-    # Prepare data for plotting
-    plot_data <- data %>%
-      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
-      mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
-      filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
-      pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
-      group_by(group, variable, value) %>%
-      summarise(count = n(), .groups = "drop") %>%
-      group_by(group, variable) %>%
-      ungroup() 
-      
-    # Change values for varName
-    plot_data <- plot_data %>%
-      left_join(var_text, by = "variable") %>%
-      select(-variable) %>% 
-    mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
-      mutate(text = str_wrap(text, width = 20)) %>% 
-      filter(value %in% "quoted") %>% 
-      group_by(group) %>%
-    mutate(Percentage = count / sum(count))
-    
-    
-    if(is.null(fill_colors)){
-      fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
-      if (length(unique(plot_data$text)) > 9) {
-        fill_colors <- colorRampPalette(fill_colors)(length(unique(plot_data$text)))
-      }
-    } 
-      #c(myblue, myorange, myyellow, mypurple, mygreen)
-    
-
-    # Create plot
-    plot_function <- function(plot_data) {
-
-      # Plot erstellen
-      g <- ggplot(plot_data[plot_data$value %in% "quoted",], aes(x = group, y = count, fill = text)) +  
-        geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
-        labs(
-          x = NULL,   # Entferne x-Achsen-Beschriftung
-          y = "Percentage of Among All Named Categories",
-          fill = "Category",
-          title = ""
-         # title = paste0("Comparison of Responses by Institution: ", var_org
-         #)
-        ) +
-        scale_fill_manual(values = fill_colors) +  
-        scale_y_continuous(labels = scales::percent)  +
-        
-        theme_minimal() +
-        theme(
-          text = element_text(size = 12),
-          strip.text.y.left = element_text(size = 14, face = "bold", angle = 0),  # Lesbare Facet-Titel
-          #axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-          #axis.text.x = element_blank(),  # Entferne die x-Achsen-Beschriftungen
-          #axis.title.x = element_blank(), # Entferne x-Achsen-Titel komplett
-          axis.title = element_text(size = 12),
-          legend.text = element_text(size = 10),
-          legend.title = element_text(size = 10),
-          plot.title = element_text(size = 14, hjust = 0.5)
-        )
-      
-      if(showCount){return(g+
-                             geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = 2, color = "white")) 
-        }else{
-      return(g)
-      }
-    }
-    
-    plot_function(plot_data)
-    
-}
+```
 
 
-
-
+```{r}
 
 swims.plot.aggregation(var = "discrimination_type", institution = target_institution, showCount = T) # showCount = T only for testing
 
 ```
 
+## Questionable Research Practices
 
-  
-# Key Variables
-  
-  The following plots compare the responses to key survey variables between **`r target_institution`** and all other institutions.
 
-```{r key-variables}
+```{r}
+swims.plot.multibar(var = "qrp", institution = target_institution, fill_color_set = rev(c("gray48","brown","orange","forestgreen","red")))
+
+```
+
+
+```{r}
+
+#swims.plot.aggregation(var = "qrp_pressure", institution = target_institution, showCount = T) # showCount = T only for testing
+
+```
+
+# Results by Age
+  
+```{r byAge, fig.height= 10, fig.width= 12}
+swims.plot.multibar(var = "institution", institution = target_institution, colors_set = "RdYlGn", divider = "age", ncol_plot = 2)
 
 ```
 
@@ -263,3 +341,4 @@ swims.plot.aggregation(var = "discrimination_type", institution = target_institu
 
 Detailed variable names, item formulations, etc. can be found in the codebook [link]
 
+# References 
