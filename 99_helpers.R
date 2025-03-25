@@ -280,9 +280,15 @@ swims.plot.multibar <- function(
       stop(paste("Divider", divider, "not found in the codeb."))
     }
     
+    # # Use divider label if available
+    # divider_label <- strsplit(codeb[codeb$VarName %in% divider,"Labels"],"//")[[1]]
     # Use divider label if available
-    divider_label <- strsplit(codeb[codeb$VarName %in% divider,"Labels"],"//")[[1]]
-    
+    if(!is.na(codeb[codeb$VarName %in% divider,"Labels"])){
+      divider_label <- strsplit(codeb[codeb$VarName %in% divider,"Labels"],"//")[[1]]
+      dat[,divider] <- factor(dat[,divider], levels = divider_label)
+    }else{
+      divider_label <- unique(dat[,divider])
+    }
   }
   
   # Prepare data ####
@@ -299,6 +305,8 @@ swims.plot.multibar <- function(
       mutate(proportion = count / sum(count),
              n_total = sum(count)) %>% 
       ungroup() 
+    
+    plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
     
   } else if(!is.null(institution) & is.null(divider)){ # Instituion and no-divider
     
@@ -326,6 +334,7 @@ swims.plot.multibar <- function(
              n_total = sum(count)) %>%
       ungroup()
     
+    plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
   } else if(is.null(institution) & is.null(divider)){ # no-Instituion and no-divider
     
     plot_data <- data %>%
