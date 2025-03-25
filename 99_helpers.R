@@ -576,14 +576,14 @@ swims.plot.multibar <- function(
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
       theme(
-        text = element_text(size = fontSize),
-        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = font_size),
+        strip.text.y.left = element_text(size = font_size, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = fontSize),
-        legend.text = element_text(size = fontSize),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
         legend.position = "bottom",
-        legend.title = element_text(size = fontSize),
-        plot.title = element_text(size = fontSize, hjust = 0.5),
+        legend.title = element_text(size = font_size),
+        plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
