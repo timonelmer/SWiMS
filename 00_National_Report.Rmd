@@ -1052,7 +1052,7 @@ swims.plot.multibar(var = "institution", divider = "Residence", font_size = mult
 These workgroup-related were answered if they indicated to be in a working group `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
 
 
-```{r Workgroup, fig.height= 9, fig.width= 9}
+```{r Workgroup, fig.height= 8, fig.width= 9}
 
 swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
 
@@ -1186,8 +1186,8 @@ swims.plot.aggregation(var = "discrimination_type", institution = NULL, font_siz
 # Questionable Research Practices
 
 ```{r Questionable Reserach Practices, fig.height= 9, fig.width= 9}
-
-swims.plot.multibar(var = "qrp", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+qrp.cols <- c("red","forestgreen","orange","brown","gray69")
+swims.plot.multibar(var = "qrp", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1195,13 +1195,13 @@ swims.plot.multibar(var = "qrp", font_size = multibar.fontSize, fontsize_inplot 
 ## Questionable Reserach Practices by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Age", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ## Questionable Reserach Practices by Gender
 
-```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```{r, fig.height= 8.5, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Gender", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1210,26 +1210,26 @@ the 'other' category entails the non-binary response category or if both male an
 ## Questionable Reserach Practices by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Discipline", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ## Questionable Reserach Practices by Funding Source (national only)
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Funding", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ## Questionable Reserach Practices by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Position", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 
 ## Questionable Reserach Practices by Care Work
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Carework", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1237,13 +1237,13 @@ swims.plot.multibar(var = "qrp", divider = "Carework", font_size = multibar.font
 ## Questionable Reserach Practices by Residence (national only)
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "qrp", divider = "Residence", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ## Pressures to Perform Questionable Reserach Practices 
 
-```{r qrp Dimensions, fig.height= 9, fig.width= 9}
+```{r qrp Dimensions, fig.height= 4, fig.width= 5}
 
 swims.plot.aggregation(var = "qrp_pressure", institution = NULL, font_size = multibar.fontSize+2,annoFontSize = multibar.fontSizeInplot)
 
