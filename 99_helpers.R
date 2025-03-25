@@ -34,6 +34,14 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
                                     font_size = 12,
                                     data = dat, codeb = codebook){
 
+  # var <- "Depression"
+  # institution <- target_institution
+  # divider <- NULL 
+  # annoFontSize <- 4  # font size for counts on top of bar
+  # font_size <- 12
+  # data <- dat
+  # codeb <- codebook
+  
   # Ensure var exists in the codeb
   if (!var %in% codeb$VarName) {
     stop(paste("Variable", var, "not found in the codeb."))
@@ -65,7 +73,9 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     group_by(group, !!sym(var)) %>%
     summarise(count = n(), .groups = "drop") %>%
     group_by(group) %>%
-    mutate(proportion = count / sum(count))
+    mutate(proportion = count / sum(count)) %>% 
+    mutate(!!var := as.factor(.data[[var]]))
+
   
   # Create plot
   g <- ggplot(plot_data, aes_string(x = var, y = "proportion", fill = "group")) +
@@ -89,7 +99,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
       legend.title = element_text(size = font_size),
       panel.grid.major.x = element_blank(),
       panel.grid.minor.x = element_blank(),
-      plot.title = element_text(size = 14, hjust = 0.5) 
+      plot.title = element_text(size = font_size, hjust = 0.5) 
     ) + 
     scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
@@ -123,7 +133,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         axis.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = 14, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) 
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
       
@@ -167,7 +177,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         legend.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = 14, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) 
       ) + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
@@ -217,12 +227,12 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         legend.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = 14, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) 
       ) + 
       guides(alpha = "none") +
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
       
-    
+    plot(g)
   }
 }
 
@@ -235,8 +245,8 @@ swims.plot.multibar <- function(
     codeb = codebook,
     ncol_plot = 1,
     fill_color_set = NULL,
-    fontSize = 12,
-    fontsize_inplot_text = 4,
+    font_size = 12,
+    fontsize_inplot = 4,
     colors_set = "RdYlGn",
     space4comp = F
 ){
@@ -414,14 +424,14 @@ swims.plot.multibar <- function(
         ) +
         theme_minimal() +
         theme(
-          text = element_text(size = fontSize),
-          strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
+          text = element_text(size = font_size),
+          strip.text.y.left = element_text(size = font_size, angle = 0),  # Lesbare Facet-Titel
           axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-          axis.title = element_text(size = fontSize),
-          legend.text = element_text(size = fontSize),
+          axis.title = element_text(size = font_size),
+          legend.text = element_text(size = font_size),
           legend.position = "bottom",
-          legend.title = element_text(size = fontSize),
-          plot.title = element_text(size = fontSize, hjust = 0.5),
+          legend.title = element_text(size = font_size),
+          plot.title = element_text(size = font_size, hjust = 0.5),
           panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank(),
           panel.spacing.x = unit(2, "lines")
@@ -430,13 +440,13 @@ swims.plot.multibar <- function(
         geom_text(data = plot_data,
                   aes(x = x_pos, y = 0.01, label = divider),
                   inherit.aes = FALSE,
-                  size = fontsize_inplot_text,
+                  size = fontsize_inplot,
                   hjust = 0) +
         geom_text(data = plot_data,
                   aes(x = x_pos, y = 1.01, 
                       label = paste0("N = ", n_total)),
                   inherit.aes = FALSE,
-                  size = fontsize_inplot_text,
+                  size = fontsize_inplot,
                   hjust = 0)
       
     } else {
@@ -462,14 +472,14 @@ swims.plot.multibar <- function(
       ) +
       theme_minimal() +
       theme(
-        text = element_text(size = fontSize),
-        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = font_size),
+        strip.text.y.left = element_text(size = font_size, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = fontSize),
-        legend.text = element_text(size = fontSize),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
         legend.position = "bottom",
-        legend.title = element_text(size = fontSize),
-        plot.title = element_text(size = fontSize, hjust = 0.5),
+        legend.title = element_text(size = font_size),
+        plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -478,13 +488,13 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data,
                 aes(x = interaction_lab, y = 0.01, label = divider),
                 inherit.aes = FALSE,
-                size = fontsize_inplot_text,
+                size = fontsize_inplot,
                 hjust = 0) +
       geom_text(data = plot_data,
                 aes(x = interaction_lab, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = fontsize_inplot_text,
+                size = fontsize_inplot,
                 hjust = 0)
     
     }
@@ -513,19 +523,19 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
                 aes(x = group, y = 0.05, label = group),  
                 inherit.aes = FALSE, 
-                size = fontsize_inplot_text, #fontface = "bold",
+                size = fontsize_inplot, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
       theme(
-        text = element_text(size = fontSize),
-        strip.text.y.left = element_text(size = fontSize, angle = 0),  # Lesbare Facet-Titel
+        text = element_text(size = font_size),
+        strip.text.y.left = element_text(size = font_size, angle = 0),  # Lesbare Facet-Titel
         axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        axis.title = element_text(size = fontSize),
-        legend.text = element_text(size = fontSize),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
         legend.position = "bottom",
-        legend.title = element_text(size = fontSize),
-        plot.title = element_text(size = fontSize, hjust = 0.5),
+        legend.title = element_text(size = font_size),
+        plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -535,7 +545,7 @@ swims.plot.multibar <- function(
                 aes(x = group, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = fontsize_inplot_text,
+                size = fontsize_inplot,
                 hjust = 0)
     
   } else if (is.null(institution) & !is.null(divider)){ # no-Institution and divider
@@ -561,7 +571,7 @@ swims.plot.multibar <- function(
       geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
                 aes(x = divider, y = 0.05, label = divider),  
                 inherit.aes = FALSE, 
-                size = fontsize_inplot_text, #fontface = "bold",
+                size = fontsize_inplot, #fontface = "bold",
                 hjust = 0,
                 position = position_nudge(x = -0.5)) +
       theme_minimal() +
@@ -582,7 +592,7 @@ swims.plot.multibar <- function(
                 aes(x = divider, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
-                size = fontsize_inplot_text,
+                size = fontsize_inplot,
                 hjust = 0)
     
   } else if (is.null(institution) & is.null(divider)){ # no-Institution and no-divider
@@ -605,15 +615,15 @@ swims.plot.multibar <- function(
       annotate("text", x = Inf, y = Inf, label = range_text, size = 4, hjust = 1, vjust = 1) +  
       theme_minimal() +  
       theme(
-        text = element_text(size = fontSize),
-        strip.text.y.left = element_text(size = fontSize, face = "bold", angle = 0),  
-        axis.text.y = element_text(size = fontSize),  
-        axis.text.x = element_text(size = fontSize),  
-        axis.title = element_text(size = fontSize),
-        legend.text = element_text(size = fontSize),
+        text = element_text(size = font_size),
+        strip.text.y.left = element_text(size = font_size, face = "bold", angle = 0),  
+        axis.text.y = element_text(size = font_size),  
+        axis.text.x = element_text(size = font_size),  
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
         legend.position = "bottom",
-        legend.title = element_text(size = fontSize),
-        plot.title = element_text(size = fontSize, hjust = 0.5),
+        legend.title = element_text(size = font_size),
+        plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         panel.spacing.x = unit(2, "lines")
@@ -635,7 +645,9 @@ swims.plot.aggregation <- function(var,
                                    codeb = codebook, 
                                    fill_colors = NULL,
                                    colors_set = "Set1", 
-                                   showCount = F
+                                   showCount = F,
+                                   font_size = 12,
+                                   annoFontSize = 4
 ){
   
   # 
@@ -708,22 +720,22 @@ swims.plot.aggregation <- function(var,
       ) +
       scale_fill_manual(values = fill_colors) +  
       scale_y_continuous(labels = scales::percent)  +
-      
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        strip.text.y.left = element_text(size = 14, face = "bold", angle = 0),  # Lesbare Facet-Titel
-        #axis.text.y = element_blank(),  # Entferne die ursprünglichen Gruppen-Namen links
-        #axis.text.x = element_blank(),  # Entferne die x-Achsen-Beschriftungen
-        #axis.title.x = element_blank(), # Entferne x-Achsen-Titel komplett
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 10),
-        plot.title = element_text(size = 14, hjust = 0.5)
-      )
+        text = element_text(size = font_size),
+        axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = font_size),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
+        legend.title = element_text(size = font_size),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        plot.title = element_text(size = font_size, hjust = 0.5) 
+      )  +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
     
     if(showCount){return(g+
-                           geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = 2, color = "white")) 
+                           geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = annoFontSize, color = "white")) 
     }else{
       return(g)
     }
