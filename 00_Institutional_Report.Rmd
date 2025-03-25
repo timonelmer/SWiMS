@@ -8,13 +8,16 @@ output:
   pdf_document:
     toc: true
     toc_depth: 3
+    keep_tex: true
+    fig_caption: false
 # bibliography: references.bib 
 classoption: landscape
+geometry: top=1.5cm, bottom=1.5cm, left=1cm, right=1cm
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
+  # - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 Institution Report}
 ---
@@ -22,7 +25,11 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
-                      out.width = "100%", 
+                      out.width = "80%",
+                      fig.width = 16,        
+                      fig.height = 12,   
+                      fig.align = 'center', 
+                      fig.pos = 'H',
                       dpi = 300)
 library(tidyverse)
 library(kableExtra)
@@ -35,7 +42,7 @@ library(ggpattern)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-24.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
+load("../data/SWiMS2024_Data_2025-03-25.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
 source("99_helpers.R")
 
 
@@ -46,24 +53,6 @@ target_institution <- institution_labels[target_index]
 remaining_institutions <- setdiff(institution_labels, target_institution)
 
 ```
-
-# TODO
-
-- bei plots einbauen, dass kleine zellgrössen nicht geplotted / getabled werden
-- wieso schneidet es die plots rechts ab? -> Zoran
-- 0 as answer category set to NA -> data_ceaning script -> Timon
-- discrimination color manual -> Timon
-- levels discrimination aggreagation plot, order -> Zoran
-- aggregation plot minor grids, einheitlich --> Zoran
-- fontsize of divider -_> Zoran
-- trenn-space bei mutlibar institution mit divider -> Zoran
-
-Big stuff:
-
-- blanko struktur vom RMD -> Timon
-- Institutional -> Zoran
-- National <- Timon
-
 
 # Introduction
 
@@ -100,89 +89,113 @@ The figures below summarize the key demographic characteristics of all parttakin
 ### Age
 
 ```{r age}
-swims.plot.distribution("age", institution = target_institution)
+swims.plot.distribution("age", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### Gender
 
 ```{r gender}
-swims.plot.distribution("Gender", institution = target_institution)
+swims.plot.distribution("Gender", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### Research Discipline
 
 ```{r }
-swims.plot.distribution("researchDiscipline", institution = target_institution) 
+swims.plot.distribution("Discipline", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 
 ```
 
 ### Position Type
 
 ```{r }
-swims.plot.distribution("mainPosition", institution = target_institution) # + 
-    #scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
-
+swims.plot.distribution("mainPosition", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### Funding soruce
 
 ```{r }
-swims.plot.distribution("funding", institution = target_institution)
+swims.plot.distribution("funding", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 
 ### Residence status
 
 ```{r }
-swims.plot.distribution("residenceStatus", institution = target_institution)
+swims.plot.distribution("residenceStatus", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### Care work
 
-```{r , fig.height=3}
-swims.plot.distribution("Carework", institution = target_institution)
+```{r}
+swims.plot.distribution("Carework", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
-
+\newpage
 ### Other demographic variables
 
 These variables will not be used for group comparisons later, thus the name "other".
 
 #### Employment Status
-<br>
 
 ```{r }
-
-swims.plot.distribution("employmentStatus", institution = target_institution)
-
+swims.plot.distribution("employmentStatus", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
-
+\newpage
 #### Employment Percentage
 
+```{r}
+swims.plot.distribution("workloadMainjob", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
+```
+
+\newpage
+#### Additional Non-Academic Job
 
 ```{r}
-
-swims.plot.distribution("workloadMainjob", institution = target_institution)
-
-```
-
-
-#### Additional Non-Academic Job  
-<br>
-
-```{r, fig.height= 3 }
-
-swims.plot.distribution("nonacademicJob", institution = target_institution)
+swims.plot.distribution("nonacademicJob", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 
 ```
 
+\newpage
 # Mental Health
 
 ## General Mental Health
 
 - overall distribution
 ```{r}
-
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 
@@ -190,150 +203,158 @@ swims.plot.distribution("nonacademicJob", institution = target_institution)
 ### General Mental Health by Age
 
 ```{r}
-
+debugonce(swims.plot.distribution)
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        divider = "Age",
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### General Mental Health by Gender
 
 ```{r}
-
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        divider = "Gender",
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### General Mental Health by Research Discipline
 
 ```{r}
-
-```
-
-### General Mental Health by Funding Source (national only)
-
-```{r}
-
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        divider = "Discipline",
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 ### General Mental Health by Position Type
 
 ```{r}
-
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        divider = "Position",
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
 
 ### General Mental Health by Care Work
 
 ```{r}
-
+swims.plot.distribution("mentalHealth", 
+                        institution = target_institution, 
+                        divider = "Carework",
+                        font_size = 16,
+                        annoFontSize = 6)
 ```
 
+<!-- ## Depression -->
 
-### General Mental Health by Residence (national only)
+<!-- ## Burnout -->
 
-```{r}
+<!-- ## Awarenes Resources -->
 
-```
+<!-- # Job Satisfaction -->
 
-## Depression
+<!-- ## Quitting Intentions -->
 
-## Burnout
+<!-- # Stressors -->
 
-## Awarenes Resources 
+<!-- ## System -->
 
-# Job Satisfaction 
+<!-- ## Supervisor -->
 
-## Quitting Intentions
+<!-- ## Colleagues -->
 
-# Stressors
+<!-- ## Self-Management -->
 
-## System
+<!-- ## Private -->
 
-## Supervisor
+<!-- # Supervisor -->
 
-## Colleagues
+<!-- # Institution -->
 
-## Self-Management
+<!-- # Work-Group -->
 
-## Private
+<!-- # Discrimination -->
 
-# Supervisor
-
-# Institution 
-
-# Work-Group
-
-# Discrimination
-
-# Questionable Research Practices
+<!-- # Questionable Research Practices -->
 
 
 
 
 
-Job satisfaction item by @dolbier_reliability_2005. 
+<!-- Job satisfaction item by @dolbier_reliability_2005. -->
 
-```{r job satisfaction}
+<!-- ```{r job satisfaction} -->
 
-swims.plot.distribution(var = "jobSatisfaction", institution = target_institution)
-
-
-
-```
-
-## Supervisor
-
-```{r supervisor, fig.height = 7}
+<!-- swims.plot.distribution(var = "jobSatisfaction", institution = target_institution) -->
 
 
-swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn")
+
+<!-- ``` -->
+
+<!-- ## Supervisor -->
+
+<!-- ```{r supervisor, fig.height = 7} -->
 
 
-```
-
-## Discrimination 
-
-```{r}
-swims.plot.multibar(var = "discrimination", institution = target_institution)
-
-```
-
-## Discrimination
-
-```{r}
-swims.plot.multibar(var = "discrimination", institution = target_institution)
-
-```
+<!-- swims.plot.multibar(var = "supervisor", institution = target_institution, colors_set = "RdYlGn") -->
 
 
-```{r}
+<!-- ``` -->
 
-swims.plot.aggregation(var = "discrimination_type", institution = target_institution, showCount = T) # showCount = T only for testing
+<!-- ## Discrimination -->
 
-```
+<!-- ```{r} -->
+<!-- swims.plot.multibar(var = "discrimination", institution = target_institution) -->
 
-## Questionable Research Practices
+<!-- ``` -->
+
+<!-- ## Discrimination -->
+
+<!-- ```{r} -->
+<!-- swims.plot.multibar(var = "discrimination", institution = target_institution) -->
+
+<!-- ``` -->
 
 
-```{r}
-swims.plot.multibar(var = "qrp", institution = target_institution, fill_color_set = rev(c("gray48","brown","orange","forestgreen","red")))
+<!-- ```{r} -->
 
-```
+<!-- swims.plot.aggregation(var = "discrimination_type", institution = target_institution, showCount = T) # showCount = T only for testing -->
+
+<!-- ``` -->
+
+<!-- ## Questionable Research Practices -->
 
 
-```{r}
+<!-- ```{r} -->
+<!-- swims.plot.multibar(var = "qrp", institution = target_institution, fill_color_set = rev(c("gray48","brown","orange","forestgreen","red"))) -->
 
-#swims.plot.aggregation(var = "qrp_pressure", institution = target_institution, showCount = T) # showCount = T only for testing
+<!-- ``` -->
 
-```
 
-# Results by Age
-  
-```{r byAge, fig.height= 10, fig.width= 12}
-swims.plot.multibar(var = "institution", institution = target_institution, colors_set = "RdYlGn", divider = "age", ncol_plot = 2)
+<!-- ```{r} -->
 
-```
+<!-- #swims.plot.aggregation(var = "qrp_pressure", institution = target_institution, showCount = T) # showCount = T only for testing -->
 
-# Appendix 
+<!-- ``` -->
 
-## Codebook
+<!-- # Results by Age -->
 
-Detailed variable names, item formulations, etc. can be found in the codebook [link]
+<!-- ```{r byAge, fig.height= 10, fig.width= 12} -->
+<!-- swims.plot.multibar(var = "institution", institution = target_institution, colors_set = "RdYlGn", divider = "age", ncol_plot = 2) -->
 
-# References 
+<!-- ``` -->
+
+<!-- # Appendix -->
+
+<!-- ## Codebook -->
+
+<!-- Detailed variable names, item formulations, etc. can be found in the codebook [link] -->
+
+<!-- # References -->

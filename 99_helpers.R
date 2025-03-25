@@ -31,17 +31,14 @@ insert_level <- function(fct, new_level, position) {
 
 swims.plot.distribution <- function(var, institution = NULL, divider = NULL, 
                                     annoFontSize = 4,  # font size for counts on top of bar
+                                    font_size = 12,
                                     data = dat, codeb = codebook){
-  
+
   # Ensure var exists in the codeb
   if (!var %in% codeb$VarName) {
     stop(paste("Variable", var, "not found in the codeb."))
   }
-  
-  # # Use variable label if available
-  # x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
-  # 
-  
+
   # Check for divider
   if(!is.null(divider)){
     
@@ -60,6 +57,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
   }
   
   if(!is.null(institution) & is.null(divider)){ # with institution, no divider
+    
   # Prepare data for plotting
   plot_data <- data %>%
     mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
@@ -83,21 +81,22 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
     theme_minimal() +
     theme(
-      text = element_text(size = 12),
-      axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
-      axis.text.y = element_text(size = 10),
-      axis.title = element_text(size = 12),
-      legend.text = element_text(size = 10),
-      legend.title = element_text(size = 10),
+      text = element_text(size = font_size),
+      axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+      axis.text.y = element_text(size = font_size),
+      axis.title = element_text(size = font_size),
+      legend.text = element_text(size = font_size),
+      legend.title = element_text(size = font_size),
       panel.grid.major.x = element_blank(),
       panel.grid.minor.x = element_blank(),
-      plot.title = element_text(size = 14, hjust = 0.5)
+      plot.title = element_text(size = 14, hjust = 0.5) 
     ) + 
     scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
   
   plot(g)
-  }else if(is.null(institution) & is.null(divider)){ #plot for no institution and divider specified
+  
+  } else if(is.null(institution) & is.null(divider)){ #plot for no institution and divider specified
     
     # Prepare data for plotting
     plot_data <- data %>%
@@ -118,19 +117,21 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
       geom_text(aes(label = count), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 10),
-        axis.title = element_text(size = 12),
+        text = element_text(size = font_size),
+        axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = font_size),
+        axis.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = 14, hjust = 0.5)
+        plot.title = element_text(size = 14, hjust = 0.5) 
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
       
     
     plot(g)
-  }else if(is.null(institution) & !is.null(divider)){ # no institution, but divider
+    
+  } else if(is.null(institution) & !is.null(divider)){ # no institution, but divider
+    
     # Prepare data for plotting
     plot_data <- data %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(get(divider))) %>%  # Remove NAs in selected variables
@@ -158,22 +159,70 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
       geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
-        text = element_text(size = 12),
-        axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
-        axis.text.y = element_text(size = 10),
-        axis.title = element_text(size = 12),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(size = 10),
+        text = element_text(size = font_size),
+        axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = font_size),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
+        legend.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = 14, hjust = 0.5)
+        plot.title = element_text(size = 14, hjust = 0.5) 
       ) + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
     
     plot(g)
-  }else if(!is.null(institution) & !is.null(divider)){ # institution, and divider
-    print("TODO: sorry!")
+    
+  } else if(!is.null(institution) & !is.null(divider)){ # institution, and divider
+    
+    # Prepare data for plotting
+    plot_data <- data %>%
+      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group), !is.na(get(divider))) %>%  # Remove NAs in selected variables
+      pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
+      group_by(group, variable, value, divider = get(divider)) %>%
+      summarise(count = n(), .groups = "drop") %>%
+      group_by(variable, divider, group) %>%
+      mutate(proportion = count / sum(count),
+             n_total = sum(count)) %>%
+      ungroup()
+    
+    plot_data$divider <- factor(plot_data$divider, levels = divider_label)
+
+    alpha_labs <- unique(plot_data$group)
+    
+    # Create plot
+    g <- ggplot(plot_data, aes_string(x = "value", y = "proportion", fill = "divider", alpha = "group")) +
+      geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+      scale_y_continuous(labels = scales::percent, limits = c(0,max(plot_data$proportion+.05))) +
+      scale_alpha_manual(values = setNames(c(1, 0.6, 0), alpha_labs),
+                         guide = guide_legend(reverse = TRUE)) +
+      labs(
+        x = "",
+        y = "Proportion within Group",
+        fill = divider,#,
+        #title = paste("Distribution of", var)
+      ) +
+      scale_fill_manual(values = our_color[1:length(divider_label)]) +
+      geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
+      facet_wrap(~ group, ncol = 1) +
+      theme_minimal() +
+      theme(
+        text = element_text(size = font_size),
+        axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+        axis.text.y = element_text(size = font_size),
+        axis.title = element_text(size = font_size),
+        legend.text = element_text(size = font_size),
+        legend.title = element_text(size = font_size),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        plot.title = element_text(size = 14, hjust = 0.5) 
+      ) + 
+      guides(alpha = "none") +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
+      
+    
   }
 }
 
