@@ -500,7 +500,12 @@ swims.plot.multibar(var = "resources", divider = "Residence")
 
 # Job Satisfaction 
 
-item from REF
+Item formulation: 
+
+*Taking everything into consideration, how satisfied do you feel about your job as a whole?*
+
+item by @dolbier_reliability_2005. 
+
 
 ```{r job satisfaction, fig.height= 5 , fig.width= 6}
 swims.plot.distribution("jobSatisfaction")
@@ -557,84 +562,755 @@ swims.plot.distribution(var = "jobSatisfaction", divider = "Residence", annoFont
 ```
 
 
-
 ## Quitting Intentions
+
+
+```{r quitting intentions, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("quitting")
+
+```
+
+
+### Quitting Intentions by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "quitting", divider = "Age", annoFontSize = 3)
+```
+
+### Quitting Intentions by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "quitting", divider = "Gender", annoFontSize = 3)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Quitting Intentions by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "quitting", divider = "Discipline", annoFontSize = 2)
+```
+
+### Quitting Intentions by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "quitting", divider = "Funding", annoFontSize = 2)
+```
+
+### Quitting Intentions by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "quitting", divider = "Position", annoFontSize = 2)
+```
+
+
+### Quitting Intentions by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "quitting", divider = "Carework", annoFontSize = 3)
+
+```
+
+
+### Quitting Intentions by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "quitting", divider = "Residence", annoFontSize = 3)
+
+```
 
 # Stressors
 
 ## System
 
+
+To what degree is the following causing you stress currently?
+
+```{r stress system, fig.height= 6 , fig.width= 8}
+
+multibar.fontSize = 8
+multibar.fontSizeInplot = 2.5
+
+swims.plot.multibar("stress_system",font_size = multibar.fontSize)
+
+```
+
+
+### Stressor System by Age
+
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor System by Gender
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Stressor System by Research Discipline
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor System by Funding Source (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor System by Position Type
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+### Stressor System by Care Work
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+### Stressor System by Residence (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_system", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
 ## Supervisor
+
+To what degree is the following causing you stress currently?
+
+```{r stress supervisor, fig.height= 6 , fig.width= 8}
+
+swims.plot.multibar("stress_supervisor",font_size = multibar.fontSize)
+
+```
+
+
+### Stressor Supervisor by Age
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Supervisor by Gender
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Stressor Supervisor by Research Discipline
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Supervisor by Funding Source (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Supervisor by Position Type
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+### Stressor Supervisor by Care Work
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+### Stressor Supervisor by Residence (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_supervisor", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
 
 ## Colleagues
 
+
+To what degree is the following causing you stress currently?
+
+
+```{r stress colleagues, fig.height= 6 , fig.width= 8}
+
+swims.plot.multibar("stress_colleagues",font_size = multibar.fontSize)
+
+```
+
+
+### Stressor Colleagues by Age
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Colleagues by Gender
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Stressor Colleagues by Research Discipline
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Colleagues by Funding Source (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Colleagues by Position Type
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+### Stressor Colleagues by Care Work
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+### Stressor Colleagues by Residence (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_colleagues", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
 ## Self-Management
+
+To what degree is the following causing you stress currently?
+
+
+
+```{r stress selfManagement, fig.height= 6 , fig.width= 8}
+
+swims.plot.multibar("stress_selfManagement",font_size = multibar.fontSize)
+
+```
+
+
+### Stressor Self-Management by Age
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Self-Management by Gender
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Stressor Self-Management by Research Discipline
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Self-Management by Funding Source (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Self-Management by Position Type
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+### Stressor Self-Management by Care Work
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+### Stressor Self-Management by Residence (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_selfManagement", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
 
 ## Private
 
+To what degree is the following causing you stress currently?
+
+
+```{r stress private, fig.height= 6 , fig.width= 8}
+
+swims.plot.multibar("stress_private",font_size = multibar.fontSize)
+
+```
+
+
+### Stressor Private by Age
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Private by Gender
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Stressor Private by Research Discipline
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Private by Funding Source (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+### Stressor Private by Position Type
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+### Stressor Private by Care Work
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+### Stressor Private by Residence (national only)
+
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "stress_private", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
 # Supervisor
+
+
+```{r Supervisor, fig.height= 9, fig.width= 9}
+
+swims.plot.multibar(var = "supervisor", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Supervisor by Age
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Supervisor by Gender
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+## Supervisor by Research Discipline
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Supervisor by Funding Source (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Supervisor by Position Type
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+## Supervisor by Care Work
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Supervisor by Residence (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "supervisor", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
 
 # Institution 
 
+```{r Institution, fig.height= 9, fig.width= 9}
+
+swims.plot.multibar(var = "institution", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Institution by Age
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Institution by Gender
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+## Institution by Research Discipline
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Institution by Funding Source (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Institution by Position Type
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+## Institution by Care Work
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Institution by Residence (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "institution", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
 # Work-Group
-
-# Discrimination
-
-# Questionable Research Practices
-
-
-
-```{r Job Satistfaction}
-
-swims.plot.distribution("jobSatisfaction")
-
-```
-Item formulation: 
-
-*Taking everything into consideration, how satisfied do you feel about your job as a whole?*
-
-item by @dolbier_reliability_2005. 
-
-## Institution
-
-```{r Institution, fig.height= 10}
-
-swims.plot.multibar(var = "institution", colors_set = "RdYlGn")
-
-```
-
-## Workgroup
 
 These workgroup-related were answered if they indicated to be in a working group `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
 
-```{r Workgroup, fig.height= 5}
 
-swims.plot.multibar(var = "workgroup", colors_set = "RdYlGn")
-```
+```{r Workgroup, fig.height= 9, fig.width= 9}
 
-## Supervisor
-
-```{r Supervisor, fig.height= 10}
-
-swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn")
-
-#swims.plot.multibar(var = "supervisor", colors_set = "RdYlGn", divider = "phd")
+swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
 
 ```
 
 
-## Discrimination
+## Workgroup by Age
 
-```{r Discrimination , fig.height= 15}
-
-swims.plot.multibar(var = "discrimination")
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
 ```
 
-## Results by Age
-  
-```{r age_institution, fig.height=13}
-swims.plot.multibar(var = "institution", colors_set = "RdYlGn", divider = "age")
+## Workgroup by Gender
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
 ```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+## Workgroup by Research Discipline
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Workgroup by Funding Source (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Workgroup by Position Type
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+## Workgroup by Care Work
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Workgroup by Residence (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+# Discrimination
+
+## Discrimination Experience 
+
+```{r Discrimination, fig.height= 9, fig.width= 9}
+
+swims.plot.multibar(var = "discrimination", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+
+## Discrimination Experience by Age
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+
+## Discrimination Experience by Gender
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+## Discrimination Experience by Research Discipline
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Discrimination Experience by Funding Source (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Discrimination Experience by Position Type
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+## Discrimination Experience by Care Work
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Discrimination Experience by Residence (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "discrimination", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+## Discrimination Dimensions 
+
+```{r Discrimination Dimensions, fig.height= 9, fig.width= 9}
+
+swims.plot.aggregation(var = "discrimination_type", institution = NULL, font_size = multibar.fontSize+2,annoFontSize = multibar.fontSizeInplot)
+
+```
+
+## Discrimination Dimensions by Age? etc.
+
+
+# Questionable Research Practices
+
+```{r Questionable Reserach Practices, fig.height= 9, fig.width= 9}
+
+swims.plot.multibar(var = "qrp", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Questionable Reserach Practices by Age
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Questionable Reserach Practices by Gender
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+## Questionable Reserach Practices by Research Discipline
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Questionable Reserach Practices by Funding Source (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+## Questionable Reserach Practices by Position Type
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+```
+
+
+## Questionable Reserach Practices by Care Work
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+
+## Questionable Reserach Practices by Residence (national only)
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+
+```
+
+## Pressures to Perform Questionable Reserach Practices 
+
+```{r qrp Dimensions, fig.height= 9, fig.width= 9}
+
+swims.plot.aggregation(var = "qrp_pressure", institution = NULL, font_size = multibar.fontSize+2,annoFontSize = multibar.fontSizeInplot)
+
+```
+
+## Pressures to Perform Questionable Reserach Practices by Age? etc.
+
+## Effects of Pressures to Perform Questionable Reserach Practices on Mental Health
+
+
+```{r qrp_mh, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("pressureqrpMentalhealth")
+
+```
+
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Age", annoFontSize = 3)
+```
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Gender", annoFontSize = 3)
+
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Discipline", annoFontSize = 2)
+```
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Funding", annoFontSize = 2)
+```
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Position", annoFontSize = 2)
+```
+
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Carework", annoFontSize = 3)
+
+```
+
+
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Residence", annoFontSize = 3)
+
+```
+
+
+---
   
 # Appendix
   
@@ -643,3 +1319,5 @@ swims.plot.multibar(var = "institution", colors_set = "RdYlGn", divider = "age")
 Detailed variable names, item formulations, etc. can be found in the codebook [link]
 
 # References 
+
+

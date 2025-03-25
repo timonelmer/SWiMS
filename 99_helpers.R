@@ -660,12 +660,13 @@ swims.plot.aggregation <- function(var,
 ){
   
   # 
-  # vars <- "discrimination_type"
+  # var <- "discrimination_type"
   # data = dat
   # codeb = codebook
   # fill_colors = NULL
   # colors_set = "Set1"
   # showCount = T
+  # institution = NULL
   # 
   # Define variable
   var_org <- var
@@ -677,83 +678,148 @@ swims.plot.aggregation <- function(var,
     stop(paste("Variable", var, "not found in the codeb."))
   }
   
-  data.m <- reshape2::melt(data[,c("institution",var)], id.vars = "institution")
+  #data.m <- reshape2::melt(data[,c("institution",var)], id.vars = "institution")
   
   # Use variable label if available
   x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
   
-  # Prepare data for plotting
-  plot_data <- data %>%
-    mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
-    mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
-    filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
-    pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
-    group_by(group, variable, value) %>%
-    summarise(count = n(), .groups = "drop") %>%
-    group_by(group, variable) %>%
-    ungroup() 
-  
-  # Change values for varName
-  plot_data <- plot_data %>%
-    left_join(var_text, by = "variable") %>%
-    select(-variable) %>% 
-    mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
-    mutate(text = str_wrap(text, width = 20)) %>% 
-    filter(value %in% "quoted") %>% 
-    group_by(group) %>%
-    mutate(Percentage = count / sum(count))
-  
-  
-  if(is.null(fill_colors)){
-    fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
-    if (length(unique(plot_data$text)) > 9) {
-      fill_colors <- colorRampPalette(fill_colors)(length(unique(plot_data$text)))
-    }
-  } 
-  #c(myblue, myorange, myyellow, mypurple, mygreen)
-  
-  
-  # Create plot
-  plot_function <- function(plot_data) {
+  if(!is.null(institution)){ # with institution
+    # Prepare data for plotting
+    plot_data <- data %>%
+      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
+      filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
+      pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
+      group_by(group, variable, value) %>%
+      summarise(count = n(), .groups = "drop") %>%
+      group_by(group, variable) %>%
+      ungroup() 
     
-    # Plot erstellen
-    g <- ggplot(plot_data[plot_data$value %in% "quoted",], aes(x = group, y = count, fill = text)) +  
-      geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
-      labs(
-        x = NULL,   # Entferne x-Achsen-Beschriftung
-        y = "Percentage of Among All Named Categories",
-        fill = "Category",
-        title = ""
-        # title = paste0("Comparison of Responses by Institution: ", var_org
-        #)
-      ) +
-      scale_fill_manual(values = fill_colors) +  
-      scale_y_continuous(labels = scales::percent)  +
-      theme_minimal() +
-      theme(
-        text = element_text(size = font_size),
-        axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
-        axis.text.y = element_text(size = font_size),
-        axis.title = element_text(size = font_size),
-        legend.text = element_text(size = font_size),
-        legend.title = element_text(size = font_size),
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = font_size, hjust = 0.5) 
-      )  +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
+    # Change values for varName
+    plot_data <- plot_data %>%
+      left_join(var_text, by = "variable") %>%
+      select(-variable) %>% 
+      mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
+      mutate(text = str_wrap(text, width = 20)) %>% 
+      filter(value %in% "quoted") %>% 
+      group_by(group) %>%
+      mutate(Percentage = count / sum(count))
     
-    if(showCount){return(g+
-                           geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = annoFontSize, color = "white")) 
-    }else{
-      return(g)
+    
+    if(is.null(fill_colors)){
+      fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
+      if (length(unique(plot_data$text)) > 9) {
+        fill_colors <- colorRampPalette(fill_colors)(length(unique(plot_data$text)))
+      }
+    } 
+    #c(myblue, myorange, myyellow, mypurple, mygreen)
+    
+    
+    # Create plot
+    plot_function <- function(plot_data) {
+      
+      # Plot erstellen
+      g <- ggplot(plot_data[plot_data$value %in% "quoted",], aes(x = group, y = count, fill = text)) +  
+        geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked Bar Chart
+        labs(
+          x = NULL,   # Entferne x-Achsen-Beschriftung
+          y = "Percentage of Among All Named Categories",
+          fill = "Category",
+          title = ""
+          # title = paste0("Comparison of Responses by Institution: ", var_org
+          #)
+        ) +
+        scale_fill_manual(values = fill_colors) +  
+        scale_y_continuous(labels = scales::percent)  +
+        theme_minimal() +
+        theme(
+          text = element_text(size = font_size),
+          axis.text.x = element_text(size = font_size, angle = 45, hjust = 1),
+          axis.text.y = element_text(size = font_size),
+          axis.title = element_text(size = font_size),
+          legend.text = element_text(size = font_size),
+          legend.title = element_text(size = font_size),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          plot.title = element_text(size = font_size, hjust = 0.5) 
+        )  +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
+      
+      if(showCount){return(g+
+                             geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = annoFontSize, color = "white")) 
+      }else{
+        return(g)
+      }
     }
+    
+    plot_function(plot_data)
   }
   
-  plot_function(plot_data)
+  if(is.null(institution)){ # without institution
+      
+      # Prepare data for plotting (no institution grouping)
+      plot_data <- data %>%
+        filter(if_all(all_of(var), ~ !is.na(.))) %>%
+        pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
+        group_by(variable, value) %>%
+        summarise(count = n(), .groups = "drop") %>%
+        ungroup()
+      
+      # Merge labels for variables
+      plot_data <- plot_data %>%
+        left_join(var_text, by = "variable") %>%
+        select(-variable) %>% 
+        mutate(text = factor(text, levels = var_text$text)) %>%
+        mutate(text = str_wrap(text, width = 20)) %>%
+        filter(value %in% "quoted") %>%
+        mutate(Percentage = count / sum(count))
+      
+      # Define fill colors if not provided
+      if(is.null(fill_colors)){
+        fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
+        if (length(unique(plot_data$text)) > 9) {
+          fill_colors <- colorRampPalette(fill_colors)(length(unique(plot_data$text)))
+        }
+      }
+      
+      # Plot function (without institution grouping)
+      plot_function <- function(plot_data) {
+        g <- ggplot(plot_data, aes(x = "", y = Percentage, fill = text)) +  
+          geom_bar(stat = "identity", width = 0.5) +  
+          labs(
+            x = NULL,   
+            y = "Percentage",
+            fill = "Category",
+            title = ""
+          ) +
+          scale_fill_manual(values = fill_colors) +  
+          scale_y_continuous(labels = scales::percent) +
+          theme_minimal() +
+          theme(
+            text = element_text(size = font_size),
+            axis.text.x = element_blank(),
+            axis.ticks.x = element_blank(),
+            axis.text.y = element_text(size = font_size),
+            axis.title = element_text(size = font_size),
+            legend.position = "right",
+            panel.grid.major.x = element_blank(),
+            panel.grid.minor.x = element_blank(),
+            plot.title = element_text(size = font_size, hjust = 0.5) 
+          ) 
+        
+        
+        if(showCount){
+          return(g + geom_text(aes(label = count), vjust = -0.5, size = annoFontSize, color = "black"))
+        } else {
+          return(g)
+        }
+      }
+      
+      plot_function(plot_data)
+    }
+    
+  }
   
-}
-
 
 
 #### colors ####
