@@ -290,25 +290,25 @@ dat[columns_to_update] <- lapply(dat[columns_to_update], function(col) {
 
 # Create the new 'gender' variable
 dat <- dat %>%
-  mutate(gender = case_when(
-    male == "quoted" & female == "not quoted" & nonbinary == "not quoted" ~ "male",
-    female == "quoted" & male == "not quoted" & nonbinary == "not quoted" ~ "female",
-    (nonbinary == "quoted") | (male == "quoted" & female == "quoted")  ~ "other",
+  mutate(Gender = case_when(
+    male == "quoted" & female == "not quoted" & nonbinary == "not quoted" ~ "Male",
+    female == "quoted" & male == "not quoted" & nonbinary == "not quoted" ~ "Female",
+    (nonbinary == "quoted") | (male == "quoted" & female == "quoted")  ~ "Other",
     genderNA == "quoted" ~ NA_character_,
     TRUE ~ NA_character_  # Any other combinations are assigned as NA
   ))
 
 # Create the new 'carework' variable
 dat <- dat %>%
-  mutate(carework = case_when(
-    careNo == "quoted"  ~ "no care work",
-    careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ "care work"
+  mutate(Carework = case_when(
+    careNo == "quoted"  ~ "No care work",
+    careFamily == "quoted" | careKids == "quoted" & nonbinary == "not quoted" ~ "Care work"
   ))
 
 # create the new 'Discipline' variable
 dat <- dat %>%
-  mutate(discipline = case_when(
-    researchDiscipline == "Discipline of natural sciences and engineering" ~   "Natural Sciences and Dngineering" ,                                 
+  mutate(Discipline = case_when(
+    researchDiscipline == "Discipline of natural sciences and engineering" ~   "Natural Sciences and Engineering" ,                                 
     researchDiscipline == "Discipline of medicine" ~ "Medicine" ,                          
     researchDiscipline == "Disciplines of social sciences incl. psychology, economy, educational science, law" ~ "Social Sciences",
     researchDiscipline == "Discipline of humanities incl. arts, history, literature and theology" ~"Humanities" ,          
@@ -317,7 +317,7 @@ dat <- dat %>%
 
 # create the new 'Age' variable
 dat <- dat %>%
-  mutate(age2 = case_when(
+  mutate(Age = case_when(
     age == "18-30" ~ "18-30",
     age == "31-40" ~  "31-40",
     age == "41-60" ~ ">41",
@@ -327,7 +327,7 @@ dat <- dat %>%
 
 # create the new 'Position' variable
 dat <- dat %>%
-  mutate(position_type = case_when(
+  mutate(Position = case_when(
     mainPosition == "Researcher aiming for a PhD" ~ "Researcher aiming for a PhD" ,
     mainPosition == "Postdoctoral researcher"  ~ "Researcher with a PhD",
     mainPosition == "Researcher with a PhD degree (not doing a postdoc)" ~ "Researcher with a PhD" ,
@@ -340,7 +340,7 @@ dat <- dat %>%
 
 # create the new 'funding' variable
 dat <- dat %>%
-  mutate(funding2 = case_when(
+  mutate(Funding = case_when(
     funding == "Swiss National Science Foundation (SNSF)"  ~ "Swiss National Science Foundation (SNSF)" ,
     funding == "non-SNSF project funding" ~  "Non-SNSF funding",
     funding == "University / Higher education institute" ~ "University / Higher education institute",
@@ -352,7 +352,7 @@ dat <- dat %>%
 
 # create the new 'residence' variable
 dat <- dat %>%
-  mutate(residence = case_when(
+  mutate(Residence = case_when(
     residenceStatus == "Swiss citizenship"  ~ "Swiss citizenship + Permit C",
     residenceStatus == "Permit C (EU/EFTA permanent residence permit)" ~  "Swiss citizenship + Permit C",
     residenceStatus == "Permit G (EU/EFTA cross-border permit)"  ~ "Other Permits",
@@ -363,6 +363,41 @@ dat <- dat %>%
     residenceStatus == "Prefer not to say" ~ NA
   ))
 
+# create the depression variable
+dep.vars <- c("positiveFeeling","initiative",
+"future","feelingDown",
+"enthusiasm","selfworth",
+"meaning")
+# data.frame(as.numeric((dat[,dep.vars[1]])),(dat[,dep.vars[1]])) # check that numeric matches levels
+for(i in 1:length(dep.vars)){ # make numeric
+  dat[,paste0("depression_",i)] <- as.numeric(dat[,dep.vars[i]])-1
+}
+depression.items <- paste0("depression_",1:length(dep.vars))
+psych::alpha(dat[,depression.items])
+dat$depresssion.na <- rowSums(is.na(dat[,depression.items]))
+table(dat$depresssion.na > 0) # 62 observations removed due to at least 1 missing depression item score
+dat$Depression <-  rowSums(dat[,depression.items])
+
+# depression category
+
+# Aufgrund der jetzigen Datenlage werden folgende Grenzwerte vorgeschlagen: Der
+# problematische Wert für Depression (erhöhte Wahrscheinlichkeit für das Vorliegen einer
+# depressiven Störung) beträgt 10, für Angst ist ein Cut-off von 6, für Stress ein Wert von 10
+# sinnvoll. Diese Werte entsprechen hinsichtlich des Anteils positiv klassifizierter Patienten
+# (Auffälligkeit liegt vor) den auch für die HADS empfohlen Grenzwerten.
+
+dat <- dat %>%
+  mutate(DepressionCategory = case_when(
+    Depression < 10  ~ "Low Levels (<10)",
+    Depression >= 10  ~ "Problematic Levels (>=10)",
+    
+    #Depression >= 10 & Depression < 20  ~  "Problematic Levels (>= 10 & < 20)",
+    #Depression >= 20 ~  "Severe Levels (>= 20)",
+    Depression == NA ~ NA
+  ))
+
+# Burnout
+dat$Burnout <- dat$burnOut
 
 ## some codebook processing
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v5.xlsx")

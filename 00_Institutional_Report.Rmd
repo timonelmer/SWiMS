@@ -106,7 +106,7 @@ swims.plot.distribution("age", institution = target_institution)
 ### Gender
 
 ```{r gender}
-swims.plot.distribution("gender", institution = target_institution)
+swims.plot.distribution("Gender", institution = target_institution)
 ```
 
 ### Research Discipline
@@ -140,7 +140,7 @@ swims.plot.distribution("residenceStatus", institution = target_institution)
 ### Care work
 
 ```{r , fig.height=3}
-swims.plot.distribution("carework", institution = target_institution)
+swims.plot.distribution("Carework", institution = target_institution)
 ```
 
 ### Other demographic variables

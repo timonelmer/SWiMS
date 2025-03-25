@@ -32,13 +32,15 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-24.RData")
+load("../data/SWiMS2024_Data_2025-03-25.RData")
 source("99_helpers.R")
 
 
 institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
 
 ```
+
+# Executive Summary
 
 # Introduction
 
@@ -101,9 +103,9 @@ ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y
   theme(
     axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
     axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 12, face = "bold"),
-    axis.title.y = element_text(size = 12, face = "bold"),
-    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
+    plot.title = element_text(size = 16, hjust = 0.5),
     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
   ) +
   labs(
@@ -142,8 +144,8 @@ ggplot(institution_counts, aes(x = reorder(inst, count))) +
   theme(
     axis.text.x = element_text(size = 10),
     axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 12, face = "bold"),
-    axis.title.y = element_text(size = 12, face = "bold"),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
   ) +
   coord_flip() +
@@ -153,13 +155,15 @@ ggplot(institution_counts, aes(x = reorder(inst, count))) +
 
 ```
 
+\newpage
+
 ## Demographics 
   
 The figures below summarize the key demographic characteristics of all parttaking institutions.
 
 ### Age
 
-```{r age}
+```{r age, fig.height = 4, fig.width=3}
 swims.plot.distribution("age")
 ```
 
@@ -173,8 +177,8 @@ Grouped original age brackets into three categories: "18-30," "31-40," and ">41.
 
 ### Gender
 
-```{r gender}
-swims.plot.distribution("gender")
+```{r gender, fig.height = 4, fig.width=3}
+swims.plot.distribution("Gender")
 ```
 
 
@@ -183,7 +187,7 @@ Recoded from multiple binary selections into categories: "male," "female," or "o
 
 ### Research Discipline
 
-```{r }
+```{r , fig.height = 5, fig.width=7}
 swims.plot.distribution("researchDiscipline") 
 
 ```
@@ -192,7 +196,7 @@ Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Soc
 
 ### Position Type
 
-```{r }
+```{r , fig.height = 4, fig.width=8.5}
 swims.plot.distribution("mainPosition") # + 
     #scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
 
@@ -200,18 +204,18 @@ swims.plot.distribution("mainPosition") # +
 
 Recoded positions into three broad groups: "Researcher aiming for a PhD,", "Researcher with a PhD", and "Other". "Prefer not to say" responses coded as NA.
 
-### Funding soruce
+### Funding Soruce
 
-```{r }
+```{r , fig.height = 4, fig.width=7}
 swims.plot.distribution("funding")
 ```
 
 
 Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing (NA).
 
-### Residence status
+### Residence Status
 
-```{r }
+```{r , fig.height = 4, fig.width=7}
 swims.plot.distribution("residenceStatus")
 ```
 
@@ -220,20 +224,20 @@ Subsequently used with residence status reduced to two groups: "Swiss citizenshi
 
 ### Care work
 
-```{r , fig.height=3}
-swims.plot.distribution("carework")
+```{r , fig.height = 4, fig.width=3}
+swims.plot.distribution("Carework")
 ```
 
 Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
-
-### Other demographic variables
+\newpage
+### Other Demographic Variables
 
 These variables will not be used for group comparisons later, thus the name "other".
 
 #### Employment Status
-<br>
+\
 
-```{r }
+```{r , fig.height =3, fig.width=3}
 
 swims.plot.distribution("employmentStatus")
 
@@ -241,9 +245,9 @@ swims.plot.distribution("employmentStatus")
 
 
 #### Employment Percentage
+\
 
-
-```{r}
+```{r,  fig.height = 3, fig.width=8.5}
 
 swims.plot.distribution("workloadMainjob")
 
@@ -251,9 +255,9 @@ swims.plot.distribution("workloadMainjob")
 
 
 #### Additional Non-Academic Job  
-<br>
+\
 
-```{r, fig.height= 3 }
+```{r, fig.height= 3 , fig.width= 4}
 
 swims.plot.distribution("nonacademicJob")
 
@@ -263,64 +267,296 @@ swims.plot.distribution("nonacademicJob")
 
 ## General Mental Health
 
-- overall distribution
-```{r}
 
+```{r mental health, fig.height= 4 , fig.width= 5}
+swims.plot.distribution("mentalHealth")
 ```
-
 
 
 ### General Mental Health by Age
 
-```{r}
-
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 3)
 ```
 
 ### General Mental Health by Gender
 
-```{r}
-
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "mentalHealth", divider = "Gender", annoFontSize = 3)
 ```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### General Mental Health by Research Discipline
 
-```{r}
-
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSize = 2)
 ```
 
 ### General Mental Health by Funding Source (national only)
 
-```{r}
-
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize = 2)
 ```
 
 ### General Mental Health by Position Type
 
-```{r}
-
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize = 2)
 ```
 
 
 ### General Mental Health by Care Work
 
-```{r}
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "mentalHealth", divider = "Carework", annoFontSize = 3)
 
 ```
 
 
 ### General Mental Health by Residence (national only)
 
-```{r}
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "mentalHealth", divider = "Residence", annoFontSize = 3)
 
 ```
 
 ## Depression
 
+sum score of the 7 DASS-21 items
+with chronbach's alpha of .91 in this sample
+
+62 observations removed due to at least 1 missing depression item score
+
+above score 10 problematic (Nilges, P. \& Essau, C. (2021))
+
+```{r depression, fig.height= 4 , fig.width= 5}
+swims.plot.distribution("Depression")
+
+swims.plot.distribution("DepressionCategory")
+```
+
+### Depression by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "DepressionCategory", divider = "Age", annoFontSize = 3)
+```
+
+### Depression by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "DepressionCategory", divider = "Gender", annoFontSize = 3)
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Depression by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "DepressionCategory", divider = "Discipline", annoFontSize = 2)
+```
+
+### Depression by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "DepressionCategory", divider = "Funding", annoFontSize = 2)
+```
+
+### Depression by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "DepressionCategory", divider = "Position", annoFontSize = 2)
+```
+
+
+### Depression by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "DepressionCategory", divider = "Carework", annoFontSize = 3)
+
+```
+
+
+### Depression by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "DepressionCategory", divider = "Residence", annoFontSize = 3)
+
+```
+
 ## Burnout
+
+item from REF
+
+```{r burnout, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("Burnout")
+
+```
+
+
+### Burnout by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "Burnout", divider = "Age", annoFontSize = 3)
+```
+
+### Burnout by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "Burnout", divider = "Gender", annoFontSize = 3)
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Burnout by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "Burnout", divider = "Discipline", annoFontSize = 2)
+```
+
+### Burnout by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "Burnout", divider = "Funding", annoFontSize = 2)
+```
+
+### Burnout by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "Burnout", divider = "Position", annoFontSize = 2)
+```
+
+
+### Burnout by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "Burnout", divider = "Carework", annoFontSize = 3)
+
+```
+
+
+### Burnout by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "Burnout", divider = "Residence", annoFontSize = 3)
+
+```
 
 ## Awarenes Resources 
 
+```{r awareness resources, fig.height= 5 , fig.width= 6}
+swims.plot.multibar("resources")
+
+```
+
+### Awarenes Resources by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.multibar(var = "resources", divider = "Age")
+```
+
+### Awarenes Resources by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.multibar(var = "resources", divider = "Gender")
+```
+
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Awarenes Resources by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.multibar(var = "resources", divider = "Discipline")
+```
+
+### Awarenes Resources by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.multibar(var = "resources", divider = "Funding")
+```
+
+### Awarenes Resources by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.multibar(var = "resources", divider = "Position")
+```
+
+
+### Awarenes Resources by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.multibar(var = "resources", divider = "Carework")
+
+```
+
+
+### Awarenes Resources by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.multibar(var = "resources", divider = "Residence")
+
+```
+
+
 # Job Satisfaction 
+
+item from REF
+
+```{r job satisfaction, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("jobSatisfaction")
+
+```
+
+
+### Job Satisfaction  by Age
+
+```{r, fig.height= 5, fig.width= 6.5}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Age", annoFontSize = 3)
+```
+
+### Job Satisfaction  by Gender
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Gender", annoFontSize = 3)
+
+```
+the 'other' category entails the non-binary response category or if both male and female gender were indicated
+
+### Job Satisfaction  by Research Discipline
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Discipline", annoFontSize = 2)
+```
+
+### Job Satisfaction  by Funding Source (national only)
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Funding", annoFontSize = 2)
+```
+
+### Job Satisfaction  by Position Type
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Position", annoFontSize = 2)
+```
+
+
+### Job Satisfaction  by Care Work
+
+```{r, fig.height= 5, fig.width= 8}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Carework", annoFontSize = 3)
+
+```
+
+
+### Job Satisfaction  by Residence (national only)
+
+```{r, fig.height= 5, fig.width= 7}
+swims.plot.distribution(var = "jobSatisfaction", divider = "Residence", annoFontSize = 3)
+
+```
+
+
 
 ## Quitting Intentions
 
