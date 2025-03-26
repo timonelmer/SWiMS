@@ -329,9 +329,9 @@ dat <- dat %>%
 dat <- dat %>%
   mutate(Position = case_when(
     mainPosition == "Researcher aiming for a PhD" ~ "Researcher aiming for a PhD" ,
-    mainPosition == "Postdoctoral researcher"  ~ "Researcher with a PhD",
-    mainPosition == "Researcher with a PhD degree (not doing a postdoc)" ~ "Researcher with a PhD" ,
-    mainPosition == "Researcher above postdoc (habilitated or equivalent)" ~ "Researcher with a PhD" ,
+    mainPosition == "Postdoctoral researcher"  ~ "Postdoctoral researcher",
+    mainPosition == "Researcher with a PhD degree (not doing a postdoc)" ~ "Other researchers with a PhD" ,
+    mainPosition == "Researcher above postdoc (habilitated or equivalent)" ~ "Other researchers with a PhD" ,
     mainPosition == "Supportive positions (e.g., administrative personnel, technical staff)" ~ "Other",
     mainPosition == "Lecturing only" ~ "Other",
     mainPosition == "Prefer not to say" ~ NA

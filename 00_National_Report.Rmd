@@ -14,6 +14,10 @@ header-includes:
   - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 National Report}
+  - \usepackage{draftwatermark}
+  - \SetWatermarkText{DRAFT}
+  - \SetWatermarkScale{1} # Adjust size of watermark
+  - \SetWatermarkLightness{0.9} # Adjust transparency (1 = invisible, 0 = solid)
 ---
 
 
@@ -39,6 +43,23 @@ source("99_helpers.R")
 institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
 
 ```
+
+# TODOs
+
+- add item information / question formulation to each page
+- kick out irrelevant comparisons (e.g. care work in qrp)?
+- write executive summary
+- add new actionuni logo
+- demograhpcis -- old gender variable
+- new grouping in position type (in codebook)!
+- distribution plot by e.g, age, bars width erhöhen damit text lesbar
+- aggregation function: do not exclude if there is one NA
+- codebook cutting of many variables on separate pages
+- resources + discReport variable
+
+
+- für paper: year in phd as important factor!
+
 
 # Executive Summary
 
