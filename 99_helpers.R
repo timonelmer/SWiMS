@@ -99,7 +99,8 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
       legend.title = element_text(size = font_size),
       panel.grid.major.x = element_blank(),
       panel.grid.minor.x = element_blank(),
-      plot.title = element_text(size = font_size, hjust = 0.5) 
+      plot.title = element_text(size = font_size, hjust = 0.5),
+      strip.text = element_text(size = font_size)
     ) + 
     scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
@@ -133,7 +134,8 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         axis.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = font_size, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) ,
+        strip.text = element_text(size = font_size)
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
       
@@ -177,7 +179,8 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         legend.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = font_size, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) ,
+        strip.text = element_text(size = font_size)
       ) + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30))   # Apply text wrapping
     
@@ -227,7 +230,8 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
         legend.title = element_text(size = font_size),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
-        plot.title = element_text(size = font_size, hjust = 0.5) 
+        plot.title = element_text(size = font_size, hjust = 0.5) ,
+        strip.text = element_text(size = font_size)
       ) + 
       guides(alpha = "none") +
       scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
@@ -248,7 +252,9 @@ swims.plot.multibar <- function(
     font_size = 12,
     fontsize_inplot = 4,
     colors_set = "RdYlGn",
-    space4comp = F
+    space4comp = F,
+    legend.nrow = 1,
+    wrap_legend = FALSE
 ){
 
   # Preparations ####
@@ -351,6 +357,11 @@ swims.plot.multibar <- function(
   
   cut_width <- ifelse("group" %in% colnames(plot_data), 40, 20)
   
+  # Cut institution name
+  if(wrap_legend){
+    levels(plot_data$group) <- str_wrap(levels(plot_data$group), width = 20)
+  }
+  
   plot_data <- plot_data %>%
     left_join(var_text, by = "variable") %>%
     select(-variable) %>%
@@ -413,13 +424,11 @@ swims.plot.multibar <- function(
       g <- ggplot(plot_data, aes(x = x_pos, y = proportion, fill = value, alpha = group)) + 
         geom_bar(stat = "identity", position = "fill", width = 0.6) +
         # Aussehen
-        scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs),
-                           guide = guide_legend(reverse = TRUE)) +
+        scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs)) +
         scale_y_continuous(labels = scales::percent) + 
         scale_x_continuous(breaks = plot_data$x_pos,
                            labels = plot_data$interaction_lab) +
-        scale_fill_manual(values = fill_colors,
-                          guide = guide_legend(reverse = TRUE)) + 
+        scale_fill_manual(values = fill_colors) + 
         facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
         coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
         # Text
@@ -427,7 +436,7 @@ swims.plot.multibar <- function(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Proportion",
           fill = "Response",
-          alpha = "Institution Type (Transparency)",
+          alpha = "Institution Type\n(Transparency)",
           #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
           subtitle = range_text
         ) +
@@ -443,7 +452,10 @@ swims.plot.multibar <- function(
           plot.title = element_text(size = font_size, hjust = 0.5),
           panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank(),
-          panel.spacing.x = unit(2, "lines")
+          panel.spacing.x = unit(2, "lines"),
+          # clip = "off",
+          plot.margin = unit(c(0,3,0,0), "cm"),
+          legend.text.align = 0
         ) +
         #swims_watermark +
         geom_text(data = plot_data,
@@ -456,18 +468,18 @@ swims.plot.multibar <- function(
                       label = paste0("N = ", n_total)),
                   inherit.aes = FALSE,
                   size = fontsize_inplot,
-                  hjust = 0)
+                  hjust = 0) +
+        guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
+               alpha = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
       
     } else {
     
     g <- ggplot(plot_data, aes(x = interaction_lab, y = proportion, fill = value, alpha = group)) + 
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
       # Aussehen
-      scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs),
-                         guide = guide_legend(reverse = TRUE)) +
+      scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs)) +
       scale_y_continuous(labels = scales::percent) + 
-      scale_fill_manual(values = fill_colors,
-                        guide = guide_legend(reverse = TRUE)) + 
+      scale_fill_manual(values = fill_colors) + 
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       # Text
@@ -475,7 +487,7 @@ swims.plot.multibar <- function(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
         fill = "Response",
-        alpha = "Institution Type (Transparency)",
+        alpha = "Institution Type \n (Transparency)",
         #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
         subtitle = range_text
       ) +
@@ -491,7 +503,10 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines")
+        panel.spacing.x = unit(2, "lines"),
+        # clip = "off",
+        plot.margin = unit(c(0,3,0,0), "cm"),
+        legend.text.align = 0
       ) +
       #swims_watermark +
       geom_text(data = plot_data,
@@ -504,7 +519,9 @@ swims.plot.multibar <- function(
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
                 size = fontsize_inplot,
-                hjust = 0)
+                hjust = 0) +
+      guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
+             alpha = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
     
     }
     
@@ -515,8 +532,7 @@ swims.plot.multibar <- function(
       # Aussehen
       scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1)) +
       scale_y_continuous(labels = scales::percent) + 
-      scale_fill_manual(values = fill_colors,
-                        guide = guide_legend(reverse = TRUE)) +  
+      scale_fill_manual(values = fill_colors) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       #swims_watermark +
@@ -547,15 +563,19 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines")
+        panel.spacing.x = unit(2, "lines"),
+        # clip = "off",
+        plot.margin = unit(c(0,3,0,0), "cm"),
+        legend.text.align = 0
       ) +
-      guides(alpha = "none") +
       geom_text(data = plot_data,
                 aes(x = group, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
                 size = fontsize_inplot,
-                hjust = 0)
+                hjust = 0) +
+      guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
+             alpha = "none") 
     
   } else if (is.null(institution) & !is.null(divider)){ # no-Institution and divider
     
@@ -563,8 +583,7 @@ swims.plot.multibar <- function(
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
-      scale_fill_manual(values = fill_colors,
-                        guide = guide_legend(reverse = TRUE)) +  
+      scale_fill_manual(values = fill_colors) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
       #swims_watermark +
@@ -595,14 +614,18 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines")
+        panel.spacing.x = unit(2, "lines"),
+        # clip = "off",
+        plot.margin = unit(c(0,3,0,0), "cm"),
+        legend.text.align = 0
       ) +
       geom_text(data = plot_data,
                 aes(x = divider, y = 1.01, 
                     label = paste0("N = ", n_total)),
                 inherit.aes = FALSE,
                 size = fontsize_inplot,
-                hjust = 0)
+                hjust = 0) +
+      guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
     
   } else if (is.null(institution) & is.null(divider)){ # no-Institution and no-divider
     
@@ -610,8 +633,7 @@ swims.plot.multibar <- function(
       geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked bar chart  
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
-      scale_fill_manual(values = fill_colors,
-                        guide = guide_legend(reverse = TRUE)) +   
+      scale_fill_manual(values = fill_colors) +   
       coord_flip(clip = "off") +  # Horizontal bars  
       #swims_watermark +
       # Text 
@@ -635,8 +657,12 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines")
-      )
+        panel.spacing.x = unit(2, "lines"),
+        # clip = "off",
+        plot.margin = unit(c(0,3,0,0), "cm"),
+        legend.text.align = 0
+      ) +
+      guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
     
   }
   
@@ -804,7 +830,7 @@ swims.plot.aggregation <- function(var,
             legend.position = "right",
             panel.grid.major.x = element_blank(),
             panel.grid.minor.x = element_blank(),
-            plot.title = element_text(size = font_size, hjust = 0.5) 
+            plot.title = element_text(size = font_size, hjust = 0.5)
           ) 
         
         
