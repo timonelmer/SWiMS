@@ -681,6 +681,7 @@ swims.plot.aggregation <- function(var,
                                    fill_colors = NULL,
                                    colors_set = "Set1", 
                                    showCount = F,
+                                   wrap_width = 20,
                                    font_size = 12,
                                    annoFontSize = 4
 ){
@@ -725,8 +726,8 @@ swims.plot.aggregation <- function(var,
     plot_data <- plot_data %>%
       left_join(var_text, by = "variable") %>%
       select(-variable) %>% 
-      mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
-      mutate(text = str_wrap(text, width = 20)) %>% 
+      mutate(text = factor(text, levels = str_wrap(var_text$text, width = wrap_width))) %>%
+      mutate(text = str_wrap(text, width = wrap_width)) %>% 
       filter(value %in% "quoted") %>% 
       group_by(group) %>%
       mutate(Percentage = count / sum(count))
@@ -794,9 +795,9 @@ swims.plot.aggregation <- function(var,
       # Merge labels for variables
       plot_data <- plot_data %>%
         left_join(var_text, by = "variable") %>%
-        select(-variable) %>% 
-        mutate(text = factor(text, levels = var_text$text)) %>%
-        mutate(text = str_wrap(text, width = 20)) %>%
+        #select(-variable) %>% 
+        mutate(text = str_wrap(text, width = wrap_width)) %>%
+        mutate(text = factor(text, levels = str_wrap(var_text$text, width = wrap_width))) %>%
         filter(value %in% "quoted") %>%
         mutate(Percentage = count / sum(count))
       
