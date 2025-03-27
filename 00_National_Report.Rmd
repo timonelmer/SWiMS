@@ -223,7 +223,7 @@ swims.plot.distribution("Gender")
 `r swims.formulation("genderNA")`
 
 
-Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). Ambiguous responses were coded as missing (NA).
+Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). 'prefer not to say' responses were coded as missing (NA).
 
 ### Research Discipline
 
