@@ -29,10 +29,12 @@ insert_level <- function(fct, new_level, position) {
 # Add watermark 
 #swims.watermark <- annotate("text", x =1, y = 1, label = "SWiMS24", size = 20, alpha = 0.1, fontface = "bold", color = "gray80") 
 
-swims.plot.distribution <- function(var, institution = NULL, divider = NULL, 
+swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL, 
                                     annoFontSize = 4,  # font size for counts on top of bar
                                     font_size = 12,
-                                    data = dat, codeb = codebook){
+                                    data = dat, 
+                                    codeb = codebook,
+                                    alpha_plot = 0.6){
 
   # var <- "Depression"
   # institution <- target_institution
@@ -64,11 +66,11 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     }
   }
   
-  if(!is.null(institution) & is.null(divider)){ # with institution, no divider
+  if(!is.null(institution_prov) & is.null(divider)){ # with institution, no divider
     
   # Prepare data for plotting
   plot_data <- data %>%
-    mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+    mutate(group = ifelse(institution == institution_prov, paste0(institution_prov), "Other Institutions")) %>%
     filter(!is.na(!!sym(var)), !is.na(group)) %>%
     group_by(group, !!sym(var)) %>%
     summarise(count = n(), .groups = "drop") %>%
@@ -107,7 +109,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
   
   plot(g)
   
-  } else if(is.null(institution) & is.null(divider)){ #plot for no institution and divider specified
+  } else if(is.null(institution_prov) & is.null(divider)){ #plot for no institution and divider specified
     
     # Prepare data for plotting
     plot_data <- data %>%
@@ -142,7 +144,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     
     plot(g)
     
-  } else if(is.null(institution) & !is.null(divider)){ # no institution, but divider
+  } else if(is.null(institution_prov) & !is.null(divider)){ # no institution, but divider
     
     # Prepare data for plotting
     plot_data <- data %>%
@@ -187,11 +189,11 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     
     plot(g)
     
-  } else if(!is.null(institution) & !is.null(divider)){ # institution, and divider
+  } else if(!is.null(institution_prov) & !is.null(divider)){ # institution, and divider
     
     # Prepare data for plotting
     plot_data <- data %>%
-      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = ifelse(institution == institution_prov, paste0(institution_prov), "Other Institutions")) %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group), !is.na(get(divider))) %>%  # Remove NAs in selected variables
       pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
       group_by(group, variable, value, divider = get(divider)) %>%
@@ -209,7 +211,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
     g <- ggplot(plot_data, aes_string(x = "value", y = "proportion", fill = "divider", alpha = "group")) +
       geom_bar(stat = "identity", position = "dodge", width = 0.8) +
       scale_y_continuous(labels = scales::percent, limits = c(0,max(plot_data$proportion+.05))) +
-      scale_alpha_manual(values = setNames(c(1, 0.6, 0), alpha_labs),
+      scale_alpha_manual(values = setNames(c(1, alpha_plot, 0), alpha_labs),
                          guide = guide_legend(reverse = TRUE)) +
       labs(
         x = "",
@@ -243,7 +245,7 @@ swims.plot.distribution <- function(var, institution = NULL, divider = NULL,
 
 swims.plot.multibar <- function(
     var = NULL,
-    institution = NULL,
+    institution_prov = NULL,
     divider = NULL,
     data = dat,
     codeb = codebook,
@@ -254,7 +256,8 @@ swims.plot.multibar <- function(
     colors_set = "RdYlGn",
     space4comp = F,
     legend.nrow = 1,
-    wrap_legend = FALSE
+    wrap_legend = FALSE,
+    alpha_plot = 0.6
 ){
 
   # Preparations ####
@@ -298,10 +301,10 @@ swims.plot.multibar <- function(
   }
   
   # Prepare data ####
-  if(!is.null(institution) & !is.null(divider)){ # Instituion and divider
+  if(!is.null(institution_prov) & !is.null(divider)){ # Instituion and divider
     
     plot_data <- data %>%
-      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = ifelse(institution == institution_prov, paste0(institution_prov), "Other Institutions")) %>%
       mutate(group = factor(group, levels = c("Other Institutions", setdiff(levels(factor(group)), "Other Institutions")))) %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group), !is.na(get(divider))) %>%
       pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
@@ -314,10 +317,10 @@ swims.plot.multibar <- function(
     
     plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
     
-  } else if(!is.null(institution) & is.null(divider)){ # Instituion and no-divider
+  } else if(!is.null(institution_prov) & is.null(divider)){ # Instituion and no-divider
     
     plot_data <- data %>%
-      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = ifelse(institution == institution_prov, paste0(institution_prov), "Other Institutions")) %>%
       mutate(group = factor(group, levels = c("Other Institutions", setdiff(levels(factor(group)), "Other Institutions")))) %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
       pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
@@ -328,7 +331,7 @@ swims.plot.multibar <- function(
              n_total = sum(count)) %>% 
       ungroup() 
     
-  } else if(is.null(institution) & !is.null(divider)){ # no-Instituion and divider
+  } else if(is.null(institution_prov) & !is.null(divider)){ # no-Instituion and divider
     
     plot_data <- data %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(get(divider))) %>%  # Remove NAs in selected variables
@@ -341,7 +344,7 @@ swims.plot.multibar <- function(
       ungroup()
     
     plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
-  } else if(is.null(institution) & is.null(divider)){ # no-Instituion and no-divider
+  } else if(is.null(institution_prov) & is.null(divider)){ # no-Instituion and no-divider
     
     plot_data <- data %>%
       filter(if_all(all_of(var), ~ !is.na(.))) %>%  # Remove NAs in selected variables
@@ -356,18 +359,32 @@ swims.plot.multibar <- function(
   }
   
   cut_width <- ifelse("group" %in% colnames(plot_data), 40, 20)
+
+  plot_data <- plot_data %>%
+    left_join(var_text, by = "variable") %>%
+    select(-variable) %>%
+    mutate(text = str_wrap(text, width = cut_width))
+  
+  # Compute the range of the sum of counts per text variable
+  if(!is.null(institution_prov)){
+    range_values <- plot_data %>%
+      filter(group == institution_prov) %>%
+      group_by(text) %>%
+      summarise(total_count = sum(count)) %>%
+      summarise(min_obs = min(total_count), max_obs = max(total_count))    
+  } else {
+    range_values <- plot_data %>%
+      group_by(text) %>%
+      summarise(total_count = sum(count)) %>%
+      summarise(min_obs = min(total_count), max_obs = max(total_count))    
+  }
   
   # Cut institution name
   if(wrap_legend){
     levels(plot_data$group) <- str_wrap(levels(plot_data$group), width = 20)
   }
   
-  plot_data <- plot_data %>%
-    left_join(var_text, by = "variable") %>%
-    select(-variable) %>%
-    mutate(text = str_wrap(text, width = cut_width))
-  
-  if(!is.null(divider) & !is.null(institution)){
+  if(!is.null(divider) & !is.null(institution_prov)){
     plot_data$interaction_lab <- interaction(plot_data$group, plot_data$divider)
     plot_data <- plot_data %>%
       mutate(
@@ -380,22 +397,8 @@ swims.plot.multibar <- function(
     alpha_labs <- unique(plot_data$group)
   }
   
-  # Compute the range of the sum of counts per text variable
-  if(!is.null(institution)){
-    range_values <- plot_data %>%
-      filter(group == target_institution) %>%
-      group_by(text) %>%
-      summarise(total_count = sum(count)) %>%
-      summarise(min_obs = min(total_count), max_obs = max(total_count))    
-  } else {
-    range_values <- plot_data %>%
-      group_by(text) %>%
-      summarise(total_count = sum(count)) %>%
-      summarise(min_obs = min(total_count), max_obs = max(total_count))    
-  }
-  
   # Store as a formatted text for annotation
-  if(!is.null(institution)){
+  if(!is.null(institution_prov)){
     if(range_values$min_obs == range_values$max_obs){
       range_text <- paste0("Institutional observations per item: ", range_values$min_obs)
     }else{
@@ -410,7 +413,7 @@ swims.plot.multibar <- function(
   }
   
   # Plotting ####
-  if(!is.null(institution) & !is.null(divider)){ # Institution and divider
+  if(!is.null(institution_prov) & !is.null(divider)){ # Institution and divider
     
     if(space4comp){
       plot_data$x_pos <- plot_data$interaction_lab
@@ -424,7 +427,7 @@ swims.plot.multibar <- function(
       g <- ggplot(plot_data, aes(x = x_pos, y = proportion, fill = value, alpha = group)) + 
         geom_bar(stat = "identity", position = "fill", width = 0.6) +
         # Aussehen
-        scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs)) +
+        scale_alpha_manual(values = setNames(c(alpha_plot, 1, 0), alpha_labs)) +
         scale_y_continuous(labels = scales::percent) + 
         scale_x_continuous(breaks = plot_data$x_pos,
                            labels = plot_data$interaction_lab) +
@@ -452,7 +455,7 @@ swims.plot.multibar <- function(
           plot.title = element_text(size = font_size, hjust = 0.5),
           panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank(),
-          panel.spacing.x = unit(2, "lines"),
+          panel.spacing.x = unit(4, "lines"),
           # clip = "off",
           plot.margin = unit(c(0,3,0,0), "cm"),
           legend.text.align = 0
@@ -477,7 +480,7 @@ swims.plot.multibar <- function(
     g <- ggplot(plot_data, aes(x = interaction_lab, y = proportion, fill = value, alpha = group)) + 
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
       # Aussehen
-      scale_alpha_manual(values = setNames(c(0.6, 1, 0), alpha_labs)) +
+      scale_alpha_manual(values = setNames(c(alpha_plot, 1, 0), alpha_labs)) +
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors) + 
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
@@ -503,7 +506,7 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines"),
+        panel.spacing.x = unit(4, "lines"),
         # clip = "off",
         plot.margin = unit(c(0,3,0,0), "cm"),
         legend.text.align = 0
@@ -525,12 +528,12 @@ swims.plot.multibar <- function(
     
     }
     
-  } else if (!is.null(institution) & is.null(divider)){ # Institution and no-divider
+  } else if (!is.null(institution_prov) & is.null(divider)){ # Institution and no-divider
     
     g <- ggplot(plot_data, aes(x = group, y = proportion, fill = value, alpha = ifelse(group == "Other Institutions", "TRUE", "FALSE"))) + 
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
       # Aussehen
-      scale_alpha_manual(values = c("TRUE" = 0.6, "FALSE" = 1)) +
+      scale_alpha_manual(values = c("TRUE" = alpha_plot, "FALSE" = 1)) +
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
@@ -563,7 +566,7 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines"),
+        panel.spacing.x = unit(4, "lines"),
         # clip = "off",
         plot.margin = unit(c(0,3,0,0), "cm"),
         legend.text.align = 0
@@ -577,7 +580,7 @@ swims.plot.multibar <- function(
       guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
              alpha = "none") 
     
-  } else if (is.null(institution) & !is.null(divider)){ # no-Institution and divider
+  } else if (is.null(institution_prov) & !is.null(divider)){ # no-Institution and divider
     
     g <- ggplot(plot_data, aes(x = divider, y = proportion, fill = value)) + 
       geom_bar(stat = "identity", position = "fill", width = 0.6) +
@@ -614,7 +617,7 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines"),
+        panel.spacing.x = unit(4, "lines"),
         # clip = "off",
         plot.margin = unit(c(0,3,0,0), "cm"),
         legend.text.align = 0
@@ -627,7 +630,7 @@ swims.plot.multibar <- function(
                 hjust = 0) +
       guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
     
-  } else if (is.null(institution) & is.null(divider)){ # no-Institution and no-divider
+  } else if (is.null(institution_prov) & is.null(divider)){ # no-Institution and no-divider
     
     g <- ggplot(plot_data, aes(x = text, y = proportion, fill = value)) +   
       geom_bar(stat = "identity", position = "fill", width = 0.6) +  # Stacked bar chart  
@@ -657,7 +660,7 @@ swims.plot.multibar <- function(
         plot.title = element_text(size = font_size, hjust = 0.5),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        panel.spacing.x = unit(2, "lines"),
+        panel.spacing.x = unit(4, "lines"),
         # clip = "off",
         plot.margin = unit(c(0,3,0,0), "cm"),
         legend.text.align = 0
@@ -675,15 +678,13 @@ swims.plot.multibar <- function(
 
 
 swims.plot.aggregation <- function(var, 
-                                   institution = target_institution, 
+                                   institution_prov = institution, 
                                    data = dat, 
                                    codeb = codebook, 
                                    fill_colors = NULL,
                                    colors_set = "Set1", 
                                    showCount = F,
-                                   wrap_width = 20,
                                    font_size = 12,
-                                   annoFontSize = 4
 ){
   
   # 
@@ -710,10 +711,10 @@ swims.plot.aggregation <- function(var,
   # Use variable label if available
   x_label <- strsplit(codeb[codeb$VarName %in% var,"Labels"],"//")[[1]]
   
-  if(!is.null(institution)){ # with institution
+  if(!is.null(institution_prov)){ # with institution
     # Prepare data for plotting
     plot_data <- data %>%
-      mutate(group = ifelse(institution == target_institution, paste0(target_institution), "Other Institutions")) %>%
+      mutate(group = ifelse(institution == institution_prov, paste0(institution_prov), "Other Institutions")) %>%
       mutate(group = factor(group, levels = c(setdiff(levels(factor(group)), "Other Institutions"), "Other Institutions"))) %>%
       filter(if_all(all_of(var), ~ !is.na(.)), !is.na(group)) %>%
       pivot_longer(cols = all_of(var), names_to = "variable", values_to = "value") %>%
@@ -726,8 +727,8 @@ swims.plot.aggregation <- function(var,
     plot_data <- plot_data %>%
       left_join(var_text, by = "variable") %>%
       select(-variable) %>% 
-      mutate(text = factor(text, levels = str_wrap(var_text$text, width = wrap_width))) %>%
-      mutate(text = str_wrap(text, width = wrap_width)) %>% 
+      mutate(text = factor(text, levels = var_text$text)) %>%# Order responses correctly
+      mutate(text = str_wrap(text, width = 20)) %>% 
       filter(value %in% "quoted") %>% 
       group_by(group) %>%
       mutate(Percentage = count / sum(count))
@@ -778,11 +779,9 @@ swims.plot.aggregation <- function(var,
         return(g)
       }
     }
-    
-    plot_function(plot_data)
   }
   
-  if(is.null(institution)){ # without institution
+  if(is.null(institution_prov)){ # without institution
       
       # Prepare data for plotting (no institution grouping)
       plot_data <- data %>%
@@ -795,9 +794,9 @@ swims.plot.aggregation <- function(var,
       # Merge labels for variables
       plot_data <- plot_data %>%
         left_join(var_text, by = "variable") %>%
-        #select(-variable) %>% 
-        mutate(text = str_wrap(text, width = wrap_width)) %>%
-        mutate(text = factor(text, levels = str_wrap(var_text$text, width = wrap_width))) %>%
+        select(-variable) %>% 
+        mutate(text = factor(text, levels = var_text$text)) %>%
+        mutate(text = str_wrap(text, width = 20)) %>%
         filter(value %in% "quoted") %>%
         mutate(Percentage = count / sum(count))
       
@@ -842,9 +841,10 @@ swims.plot.aggregation <- function(var,
         }
       }
       
-      plot_function(plot_data)
+      
     }
     
+    plot_function(plot_data)
   }
   
 

@@ -3,7 +3,7 @@ title: "Institution Report: SWiMS 2024 Data"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
-  object.inst: 4
+  object.inst: 5
   font_text: 16
   font_anno: 6
   fontsize_inplot_text: 8
@@ -45,13 +45,7 @@ library(dplyr)
 load("../data/SWiMS2024_Data_2025-03-25.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
 source("99_helpers.R")
 
-
-# Set target institution index manually
-target_index <- params$object.inst  # Change this value to select the institution
-institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
-target_institution <- institution_labels[target_index]
-remaining_institutions <- setdiff(institution_labels, target_institution)
-
+target_institution <- levels(dat$institution)[params$object.inst]
 ```
 
 # Introduction
@@ -155,7 +149,7 @@ swims.plot.distribution("Carework",
 
 These variables will not be used for group comparisons later, thus the name "other".
 
-<!-- \newpage -->
+
 #### Employment Status
 
 ```{r }
@@ -165,7 +159,7 @@ swims.plot.distribution("employmentStatus",
                         annoFontSize = params$font_anno)
 ```
 
-<!-- \newpage -->
+\newpage
 #### Employment Percentage
 
 ```{r}
@@ -192,7 +186,7 @@ swims.plot.distribution("nonacademicJob",
 ## General Mental Health
 
 Overall Distribution
-```{r}
+```{r, out.width = "70%"}
 swims.plot.distribution("mentalHealth",
                         institution = target_institution,
                         font_size = params$font_text,
@@ -433,11 +427,11 @@ swims.plot.distribution("Burnout",
 ## Awarenes Resources
 
 Overall Distribution
-```{r}
+```{r, out.width = "70%"}
 swims.plot.multibar("resources",
                     institution = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = params$fontsize_inplot_text)
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2))
 ```
 
 
@@ -448,909 +442,1051 @@ swims.plot.multibar("resources",
                     institution = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F)
+```
+
+### Awarenes Resources by Gender
+
+```{r}
+swims.plot.multibar("resources",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F)
+```
+
+### Awarenes Resources by Research Discipline
+
+```{r}
+swims.plot.multibar("resources",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F)
+```
+
+### Awarenes Resources by Position Type
+
+```{r}
+swims.plot.multibar("resources",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F)
+```
+
+
+### Awarenes Resources by Care Work
+
+```{r}
+swims.plot.multibar("resources",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F)
+```
+
+
+## Job Satisfaction
+
+Overall Distribution
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+
+### Job Satisfaction by Age
+
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        divider = "Age",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Job Satisfaction by Gender
+
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        divider = "Gender",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Job Satisfaction by Research Discipline
+
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        divider = "Discipline",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Job Satisfaction by Position Type
+
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        divider = "Position",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+### Job Satisfaction by Care Work
+
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution = target_institution,
+                        divider = "Carework",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+## Quitting Intentions
+
+Overall Distribution
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+
+### Quitting Intentions by Age
+
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        divider = "Age",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Quitting Intentions by Gender
+
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        divider = "Gender",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Quitting Intentions by Research Discipline
+
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        divider = "Discipline",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Quitting Intentions by Position Type
+
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        divider = "Position",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+### Quitting Intentions by Care Work
+
+```{r}
+swims.plot.distribution("quitting",
+                        institution = target_institution,
+                        divider = "Carework",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+# Stressors
+
+## Stress
+Overall Distribution
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+
+### Stress by Age
+
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        divider = "Age",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Stress by Gender
+
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        divider = "Gender",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Stress by Research Discipline
+
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        divider = "Discipline",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+### Stress by Position Type
+
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        divider = "Position",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+
+### Stress by Care Work
+
+```{r}
+swims.plot.distribution("stress",
+                        institution = target_institution,
+                        divider = "Carework",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+## System Stressors
+
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+```
+
+
+### System Stressors by Age
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### System Stressors by Gender
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### System Stressors by Research Discipline
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 4),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### System Stressors by Position Type
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+
+### System Stressors by Care Work
+
+```{r}
+swims.plot.multibar("stress_system",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+## Supervisor Stressors
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    font_size = params$font_text,
                     fontsize_inplot = params$fontsize_inplot_text)
 ```
 
-<!-- ### Awarenes Resources by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("resources", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Awarenes Resources by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("resources", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
 
-<!-- ### Awarenes Resources by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("resources", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Awarenes Resources by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("resources", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ## Job Satisfaction -->
-
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-
-<!-- ### Job Satisfaction by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Age", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Job Satisfaction by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Gender", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Job Satisfaction by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Discipline", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Job Satisfaction by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Position", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-<!-- ### Job Satisfaction by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("jobSatisfaction", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Carework", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ## Quitting Intentions -->
-
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-
-<!-- ### Quitting Intentions by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Age", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Quitting Intentions by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Gender", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Quitting Intentions by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Discipline", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Quitting Intentions by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Position", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-<!-- ### Quitting Intentions by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("quitting", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Carework", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- # Stressors -->
-
-<!-- ## Stress -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-
-<!-- ### Stress by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Age", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Stress by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Gender", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Stress by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Discipline", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ### Stress by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Position", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-
-<!-- ### Stress by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.distribution("stress", -->
-<!--                         institution = target_institution, -->
-<!--                         divider = "Carework", -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ## System Stressors -->
-
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### System Stressors by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### System Stressors by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### System Stressors by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### System Stressors by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### System Stressors by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_system", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ## Supervisor Stressors -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Supervisor Stressors by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor Stressors by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor Stressors by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor Stressors by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Supervisor Stressors by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ## Colleagues -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Colleagues Stressors by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Colleagues Stressors by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Colleagues Stressors by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Colleagues Stressors by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Colleagues Stressors by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_colleagues", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ## Self-Management Stressors -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Self-Management Stressors by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Self-Management Stressors by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Self-Management Stressors by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Self-Management Stressors by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Self-Management Stressors by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_selfManagement", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-
-<!-- ## Private Stressors -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Private Stressors by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Private Stressors by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Private Stressors by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Private Stressors by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Private Stressors by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("stress_private", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-
-<!-- # Supervisor -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Supervisor by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Supervisor by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Supervisor by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("supervisor", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- # Institution -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Institution by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Institution by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Institution by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Institution by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Institution by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("institution", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- # Work-Group -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Work-Group by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Work-Group by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Work-Group by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Work-Group by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Work-Group by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("workgroup", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- # Discrimination -->
-
-<!-- ## Discrimination Experience -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Discrimination Experience by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Discrimination Experience by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Discrimination Experience by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Discrimination Experience by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Discrimination Experience by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("discrimination", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ## Discrimination Dimensions -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.aggregation("discrimination_type", -->
-<!--                        institution = target_institution, -->
-<!--                        font_size = params$font_text, -->
-<!--                        annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ## Reporting Information -->
-
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.distribution("discrReport", -->
-<!--                         institution = target_institution, -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- # Questionable Research Practices -->
-<!-- ## Performing of QRPs -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Performing of QRPs by Age -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Age", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Performing of QRPs by Gender -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Gender", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Performing of QRPs by Research Discipline -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Discipline", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-<!-- ### Performing of QRPs by Position Type -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Position", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-<!-- ### Performing of QRPs by Care Work -->
-
-<!-- ```{r} -->
-<!-- swims.plot.multibar("qrp", -->
-<!--                     institution = target_institution, -->
-<!--                     divider = "Carework", -->
-<!--                     font_size = params$font_text, -->
-<!--                     fontsize_inplot = params$fontsize_inplot_text) -->
-<!-- ``` -->
-
-
-
-<!-- ## Source of Pressure -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.aggregation("qrp_pressure", -->
-<!--                        institution = target_institution, -->
-<!--                        font_size = params$font_text, -->
-<!--                        annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- ## Effect on Mental Health -->
-<!-- Overall Distribution -->
-<!-- ```{r} -->
-<!-- swims.plot.distribution("pressureqrpMentalhealth", -->
-<!--                         institution = target_institution, -->
-<!--                         font_size = params$font_text, -->
-<!--                         annoFontSize = params$font_anno) -->
-<!-- ``` -->
-
-<!-- # Appendix -->
-
-<!-- ## Codebook -->
-
-<!-- Detailed variable names, item formulations, etc. can be found in the codebook [link] -->
-
-<!-- # References -->
+### Supervisor Stressors by Age
+
+```{r}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Supervisor Stressors by Gender
+
+```{r}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Supervisor Stressors by Research Discipline
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### Supervisor Stressors by Position Type
+
+```{r}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+### Supervisor Stressors by Care Work
+
+```{r}
+swims.plot.multibar("stress_supervisor",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+## Colleagues
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = params$fontsize_inplot_text)
+```
+
+
+### Colleagues Stressors by Age
+
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Colleagues Stressors by Gender
+
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Colleagues Stressors by Research Discipline
+
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### Colleagues Stressors by Position Type
+
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+### Colleagues Stressors by Care Work
+
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+## Self-Management Stressors
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = params$fontsize_inplot_text)
+```
+
+
+### Self-Management Stressors by Age
+
+```{r}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Self-Management Stressors by Gender
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Self-Management Stressors by Research Discipline
+
+```{r}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### Self-Management Stressors by Position Type
+
+```{r}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+### Self-Management Stressors by Care Work
+
+```{r}
+swims.plot.multibar("stress_selfManagement",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+
+## Private Stressors
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    font_size = (params$font_text + 2),
+                    fontsize_inplot = params$fontsize_inplot_text)
+```
+
+
+### Private Stressors by Age
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Private Stressors by Gender
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+### Private Stressors by Research Discipline
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = T)
+```
+
+### Private Stressors by Position Type
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+### Private Stressors by Care Work
+
+```{r, out.width = "73%"}
+swims.plot.multibar("stress_private",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F)
+```
+
+
+
+# Supervisor
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+```
+
+
+### Supervisor by Age
+
+```{r}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T)
+```
+
+### Supervisor by Gender
+
+```{r}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Supervisor by Research Discipline
+
+```{r}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 5),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T)
+```
+
+### Supervisor by Position Type
+
+```{r}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+### Supervisor by Care Work
+
+```{r}
+swims.plot.multibar("supervisor",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+# Institution
+Overall Distribution
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text) - 1)
+```
+
+
+### Institution by Age
+
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Institution by Gender
+
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Institution by Research Discipline
+
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T)
+```
+
+### Institution by Position Type
+
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+### Institution by Care Work
+
+```{r}
+swims.plot.multibar("institution",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+# Work-Group
+Overall Distribution
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 1))
+```
+
+
+### Work-Group by Age
+
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Work-Group by Gender
+
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 1),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Work-Group by Research Discipline
+
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T)
+```
+
+### Work-Group by Position Type
+
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+### Work-Group by Care Work
+
+```{r}
+swims.plot.multibar("workgroup",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+# Discrimination
+
+## Discrimination Experience
+Overall Distribution
+```{r, out.width = "70%"}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+```
+
+
+### Discrimination Experience by Age
+
+```{r}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Discrimination Experience by Gender
+
+```{r}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+### Discrimination Experience by Research Discipline
+
+```{r}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 4),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T)
+```
+
+### Discrimination Experience by Position Type
+
+```{r}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+### Discrimination Experience by Care Work
+
+```{r}
+swims.plot.multibar("discrimination",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T)
+```
+
+
+## Discrimination Dimensions
+Overall Distribution
+```{r}
+swims.plot.aggregation("discrimination_type",
+                       institution = target_institution,
+                       font_size = params$font_text,
+                       annoFontSize = params$font_anno)
+```
+
+## Reporting Information
+
+Overall Distribution
+```{r}
+swims.plot.distribution("discrReport",
+                        institution = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+# Questionable Research Practices
+## Performing of QRPs
+Overall Distribution
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    font_size = (params$font_text + 2),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+```
+
+
+### Performing of QRPs by Age
+
+```{r}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T,
+                    ncol_plot = 2)
+```
+
+### Performing of QRPs by Gender
+
+```{r}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T,
+                    ncol_plot = 2)
+```
+
+### Performing of QRPs by Research Discipline
+
+```{r}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 4),
+                    legend.nrow = 2,
+                    space4comp = T,
+                    wrap_legend = T,
+                    ncol_plot = 2)
+```
+
+### Performing of QRPs by Position Type
+
+```{r}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 3),
+                    legend.nrow = 2,
+                    space4comp = F,
+                    wrap_legend = T,
+                    ncol_plot = 2)
+```
+
+
+### Performing of QRPs by Care Work
+
+```{r}
+swims.plot.multibar("qrp",
+                    institution = target_institution,
+                    divider = "Carework",
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    wrap_legend = T,
+                    legend.nrow = 3)
+```
+
+
+
+## Source of Pressure
+Overall Distribution
+```{r}
+swims.plot.aggregation("qrp_pressure",
+                       institution = target_institution,
+                       font_size = params$font_text,
+                       annoFontSize = params$font_anno)
+```
+
+## Effect on Mental Health
+Overall Distribution
+```{r}
+swims.plot.distribution("pressureqrpMentalhealth",
+                        institution = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno)
+```
+
+# Appendix
+
+## Codebook
+
+Detailed variable names, item formulations, etc. can be found in the codebook [link]
+
+# References
