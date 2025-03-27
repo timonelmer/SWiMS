@@ -20,7 +20,7 @@ object.inst <- levels(dat$institution)
 # Loop über jede Gruppe
 for (g in 1:length(object.inst)) {
   
-  if(g == 3){
+  if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
     obj <- "ETHZ"
   } else {
     obj <- object.inst[g]
@@ -42,7 +42,6 @@ for (g in 1:length(object.inst)) {
 # - Funding includieren im Instituion
 # - add item information / question formulation to each page
 # - demograhpcis -- old gender variable
-# - new grouping in position type (in codebook)!
 # - distribution plot by e.g, age, bars width erhöhen dami text lesbar
 # - aggregation function: do not exclude if there is one NA
 # - aggregation function: add info if "other" was specified
