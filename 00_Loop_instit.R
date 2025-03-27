@@ -36,14 +36,13 @@ for (g in 1:length(object.inst)) {
 
 
 # Feedback von Neele & Patricia
-# - Positioning: Phd / PostDoc / Other Researcher with a PhD / Other
-# - Cronbach alpha für Depression
-# - Depression binär machen nach Timon
-# - Schlimm rot besser grün
-# - multibar na exclude pro variable nicht allen in plot_data
+# - Cronbach alpha für Depression in institutional
+# - Depression binär machen in instiutional
 # - overview wie viele diskriminierung erlebt wurden (anzahl an leuten)
 # - Funding includieren im Instituion
-# - multibar plot zeit manchmal alpha 
-# - timons idee zum cutten items umbenenen nach seiten 
-# - instituionell alpha höher (solved)
-# - demografische gruppe unter 10 muss weg
+# - add item information / question formulation to each page
+# - demograhpcis -- old gender variable
+# - new grouping in position type (in codebook)!
+# - distribution plot by e.g, age, bars width erhöhen dami text lesbar
+# - aggregation function: do not exclude if there is one NA
+# - aggregation function: add info if "other" was specified
