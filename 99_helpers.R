@@ -24,6 +24,19 @@ insert_level <- function(fct, new_level, position) {
 }
 
 
+swims.formulation <- function(var, codeb = codebook, what = "all"){
+  Item <- codeb[codeb$VarName %in% var,"Item"]
+  Item <- gsub(pattern = ' \\(q_.*',"",Item)
+  
+  Labels <- codeb[codeb$VarName %in% var,"Labels"]
+  Labels <- gsub("//"," ; ",Labels)
+  
+  if(what == "item") return(paste0("Item: '",Item,"'"))
+  if(what == "labels") return(Labels)
+  if(what == "all") return(paste0("Item: '",Item,"', with answer options: ", Labels,"."))
+}
+
+
 #### SWIMS Plots #####
 
 # Add watermark 
@@ -684,7 +697,7 @@ swims.plot.aggregation <- function(var,
                                    fill_colors = NULL,
                                    colors_set = "Set1", 
                                    showCount = F,
-                                   font_size = 12,
+                                   font_size = 12
 ){
   
   # 
