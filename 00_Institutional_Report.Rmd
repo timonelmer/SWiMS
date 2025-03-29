@@ -6,28 +6,31 @@ params:
   object.inst: 5
   font_text: 16
   font_anno: 6
-  fontsize_inplot_text: 8
+  fontsize_inplot_text: 10
+  cut_off: 10
+  del_small_groups: FALSE
+  alpha_val: 0.4
 output:
   pdf_document:
     toc: true
     toc_depth: 3
     keep_tex: true
     fig_caption: false
-# bibliography: references.bib 
+bibliography: references.bib 
 classoption: landscape
 geometry: top=1.5cm, bottom=1.5cm, left=1cm, right=1cm
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  # - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
+  #- \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 Institution Report}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
-                      out.width = "75%",
+                      out.width = "70%",
                       fig.width = 16,        
                       fig.height = 14,   
                       fig.align = 'center', 
@@ -42,8 +45,11 @@ library(dplyr)
 
 ```{r load-data, include=FALSE}
 # Load data
-load("../data/SWiMS2024_Data_2025-03-27.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
-source("99_helpers.R")
+load("../data/SWiMS2024_Data_2025-03-29.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
+source("zz_utils_helpers.R")
+source("zz_utils_distribution.R")
+source("zz_utils_aggregation.R")
+source("zz_utils_multibar.R")
 
 target_institution <- levels(dat$institution)[params$object.inst]
 ```
@@ -86,355 +92,569 @@ The figures below summarize the key demographic characteristics of all parttakin
 swims.plot.distribution("age",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("age")`  
+For the subsequent analyses this variable was grouped into three categories: "18-30", "31-40", and ">41". Respondents unwilling to disclose their age were coded as missing.
+\normalsize
 
+\newpage
 ### Gender
 
 ```{r gender}
 swims.plot.distribution("Gender",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
+\normalsize
+`r swims.formulation("female")`  
+`r swims.formulation("male")`  
+`r swims.formulation("nonbinary")`  
+`r swims.formulation("genderNA")`  
+Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). "Prefer not to say" responses were coded as missing (NA).
+\normalsize
+
+\newpage
 ### Research Discipline
 
 ```{r }
 swims.plot.distribution("Discipline",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("researchDiscipline")`  
+Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Social Sciences", and "Humanities". "Prefer not to say" responses coded as NA.
+\normalsize
 
+\newpage
 ### Position Type
 
 ```{r }
 swims.plot.distribution("mainPosition",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups,
+                        width_text = 25)
 ```
+\normalsize
+`r swims.formulation("mainPosition")`  
+Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as NA. 
+\normalsize
 
+\newpage
 ### Funding source
 
 ```{r }
-swims.plot.distribution("funding",
-                        institution_prov = target_institution,
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+ swims.plot.distribution("funding",
+                         institution_prov = target_institution,
+                         font_size = params$font_text,
+                         annoFontSize = params$font_anno,
+                         cut.small.groups = params$cut_off,
+                         small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("funding")`  
+Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing (NA).
+\normalsize
 
-
+\newpage
 ### Residence status
 
 ```{r }
 swims.plot.distribution("residenceStatus",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("residenceStatus")`  
+Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits." Non-disclosed or unclear responses coded as NA.
+\normalsize
 
+\newpage
 ### Care work
 
 ```{r}
 swims.plot.distribution("Carework",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("careFamily")`  
+`r swims.formulation("careKids")`  
+Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
+\normalsize
 
+\newpage
 ### Other demographic variables
-
+  
 These variables will not be used for group comparisons later, thus the name "other".
-
-
+  
+  
 #### Employment Status
 
 ```{r }
 swims.plot.distribution("employmentStatus",
-                        institution_prov = target_institution,
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                          institution_prov = target_institution,
+                          font_size = params$font_text,
+                          annoFontSize = params$font_anno,
+                          cut.small.groups = params$cut_off,
+                          small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`  
+`r swims.formulation("employmentStatus", what = "item")`
+\normalsize
 
 \newpage
 #### Employment Percentage
-
+  
 ```{r}
 swims.plot.distribution("workloadMainjob",
-                        institution_prov = target_institution,
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                          institution_prov = target_institution,
+                          font_size = params$font_text,
+                          annoFontSize = params$font_anno,
+                          cut.small.groups = params$cut_off,
+                          small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("employmentStatus", what = "item")`
+\normalsize
 
 \newpage
 #### Additional Non-Academic Job
 
 ```{r}
 swims.plot.distribution("nonacademicJob",
-                        institution_prov = target_institution,
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
+                          institution_prov = target_institution,
+                          font_size = params$font_text,
+                          annoFontSize = params$font_anno,
+                          cut.small.groups = params$cut_off,
+                          small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r swims.formulation("nonacademicJob", what = "item")`
+\normalsize
 
 \newpage
 # Mental Health
 
 ## General Mental Health
 
-Overall Distribution
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
 swims.plot.distribution("mentalHealth",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### General Mental Health by Age
-
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("mentalHealth",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### General Mental Health by Gender
-
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("mentalHealth",
-                        institution_prov = target_institution,
-                        divider = "Gender",
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                         institution_prov = target_institution,
+                         divider = "Gender",
+                         font_size = params$font_text,
+                         annoFontSize = params$font_anno,
+                         cut.small.groups = params$cut_off,
+                         small.group.delete = params$del_small_groups)
 ```
-
+\normalsize
+`r imp_mess`
+\normalsize
+ 
+\newpage
 ### General Mental Health by Research Discipline
-
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("mentalHealth",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### General Mental Health by Position Type
-
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("mentalHealth",
-                        institution_prov = target_institution,
-                        divider = "Position",
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                         institution_prov = target_institution,
+                         divider = "Position",
+                         font_size = params$font_text,
+                         annoFontSize = params$font_anno,
+                         cut.small.groups = params$cut_off,
+                         small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### General Mental Health by Care Work
-
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("mentalHealth",
-                        institution_prov = target_institution,
-                        divider = "Carework",
-                        font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                         institution_prov = target_institution,
+                         divider = "Carework",
+                         font_size = params$font_text,
+                         annoFontSize = params$font_anno,
+                         cut.small.groups = params$cut_off,
+                         small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### General Mental Health by Funding Source
+\normalsize
+`r swims.formulation("mentalHealth", what = "item")`
+\normalsize
+```{r}
+swims.plot.distribution("mentalHealth",
+                         institution_prov = target_institution,
+                         divider = "Funding",
+                         font_size = params$font_text,
+                         annoFontSize = params$font_anno,
+                         cut.small.groups = params$cut_off,
+                         small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Depression
 
-Overall Distribution
+```{r}
+library(psych)
+
+side_obj <- dat %>%
+  filter(inst == target_institution) %>%
+  select(paste0("depression_", c(1:7)))
+
+del <- which(!complete.cases(side_obj))
+
+side_obj <- side_obj[-del, ]
+
+cronbach <- alpha(side_obj)
+
+```
+
+Sum score of the 7 DASS-21 sub-dimension depression items
+
+For this sample:
+  Cronbach's alpha:  `r round(cronbach$total[2],2)`
+
+Removed : `r length(del)` due to at least 1 missing depression item score
+
+Categorization: above score 10 problematic (Nilges \& Essau, 2021)
+
 ```{r}
 swims.plot.distribution("Depression",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups, 
+                        fct_ord = c(0:21))
 
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = params$fontsize_inplot_text,
-                    legend.nrow = 2)
-
+swims.plot.distribution("DepressionCategory",
+                        institution_prov = target_institution,
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### Depression by Age
 
 ```{r}
-swims.plot.distribution("Depression",
+swims.plot.distribution("DepressionCategory",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    divider = "Age",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    space4comp = T,
-                    legend.nrow = 4,
-                    wrap_legend = T)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Depression by Gender
 
 ```{r}
-swims.plot.distribution("Depression",
+swims.plot.distribution("DepressionCategory",
                         institution_prov = target_institution,
                         divider = "Gender",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    divider = "Gender",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    space4comp = T,
-                    legend.nrow = 4,
-                    wrap_legend = T)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Depression by Research Discipline
 
 ```{r}
-swims.plot.distribution("Depression",
+swims.plot.distribution("DepressionCategory",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    divider = "Discipline",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    space4comp = T,
-                    legend.nrow = 4,
-                    wrap_legend = T)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Depression by Position Type
 
 ```{r}
-swims.plot.distribution("Depression",
+swims.plot.distribution("DepressionCategory",
                         institution_prov = target_institution,
                         divider = "Position",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    divider = "Position",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    space4comp = T,
-                    legend.nrow = 4,
-                    wrap_legend = T)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Depression by Care Work
 
 ```{r}
-swims.plot.distribution("Depression",
+swims.plot.distribution("DepressionCategory",
                         institution_prov = target_institution,
                         divider = "Carework",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
-
-swims.plot.multibar("depression",
-                    institution_prov = target_institution,
-                    divider = "Carework",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    space4comp = F,
-                    legend.nrow = 4,
-                    wrap_legend = T)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Depression by Funding Source
+
+```{r}
+swims.plot.distribution("DepressionCategory",
+                        institution_prov = target_institution,
+                        divider = "Funding",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Burnout
-
-Overall Distribution
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### Burnout by Age
-
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Burnout by Gender
-
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         divider = "Gender",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Burnout by Research Discipline
-
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Burnout by Position Type
-
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         divider = "Position",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Burnout by Care Work
-
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("Burnout",
                         institution_prov = target_institution,
                         divider = "Carework",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Burnout by Funding Source
+\normalsize
+`r swims.formulation("Burnout", what = "item")`
+\normalsize
+```{r}
+swims.plot.distribution("Burnout",
+                        institution_prov = target_institution,
+                        divider = "Funding",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Awarenes Resources
 
-Overall Distribution
 ```{r, out.width = "70%"}
 swims.plot.multibar("resources",
                     institution_prov = target_institution,
                     font_size = (params$font_text + 1),
-                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups,
+                    alpha_plot = params$alpha_val)
 ```
 
-
+\newpage
 ### Awarenes Resources by Age
 
 ```{r}
@@ -445,9 +665,16 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
                     legend.nrow = 3,
-                    wrap_legend = F)
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Awarenes Resources by Gender
 
 ```{r}
@@ -458,9 +685,16 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
                     legend.nrow = 3,
-                    wrap_legend = F)
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Awarenes Resources by Research Discipline
 
 ```{r}
@@ -471,9 +705,16 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
                     legend.nrow = 3,
-                    wrap_legend = F)
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Awarenes Resources by Position Type
 
 ```{r}
@@ -484,10 +725,16 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
                     legend.nrow = 3,
-                    wrap_legend = F)
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Awarenes Resources by Care Work
 
 ```{r}
@@ -498,991 +745,3040 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
                     legend.nrow = 3,
-                    wrap_legend = F)
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Awarenes Resources by Funding Source
 
+```{r}
+swims.plot.multibar("resources",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Job Satisfaction
-
-Overall Distribution
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### Job Satisfaction by Age
-
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Job Satisfaction by Gender
-
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         divider = "Gender",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Job Satisfaction by Research Discipline
-
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Job Satisfaction by Position Type
-
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         divider = "Position",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Job Satisfaction by Care Work
-
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("jobSatisfaction",
                         institution_prov = target_institution,
                         divider = "Carework",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Job Satisfaction by Funding Source
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
+```{r}
+swims.plot.distribution("jobSatisfaction",
+                        institution_prov = target_institution,
+                        divider = "Funding",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Quitting Intentions
-
-Overall Distribution
+\normalsize
+`r swims.formulation("jobSatisfaction", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### Quitting Intentions by Age
-
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Quitting Intentions by Gender
-
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Gender",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Quitting Intentions by Research Discipline
-
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Quitting Intentions by Position Type
-
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Position",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Quitting Intentions by Care Work
-
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Carework",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Quitting Intentions by Funding Source
+\normalsize
+`r swims.formulation("quitting", what = "item")`
+\normalsize
+```{r}
+swims.plot.distribution("quitting",
+                        institution_prov = target_institution,
+                        divider = "Funding",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 # Stressors
-
 ## Stress
-Overall Distribution
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("stress",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
-
-
+\newpage
 ### Stress by Age
-
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
-swims.plot.distribution("stress",
+swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Age",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Stress by Gender
-
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
-swims.plot.distribution("stress",
+swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Gender",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Stress by Research Discipline
-
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
-swims.plot.distribution("stress",
+swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Discipline",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Stress by Position Type
-
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
-swims.plot.distribution("stress",
+swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Position",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Stress by Care Work
-
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
 ```{r}
-swims.plot.distribution("stress",
+swims.plot.distribution("quitting",
                         institution_prov = target_institution,
                         divider = "Carework",
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Stress by Funding Source
+\normalsize
+`r swims.formulation("stress", what = "item")`
+\normalsize
+```{r}
+swims.plot.distribution("quitting",
+                        institution_prov = target_institution,
+                        divider = "Funding",
+                        font_size = params$font_text,
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## System Stressors
-
-Overall Distribution
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
-swims.plot.multibar("stress_system",
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### System Stressors by Age
-
-```{r, out.width = "73%"}
-swims.plot.multibar("stress_system",
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### System Stressors by Gender
-
-```{r, out.width = "73%"}
-swims.plot.multibar("stress_system",
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\newpage
+\normalsize
+`r imp_mess`
+\normalsize
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### System Stressors by Research Discipline
-
-```{r, out.width = "73%"}
-swims.plot.multibar("stress_system",
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 4),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### System Stressors by Position Type
-
-```{r, out.width = "73%"}
-swims.plot.multibar("stress_system",
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### System Stressors by Care Work
-
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("stress_system",
+swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### System Stressors by Funding Source
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system1",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system2",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("stressFunding", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_system3",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ## Supervisor Stressors
-Overall Distribution
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = params$fontsize_inplot_text)
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### Supervisor Stressors by Age
-
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor Stressors by Gender
-
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor Stressors by Research Discipline
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor Stressors by Position Type
-
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Supervisor Stressors by Care Work
-
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_supervisor",
                     institution_prov = target_institution,
                     divider = "Carework",
-                    font_size = params$font_text,fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Supervisor Stressors by Funding Source
+\normalsize
+`r swims.formulation("stressUnclearExp", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_supervisor",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 
-## Colleagues
-Overall Distribution
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+## Colleagues Stressors
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = params$fontsize_inplot_text)
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### Colleagues Stressors by Age
-
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Colleagues Stressors by Gender
-
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Colleagues Stressors by Research Discipline
-
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Colleagues Stressors by Position Type
-
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Colleagues Stressors by Care Work
-
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_colleagues",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Colleagues Stressors by Funding Source
+\normalsize
+`r swims.formulation("stressLackSocialIntegr", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_colleagues",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Self-Management Stressors
-Overall Distribution
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = params$fontsize_inplot_text)
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### Self-Management Stressors by Age
-
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Self-Management Stressors by Gender
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Self-Management Stressors by Research Discipline
-
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Self-Management Stressors by Position Type
-
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Self-Management Stressors by Care Work
-
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
 ```{r}
 swims.plot.multibar("stress_selfManagement",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Self-Management Stressors by Funding Source
+\normalsize
+`r swims.formulation("stressLackTrainingSoft", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_selfManagement",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ## Private Stressors
-Overall Distribution
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
-                    font_size = (params$font_text + 2),
-                    fontsize_inplot = params$fontsize_inplot_text)
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### Private Stressors by Age
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Private Stressors by Gender
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Private Stressors by Research Discipline
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = T)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Private Stressors by Position Type
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Private Stressors by Care Work
-
-```{r, out.width = "73%"}
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Private Stressors by Funding Source
+\normalsize
+`r swims.formulation("stressPrivate", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("stress_private",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 # Supervisor
-Overall Distribution
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
+\newpage
 ### Supervisor by Age
-
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor by Gender
-
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor by Research Discipline
-
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 5),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
 ### Supervisor by Position Type
-
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ### Supervisor by Care Work
-
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("supervisor",
+swims.plot.multibar("supervisor1",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Supervisor by Funding Source
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor1",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor2",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("worklifebalanceSup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("supervisor3",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 # Institution
-Overall Distribution
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    font_size = (params$font_text + 1),
-                    fontsize_inplot = (params$fontsize_inplot_text) - 1)
-```
-
-
-### Institution by Age
-
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    divider = "Age",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-### Institution by Gender
-
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    divider = "Gender",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-### Institution by Research Discipline
-
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    divider = "Discipline",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T)
-```
-
-### Institution by Position Type
-
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    divider = "Position",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-
-### Institution by Care Work
-
-```{r}
-swims.plot.multibar("institution",
-                    institution_prov = target_institution,
-                    divider = "Carework",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-
-# Work-Group
-Overall Distribution
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    font_size = (params$font_text + 1),
-                    fontsize_inplot = (params$fontsize_inplot_text - 1))
-```
-
-
-### Work-Group by Age
-
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    divider = "Age",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-### Work-Group by Gender
-
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    divider = "Gender",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 1),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-### Work-Group by Research Discipline
-
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    divider = "Discipline",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T)
-```
-
-### Work-Group by Position Type
-
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    divider = "Position",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-
-### Work-Group by Care Work
-
-```{r}
-swims.plot.multibar("workgroup",
-                    institution_prov = target_institution,
-                    divider = "Carework",
-                    font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
-                    space4comp = F,
-                    wrap_legend = T)
-```
-
-
-# Discrimination
-
-## Discrimination Experience
-Overall Distribution
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r, out.width = "70%"}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     font_size = (params$font_text + 1),
-                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
-
-### Discrimination Experience by Age
-
+\newpage
+### Institution by Age
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
-
-### Discrimination Experience by Gender
-
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Institution by Gender
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
-
-### Discrimination Experience by Research Discipline
-
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Institution by Research Discipline
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 4),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
-
-### Discrimination Experience by Position Type
-
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Institution by Position Type
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
-
-
-### Discrimination Experience by Care Work
-
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
 ```{r}
-swims.plot.multibar("discrimination",
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Institution by Care Work
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution1",
                     institution_prov = target_institution,
                     divider = "Carework",
                     font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    legend.nrow = 2,
                     space4comp = F,
-                    wrap_legend = T)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Institution by Funding Source
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution1",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("institution2",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+# Work-Group
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r, out.width = "70%"}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
 
+\newpage
+### Work-Group by Age
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+### Work-Group by Gender
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Work-Group by Research Discipline
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Work-Group by Position Type
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Work-Group by Care Work
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Work-Group by Funding Source
+\normalsize
+`r swims.formulation("collabWorkinggroup", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("workgroup",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+# Discrimination
+## Discrimination Experience
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r, out.width = "70%"}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r, out.width = "70%"}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    font_size = (params$font_text + 1),
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+
+\newpage
+### Discrimination Experience by Age
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Discrimination Experience by Gender
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Discrimination Experience by Research Discipline
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Discrimination Experience by Position Type
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Discrimination Experience by Care Work
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+### Discrimination Experience by Funding Source
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination1",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
+\normalsize
+`r swims.formulation("discriminationWitness", what = "item")`
+\normalsize
+```{r}
+swims.plot.multibar("discrimination2",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+
+\newpage
 ## Sources of Discrimination
-Overall Distribution
+\normalsize
+`r swims.formulation("discrAge", what = "item")`
+\normalsize
 ```{r}
 swims.plot.aggregation("discrimination_type",
                        institution_prov = target_institution,
-                       font_size = params$font_text,
-                       annoFontSize = params$font_anno)
+                       font_size = params$font_text)
 ```
 
-## Reporting Information
+\newpage
+## Amount of Sources of Discrimination
+\normalsize
+`r swims.formulation("discrAge", what = "item")`
+\normalsize
+```{r}
+swims.plot.aggregation("discrimination_type",
+                       institution_prov = target_institution,
+                       font_size = (params$font_text + 5),
+                       count_votes_at_all = TRUE)
+```
 
-Overall Distribution
+\newpage
+## Reporting Information
+\normalsize
+`r swims.formulation("discrAge", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("discrReport",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
+\newpage
 # Questionable Research Practices
 ## Performing of QRPs
-Overall Distribution
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
 ```{r, out.width = "60%"}
-swims.plot.multibar("qrp",
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
-                    font_size = (params$font_text + 2),
-                    fontsize_inplot = (params$fontsize_inplot_text - 2))
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
-### Performing of QRPs by Age
-
-```{r}
-swims.plot.multibar("qrp",
+\newpage
+## Performing of QRPs by Age
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Age",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T,
-                    ncol_plot = 2)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Age",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-### Performing of QRPs by Gender
-
-```{r}
-swims.plot.multibar("qrp",
+\newpage
+## Performing of QRPs by Gender
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Gender",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T,
-                    ncol_plot = 2)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Gender",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-### Performing of QRPs by Research Discipline
-
-```{r}
-swims.plot.multibar("qrp",
+\newpage
+## Performing of QRPs by Research Discipline
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Discipline",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 4),
-                    legend.nrow = 2,
-                    space4comp = T,
-                    wrap_legend = T,
-                    ncol_plot = 2)
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Discipline",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-### Performing of QRPs by Position Type
-
-```{r}
-swims.plot.multibar("qrp",
+\newpage
+## Performing of QRPs by Position Type
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Position",
                     font_size = params$font_text,
-                    fontsize_inplot = (params$fontsize_inplot_text - 3),
-                    legend.nrow = 2,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
                     space4comp = F,
-                    wrap_legend = T,
-                    ncol_plot = 2)
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Position",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
-### Performing of QRPs by Care Work
-
-```{r}
-swims.plot.multibar("qrp",
+\newpage
+## Performing of QRPs by Care Work
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Carework",
-                    font_size = (params$font_text + 1),
+                    font_size = params$font_text,
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
-                    wrap_legend = T,
-                    legend.nrow = 3)
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
 ```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Carework",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
+\newpage
+## Performing of QRPs by Funding Source
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp1",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp2",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
+\newpage
+\normalsize
+`r swims.formulation("qrpFalsdata", what = "item")`
+\normalsize
+```{r, out.width = "60%"}
+swims.plot.multibar("qrp3",
+                    institution_prov = target_institution,
+                    divider = "Funding",
+                    font_size = params$font_text,
+                    fontsize_inplot = (params$fontsize_inplot_text - 2),
+                    space4comp = F,
+                    legend.nrow = 3,
+                    wrap_legend = F,
+                    alpha_plot = params$alpha_val,
+                    cut.small.groups = params$cut_off,
+                    small.group.delete = params$del_small_groups)
+```
+\normalsize
+`r imp_mess`
+\normalsize
 
-
+\newpage
 ## Source of Pressure
-Overall Distribution
+\normalsize
+`r swims.formulation("pressureqrpFunder", what = "item")`
+\normalsize
 ```{r}
 swims.plot.aggregation("qrp_pressure",
                        institution_prov = target_institution,
-                       font_size = params$font_text,
-                       annoFontSize = params$font_anno)
+                       font_size = params$font_text)
 ```
 
+\newpage
 ## Effect on Mental Health
-Overall Distribution
+\normalsize
+`r swims.formulation("pressureqrpFunder", what = "item")`
+\normalsize
 ```{r}
 swims.plot.distribution("pressureqrpMentalhealth",
                         institution_prov = target_institution,
                         font_size = params$font_text,
-                        annoFontSize = params$font_anno)
+                        annoFontSize = params$font_anno,
+                        cut.small.groups = params$cut_off,
+                        small.group.delete = params$del_small_groups)
 ```
 
+\newpage
 # Appendix
 
 ## Codebook

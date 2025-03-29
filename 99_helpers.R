@@ -1,48 +1,4 @@
 # Helper functions
-#### other helpers ####
-# Function to add line breaks to x-axis labels
-break_labels <- function(labels, Z = 20) {
-  sapply(labels, function(label) {
-    # Insert line breaks after every Z characters at the closest space or punctuation
-    gsub(paste0("(.{1,", Z, "}\\b)(?=\\S)"), "\\1\n", label, perl = TRUE)
-  })
-}
-
-# Function to add an fake level for space
-insert_level <- function(fct, new_level, position) {
-  old_levels <- levels(fct)
-  if (new_level %in% old_levels) {
-    warning("Level already exists. Returning original factor.")
-    return(fct)
-  }
-  
-  new_levels <- append(old_levels, new_level, after = position - 1)
-  factor(fct, levels = new_levels)
-}
-
-# Function to formulate the question of a variable
-swims.formulation <- function(var, codeb = codebook, what = "all"){
-  Item <- codeb[codeb$VarName %in% var,"Item"]
-  Item <- gsub(pattern = ' \\(q_.*',"",Item)
-  
-  Labels <- codeb[codeb$VarName %in% var,"Labels"]
-  Labels <- gsub("//"," ; ",Labels)
-  
-  if(what == "item") return(paste0("Item: '",Item,"'"))
-  if(what == "labels") return(Labels)
-  if(what == "all") return(paste0("Item: '",Item,"', with answer options: ", Labels,"."))
-}
-
-# Add watermark 
-#swims.watermark <- annotate("text", x =1, y = 1, label = "SWiMS24", size = 20, alpha = 0.1, fontface = "bold", color = "gray80") 
-
-# Filter function 
-# Throw out every bar that has less than x observations
-swims.filter <- function(data, cutter, lower.limit = NULL){
-  data %>%
-    filter(get(cutter) > lower.limit) # more than lower.limit
-}
-
 #### SWIMS Plots #####
 # Swims Plot Distribution ####
 swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL, 
@@ -53,11 +9,11 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
                                     alpha_plot = 0.6,
                                     colors_set = "Set2",
                                     width_bar = 0.8,
-                                    cut.small.groups = NULL){
-
-  # var <- "Depression"
-  # institution <- target_institution
-  # divider <- NULL 
+                                    cut.small.groups = NULL
+                                    ){
+  # var <- "stress"
+  # institution_prov <- target_institution
+  # divider <- "Age"
   # annoFontSize <- 4  # font size for counts on top of bar
   # font_size <- 12
   # data <- dat
@@ -103,11 +59,14 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
   }
 
   if(!is.null(cut.small.groups) && cut.small.groups > 0){
-    plot_data <- swims.filter(plot_data, cutter = "count", lower.limit = cut.small.groups)
     
-    if(nrow(plot_data) == 0){
+    side_obj <- plot_data %>%
+      filter(group == institution_prov)
+    
+    if(sum(side_obj$count) < cut.small.groups){
+      
       mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
-  
+      
       return(mess) 
     }
   }
@@ -159,9 +118,9 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
     }
     
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
-      plot_data <- swims.filter(plot_data, cutter = "count", lower.limit = cut.small.groups)
-      
-      if(nrow(plot_data) == 0){
+    
+      if(sum(plot_data$count) < cut.small.groups){
+        
         mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
         
         return(mess) 
@@ -209,19 +168,31 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
              n_total = sum(count)) %>%
       ungroup()
     
-    if(plot_data$group[1] == "Other Institutions"){
-      plot_data <- plot_data %>%
-        arrange(group == "Other Institutions")
-    }
-    
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
-      plot_data <- swims.filter(plot_data, cutter = "count", lower.limit = cut.small.groups)
       
-      if(nrow(plot_data) == 0){
-        mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+      side_obj <- plot_data %>%
+        group_by(divider) %>% 
+        summarise(count = sum(count))
+      
+      if(any(side_obj$count <= cut.small.groups)){
         
-        return(mess) 
-      }
+        problem_divider <- which(side_obj$count <= cut.small.groups)
+        
+        if(length(problem_divider) == length(divider_label)){
+          
+          mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+          
+          return(mess) 
+          
+        } else if (length(problem_divider) > 0){
+          
+          drop_divider <- divider_label[problem_divider]
+          
+          plot_data <- plot_data %>%
+            filter(!divider %in% drop_divider)
+          
+        }
+      } 
     }
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
@@ -277,13 +248,31 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
     }
     
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
-      plot_data <- swims.filter(plot_data, cutter = "count", lower.limit = cut.small.groups)
       
-      if(nrow(plot_data) == 0){
-        mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+      side_obj <- plot_data %>%
+        filter(group == institution_prov) %>%
+        group_by(divider) %>% 
+        summarise(count = sum(count))
+      
+      if(any(side_obj$count <= cut.small.groups)){
         
-        return(mess) 
-      }
+        problem_divider <- which(side_obj$count <= cut.small.groups)
+        
+        if(length(problem_divider) == length(divider_label)){
+          
+          mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+          
+          return(mess) 
+          
+        } else if (length(problem_divider) > 0){
+          
+          drop_divider <- divider_label[problem_divider]
+          
+          plot_data <- plot_data %>%
+            filter(!(group == institution_prov & divider == drop_divider))
+          
+        }
+      } 
     }
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
@@ -345,7 +334,7 @@ swims.plot.multibar <- function(
     width_bar = 0.6,
     cut.small.groups = NULL
 ){
-  # var <- "depression"
+  # var <- "resources"
   # institution_prov <- target_institution
   # font_size <- params$font_text
   # fontsize_inplot <- params$fontsize_inplot_text
@@ -415,9 +404,49 @@ swims.plot.multibar <- function(
 
     })
     
+    if(!is.null(cut.small.groups) && cut.small.groups > 0){
+      
+      obj <- lapply(1:length(obj), function(sub_plot_data){
+        
+        print()
+
+        side_obj <- obj[[sub_plot_data]] %>%
+          filter(group == institution_prov) %>%
+          group_by(divider) %>% 
+          summarise(count = sum(count))
+        
+        if(any(side_obj$count <= cut.small.groups)){
+          
+          problem_divider <- which(side_obj$count <= cut.small.groups)
+          
+          if(length(problem_divider) == length(divider_label)){
+            
+            mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+            
+            return(mess) 
+            
+          } else if (length(problem_divider) > 0){
+            
+            drop_divider <- side_obj$divider[problem_divider]
+            
+            sub_plot_data <- obj[[sub_plot_data]] %>%
+              filter(!(group == institution_prov & divider == drop_divider))
+            
+            return(sub_plot_data)
+            
+          }
+        }
+      })
+    }
+      
+    
     plot_data <- bind_rows(obj)
     
     plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
+    
+    
+    
+    
     
   } else if(!is.null(institution_prov) & is.null(divider)){ # Instituion and no-divider
     
@@ -474,16 +503,6 @@ swims.plot.multibar <- function(
     
     plot_data <- bind_rows(obj)
 
-  }
-  
-  if(!is.null(cut.small.groups) && cut.small.groups > 0){
-    plot_data <- swims.filter(plot_data, cutter = "n_total", lower.limit = cut.small.groups)
-    
-    if(nrow(plot_data) == 0 | unique(plot_data$group) == "Other Institutions"){
-      mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
-      
-      return(mess) 
-    }
   }
   
   cut_width <- ifelse("group" %in% colnames(plot_data), 40, 20)

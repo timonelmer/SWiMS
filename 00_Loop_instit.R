@@ -36,12 +36,6 @@ for (g in 1:length(object.inst)) {
 
 
 # Feedback von Neele & Patricia
-# - Cronbach alpha für Depression in institutional
-# - Depression binär machen in instiutional
-# - overview wie viele diskriminierung erlebt wurden (anzahl an leuten)
-# - Funding includieren im Instituion
-# - add item information / question formulation to each page
 # - demograhpcis -- old gender variable
 # - distribution plot by e.g, age, bars width erhöhen dami text lesbar
-# - aggregation function: do not exclude if there is one NA
 # - aggregation function: add info if "other" was specified

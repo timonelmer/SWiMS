@@ -37,7 +37,10 @@ library(readxl)
 rm(list = ls())
 # Load data
 load("../data/SWiMS2024_Data_2025-03-27.RData")
-source("99_helpers.R")
+source("zz_utils_helpers.R")
+source("zz_utils_distribution.R")
+source("zz_utils_aggregation.R")
+source("zz_utils_multibar.R")
 
 
 institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
@@ -246,7 +249,7 @@ swims.plot.distribution("mainPosition") # +
 
 `r swims.formulation("mainPosition", what = "item")`
 
-Recoded positions into three broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as NA.
+Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as NA.
 
 ### Funding Soruce
 
