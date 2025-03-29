@@ -340,7 +340,7 @@ swims.plot.multibar <- function(
     
     if(is.null(divider)){
     plot_data <- plot_data %>%
-      arrange(group == target_institution) %>% 
+      arrange(group == institution_prov) %>% 
       mutate(group = factor(group, levels = unique(group)))
     }
     
