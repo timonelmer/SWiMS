@@ -36,7 +36,7 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-03-27.RData")
+load("../data/SWiMS2024_Data_2025-03-30.RData")
 source("zz_utils_helpers.R")
 source("zz_utils_distribution.R")
 source("zz_utils_aggregation.R")
@@ -159,36 +159,36 @@ ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y
 
 The average duration of responding to the survey was `r round(mean(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)` minutes (SD = `r round(sd(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)`).
 
-### Response Rate
+<!-- ### Response Rate -->
 
-```{r}
+<!-- ```{r} -->
 
-institution_counts <- institution_counts %>%
-  left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers
-institution_counts$response_rate <- institution_counts$count/institution_counts$Members
+<!-- institution_counts <- institution_counts %>% -->
+<!--   left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers -->
+<!-- institution_counts$response_rate <- institution_counts$count/institution_counts$Members -->
 
-# Create the bar chart
-ggplot(institution_counts, aes(x = reorder(inst, count))) + 
-  geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) + 
-  geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) + 
-  geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)), 
-            hjust = -0.1, size = 3.5) +
-  labs(x = "Institution Name", 
-       y = "Number of estimated Members (in gray)\n and Responses (in blue)") + 
-  theme_minimal(base_size = 12) + 
-  theme(
-    axis.text.x = element_text(size = 10),
-    axis.text.y = element_text(size = 10),
-    axis.title.x = element_text(size = 12),
-    axis.title.y = element_text(size = 12),
-    plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
-  ) +
-  coord_flip() +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+<!-- # Create the bar chart -->
+<!-- ggplot(institution_counts, aes(x = reorder(inst, count))) +  -->
+<!--   geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) +  -->
+<!--   geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) +  -->
+<!--   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)),  -->
+<!--             hjust = -0.1, size = 3.5) + -->
+<!--   labs(x = "Institution Name",  -->
+<!--        y = "Number of estimated Members (in gray)\n and Responses (in blue)") +  -->
+<!--   theme_minimal(base_size = 12) +  -->
+<!--   theme( -->
+<!--     axis.text.x = element_text(size = 10), -->
+<!--     axis.text.y = element_text(size = 10), -->
+<!--     axis.title.x = element_text(size = 12), -->
+<!--     axis.title.y = element_text(size = 12), -->
+<!--     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic") -->
+<!--   ) + -->
+<!--   coord_flip() + -->
+<!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) -->
 
-#ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8)
+<!-- #ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8) -->
 
-```
+<!-- ``` -->
 
 \newpage
 
@@ -389,7 +389,7 @@ with chronbach's alpha of .91 in this sample
 above score 10 problematic (Nilges, P. \& Essau, C. (2021))
 
 ```{r depression, fig.height= 4 , fig.width= 5}
-swims.plot.distribution("Depression")
+#swims.plot.distribution("Depression")
 
 swims.plot.distribution("DepressionCategory")
 ```
