@@ -15,8 +15,8 @@ swims.plot.distribution <- function(var,
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example
-  # var <- "pressureqrpMentalhealth"
-  # institution_prov <- target_institution
+  # var <- "age"
+  # institution_prov <- NULL
   # divider <- NULL
   # annoFontSize <- 4
   # font_size <- 12
@@ -319,8 +319,10 @@ swims.plot.distribution <- function(var,
   }
   
   # Alpha labels
+  if("group" %in% colnames(plot_data)){
   alpha_labels <- unique(plot_data$group)
-
+  }
+  
   # Modify filling
   if(!is.null(divider)){
     
@@ -457,7 +459,7 @@ swims.plot.distribution <- function(var,
   } else if(is.null(institution_prov) & is.null(divider)){ # no-divider and no-institution
     
     # Create plot
-    g <- ggplot(plot_data, aes_string(x = "var", y = "proportion")) +
+    g <- ggplot(plot_data, aes_string(x = var, y = "proportion")) +
       geom_bar(stat = "identity", fill = fill_colors, width = width_bar) +
       scale_y_continuous(labels = scales::percent, 
                          limits = c(0, max(plot_data$proportion + 0.05))) +

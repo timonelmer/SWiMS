@@ -19,9 +19,9 @@ swims.plot.multibar <- function(
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example 
-  # var <- "qrp1"
-  # institution_prov <- target_institution
-  # divider <- "Discipline"
+  # var <- "resources"
+  # institution_prov <- NULL
+  # divider <- NULL
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -29,7 +29,7 @@ swims.plot.multibar <- function(
   # font_size <- 12
   # fontsize_inplot <- 4
   # colors_set <- "Set2"
-  # space4comp <- T
+  # space4comp <- FALSE
   # legend.nrow <- 1
   # wrap_legend <- FALSE
   # alpha_plot <- 0.6
@@ -261,6 +261,15 @@ swims.plot.multibar <- function(
         
         return(obj[[sub_plot_data]])
       }) 
+    } else {
+      
+      obj <- lapply(1:length(obj), function(sub_plot_data){
+        
+        obj[[sub_plot_data]]$drop <- "keep"
+        
+        return(obj[[sub_plot_data]])
+      })
+      
     }
     
   } else if(is.null(institution_prov) & is.null(divider)){ # no-Instituion and no-divider
@@ -304,6 +313,15 @@ swims.plot.multibar <- function(
         
         return(obj[[sub_plot_data]])
       })
+    } else {
+      
+      obj <- lapply(1:length(obj), function(sub_plot_data){
+        
+        obj[[sub_plot_data]]$drop <- "keep"
+        
+        return(obj[[sub_plot_data]])
+      })
+      
     }
 
   }

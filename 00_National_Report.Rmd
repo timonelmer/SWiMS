@@ -932,7 +932,6 @@ To what degree is the following causing you stress currently?
 
 
 ```{r stress private, fig.height= 6 , fig.width= 8}
-
 swims.plot.multibar("stress_private",font_size = multibar.fontSize)
 
 ```
