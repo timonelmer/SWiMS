@@ -3,7 +3,7 @@ title: "Institution Report: SWiMS 2024 Data"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
-  object.inst: 5
+  object.inst: 4
   font_text: 16
   font_anno: 6
   fontsize_inplot_text: 10
@@ -391,7 +391,9 @@ side_obj <- dat %>%
 
 del <- which(!complete.cases(side_obj))
 
-side_obj <- side_obj[-del, ]
+if(length(del) > 0) {
+  side_obj <- side_obj[-del, ]
+}
 
 cronbach <- alpha(side_obj)
 

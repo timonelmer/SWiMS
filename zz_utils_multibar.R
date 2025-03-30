@@ -309,6 +309,16 @@ swims.plot.multibar <- function(
   }
   
   # Combine all objects
+  if(all(grepl("No data for this variable in", obj))){
+    
+    return(obj[[1]])
+    
+  } else if(any(grepl("No data for this variable in", obj))){
+    
+    obj <- obj[!grepl("No data for this variable in", obj)]
+    
+  }
+  
   plot_data <- bind_rows(obj)
   
   if(!is.null(divider) && !is.null(institution_prov)){
