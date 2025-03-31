@@ -198,6 +198,13 @@ swims.plot.aggregation <- function(var,
       filter(value %in% "quoted") %>% 
       group_by(group) %>%
       mutate(Percentage = count / sum(count))
+    
+    
+    # Rearrange group
+    plot_data <- plot_data %>%
+      arrange(group == "Other Institutions")
+    plot_data$group <- factor(plot_data$group, levels = c(institution_prov, "Other Institutions"))
+    
 
   } else if(is.null(institution_prov)){ # without institution)
     
@@ -226,11 +233,6 @@ swims.plot.aggregation <- function(var,
     
   }
   
-  # Rearrange group
-  plot_data <- plot_data %>%
-    arrange(group == "Other Institutions")
-  plot_data$group <- factor(plot_data$group, levels = c(institution_prov, "Other Institutions"))
-
   # Define fill colors if not provided
   if(is.null(fill_colors)){
     fill_colors <- RColorBrewer::brewer.pal(n = min(length(unique(plot_data$text)), 9), name = colors_set)
