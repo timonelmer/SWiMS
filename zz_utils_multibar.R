@@ -10,6 +10,7 @@ swims.plot.multibar <- function(
     font_size = 12,
     fontsize_inplot = 4,
     colors_set = "Set2",
+    rev_colors_set = F,
     space4comp = F,
     legend.nrow = 1,
     wrap_legend = FALSE,
@@ -57,6 +58,8 @@ swims.plot.multibar <- function(
   } else {
     fill_colors <- fill_color_set[1:length(x_label)]
   }
+  
+  if(rev_colors_set) fill_colors <- rev(fill_colors)
   
   # Check for divider
   if(!is.null(divider)){
