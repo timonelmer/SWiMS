@@ -2312,7 +2312,7 @@ swims.plot.multibar("stress_private",
 `r swims.formulation("stressPrivate", what = "item")`
 \normalsize
 
-```{r}
+```{r, out.width = "65%"}
 swims.plot.multibar("stress_private",
                     institution_prov = target_institution,
                     divider = "Funding",
@@ -3586,7 +3586,7 @@ swims.plot.distribution("discrReport",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     font_size = params$font_text,
@@ -3606,7 +3606,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     font_size = params$font_text,
@@ -3626,7 +3626,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     font_size = params$font_text,
@@ -3648,7 +3648,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Age",
@@ -3669,7 +3669,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Age",
@@ -3690,7 +3690,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Age",
@@ -3713,7 +3713,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -3734,7 +3734,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -3755,7 +3755,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -3778,7 +3778,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Discipline",
@@ -3799,7 +3799,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Discipline",
@@ -3820,7 +3820,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Discipline",
@@ -3843,7 +3843,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Position",
@@ -3864,7 +3864,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Position",
@@ -3885,7 +3885,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Position",
@@ -3908,7 +3908,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Carework",
@@ -3929,7 +3929,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Carework",
@@ -3950,7 +3950,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Carework",
@@ -3973,7 +3973,7 @@ swims.plot.multibar("qrp3",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     divider = "Funding",
@@ -3994,7 +3994,7 @@ swims.plot.multibar("qrp1",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp2",
                     institution_prov = target_institution,
                     divider = "Funding",
@@ -4015,7 +4015,7 @@ swims.plot.multibar("qrp2",
 `r swims.formulation("qrpFalsdata", what = "item")`
 \normalsize
 
-```{r, out.width = "60%"}
+```{r, out.width = "70%"}
 swims.plot.multibar("qrp3",
                     institution_prov = target_institution,
                     divider = "Funding",

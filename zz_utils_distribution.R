@@ -405,7 +405,7 @@ swims.plot.distribution <- function(var,
       scale_y_continuous(labels = scales::percent, 
                          limits = c(0,max(plot_data$proportion+.05))) +
       labs(
-        x = var,
+        x = "",
         y = "Proportion",
         fill = "Institution"#,
         #title = paste("Distribution of", var)
