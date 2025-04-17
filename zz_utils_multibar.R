@@ -9,7 +9,7 @@ swims.plot.multibar <- function(
     fill_color_set = NULL,
     font_size = 12,
     fontsize_inplot = 4,
-    colors_set = "Set2",
+    colors_set = "RdYlBu", # or "RdBu"?
     rev_colors_set = F,
     space4comp = F,
     legend.nrow = 1,
@@ -482,7 +482,7 @@ swims.plot.multibar <- function(
         labs(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Proportion",
-          fill = "Response",
+          fill = "",
           alpha = "Institution Type\n(Transparency)",
           #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
           subtitle = range_text
@@ -541,7 +541,7 @@ swims.plot.multibar <- function(
         labs(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Proportion",
-          fill = "Response",
+          fill = "",
           alpha = "Institution Type \n (Transparency)",
           #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
           subtitle = range_text
@@ -603,7 +603,7 @@ swims.plot.multibar <- function(
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
-        fill = "Response",
+        fill = "",
         #title = paste0("Comparison of Responses to ", var_org, " by specific Institution"),
         subtitle = range_text
       ) +
@@ -657,7 +657,7 @@ swims.plot.multibar <- function(
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
-        fill = "Response",
+        fill = "",
         #title = paste0("Comparison of Responses to ", var_org, " by ", divider),
         subtitle = range_text
       ) +
@@ -709,7 +709,7 @@ swims.plot.multibar <- function(
       labs(
         x = NULL,   
         y = "Proportion",
-        fill = "Response"
+        fill = ""
       ) + 
       # Add text annotation for observation range at bottom right
       annotate("text", x = Inf, y = Inf, label = range_text, size = 4, hjust = 1, vjust = 1) +  
