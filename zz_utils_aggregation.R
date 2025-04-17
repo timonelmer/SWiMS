@@ -4,7 +4,7 @@ swims.plot.aggregation <- function(var,
                                    data = dat, 
                                    codeb = codebook, 
                                    fill_colors = NULL,
-                                   colors_set = "Set2", 
+                                   colors_set = "RdYlBu", 
                                    showCount = F,
                                    font_size = 12,
                                    width_bar = 0.5,
@@ -30,6 +30,12 @@ swims.plot.aggregation <- function(var,
   var_org <- var
   var <- codeb[codeb$Category %in% var,"VarName"]
   var_text <- data.frame("variable" = var,"text" = codeb[codeb$VarName %in% var,"Label"])
+  
+  # Modify institution_prov
+  if(!is.null(institution_prov)){
+    institution_prov <- remove_before_and_comma(institution_prov)
+    dat$institution <- remove_before_and_comma(dat$institution)
+  }
   
   # Ensure var exists in the codeb
   if (!all(var %in% codeb$VarName)) {
@@ -70,13 +76,15 @@ swims.plot.aggregation <- function(var,
       )
       
       plot_function <- function(plot_data) {
-        g <- ggplot(plot_data, aes(x = group, y = Percentage)) +  
-          geom_bar(stat = "identity", width = width_bar, fill = "darkgreen") +  
+        g <- ggplot(plot_data, aes(x = "Witnessed/Experienced by ...\n\n", y = Percentage, fill = group)) +  
+          geom_bar(stat = "identity", width = width_bar) +  
           labs(
-            x = paste("Mean number of dimensions reported:", round(mean_quot_dat, 2)),   
-            y = "Percentage"
+            x = paste("Mean number of dimensions reported by an individual:", round(mean_quot_dat, 2)),   
+            y = "Percentage",
+            fill = "Category"
             #title = "In cases where you have experienced or witnessed bullying, discrimination, harassment, or other unfair treatment, were such behaviors related to…"
           ) +
+          # coord_flip(clip = "off") +
           scale_y_continuous(labels = scales::percent) +
           theme_minimal() +
           theme(
@@ -88,8 +96,7 @@ swims.plot.aggregation <- function(var,
             panel.grid.major.x = element_blank(),
             panel.grid.minor.x = element_blank(),
             plot.title = element_text(size = font_size, hjust = 0.5)
-          )  +
-          guides(fill = "none")
+          ) 
           
         
         
@@ -133,13 +140,15 @@ swims.plot.aggregation <- function(var,
       )
       
       plot_function <- function(plot_data) {
-        g <- ggplot(plot_data, aes(x = group, y = Percentage)) +  
-          geom_bar(stat = "identity", width = width_bar, fill = "darkgreen") +  
+        g <- ggplot(plot_data, aes(x = "Witnessed/Experienced by ...\n\n", y = Percentage, fill = group)) +  
+          geom_bar(stat = "identity", width = width_bar) +  
           labs(
-            x = paste("Mean number of dimensions reported:", round(mean_quot_dat, 2)),   
-            y = "Percentage"
+            x = paste("Mean number of dimensions reported by an individual:", round(mean_quot_dat, 2)),   
+            y = "Percentage",
+            fill = "Category"
             #title = "In cases where you have experienced or witnessed bullying, discrimination, harassment, or other unfair treatment, were such behaviors related to…"
           ) +
+          # coord_flip(clip = "off") +
           scale_y_continuous(labels = scales::percent) +
           theme_minimal() +
           theme(
@@ -151,8 +160,7 @@ swims.plot.aggregation <- function(var,
             panel.grid.major.x = element_blank(),
             panel.grid.minor.x = element_blank(),
             plot.title = element_text(size = font_size, hjust = 0.5)
-          ) +
-          guides(fill = "none")
+          ) 
         
         
         
@@ -203,6 +211,7 @@ swims.plot.aggregation <- function(var,
     # Rearrange group
     plot_data <- plot_data %>%
       arrange(group == "Other Institutions")
+    plot_data$group <- sapply(plot_data$group, remove_before_and_comma)
     plot_data$group <- factor(plot_data$group, levels = c(institution_prov, "Other Institutions"))
     
 

@@ -44,6 +44,12 @@ swims.plot.multibar <- function(
   var <- codeb[codeb$Category %in% var,"VarName"]
   var_text <- data.frame("variable" = var,"text" = codeb[codeb$VarName %in% var,"Label"])
   
+  # Modify institution_prov
+  if(!is.null(institution_prov)){
+    institution_prov <- remove_before_and_comma(institution_prov)
+    dat$institution <- remove_before_and_comma(dat$institution)
+  }
+  
   # Ensure var exists in the codeb
   if (!all(var %in% codeb$VarName)) {
     stop(paste("Variable", var, "not found in the codeb."))
@@ -375,6 +381,8 @@ swims.plot.multibar <- function(
       mutate(group = factor(group, levels = unique(group)))
     }
     
+    
+    
     alpha_labels <- unique(plot_data$group)
     
   }
@@ -424,19 +432,19 @@ swims.plot.multibar <- function(
   
   
   # Store as a formatted text for annotation
-  if(!is.null(institution_prov)){
-    if(range_values$min_obs == range_values$max_obs){
-      range_text <- paste0("Institutional observations per item: ", range_values$min_obs)
-    }else{
-      range_text <- paste0("Institutional observations per item: ", range_values$min_obs, " to ", range_values$max_obs)
-    } 
-  } else {
-    if(range_values$min_obs == range_values$max_obs){
-      range_text <- paste0("Observations per item: ", range_values$min_obs)
-    }else{
-      range_text <- paste0("Observations per item: ", range_values$min_obs, " to ", range_values$max_obs)
-    } 
-  }
+  # if(!is.null(institution_prov)){
+  #   if(range_values$min_obs == range_values$max_obs){
+  #     range_text <- paste0("Institutional observations per item: ", range_values$min_obs)
+  #   }else{
+  #     range_text <- paste0("Institutional observations per item: ", range_values$min_obs, " to ", range_values$max_obs)
+  #   }
+  # } else {
+  #   if(range_values$min_obs == range_values$max_obs){
+  #     range_text <- paste0("Observations per item: ", range_values$min_obs)
+  #   }else{
+  #     range_text <- paste0("Observations per item: ", range_values$min_obs, " to ", range_values$max_obs)
+  #   }
+  # }
   
   # Prepare drops and change fill based on drops
   plot_data$drop <- ifelse(is.na(plot_data$count), "drop", plot_data$drop)
@@ -449,6 +457,7 @@ swims.plot.multibar <- function(
   if("count" %in% colnames(plot_data)){
     plot_data$count <- ifelse(is.na(plot_data$count), "", plot_data$count)
   }
+
   
   # PLOT ####
   if(!is.null(institution_prov) & !is.null(divider)){ # Institution and divider
@@ -483,9 +492,9 @@ swims.plot.multibar <- function(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Proportion",
           fill = "",
-          alpha = "Institution Type\n(Transparency)",
+          alpha = "Transparency"
           #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
-          subtitle = range_text
+          # subtitle = range_text
         ) +
         theme_minimal() +
         theme(
@@ -542,9 +551,9 @@ swims.plot.multibar <- function(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Proportion",
           fill = "",
-          alpha = "Institution Type \n (Transparency)",
+          alpha = "Transparency"
           #title = paste0("Comparison of Responses to ", var_org, " by ", divider, " of specific Instition"),
-          subtitle = range_text
+          # subtitle = range_text
         ) +
         theme_minimal() +
         theme(
@@ -603,9 +612,9 @@ swims.plot.multibar <- function(
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
-        fill = "",
+        fill = ""
         #title = paste0("Comparison of Responses to ", var_org, " by specific Institution"),
-        subtitle = range_text
+        #subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
       geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
@@ -657,9 +666,9 @@ swims.plot.multibar <- function(
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
         y = "Proportion",
-        fill = "",
+        fill = ""
         #title = paste0("Comparison of Responses to ", var_org, " by ", divider),
-        subtitle = range_text
+        #subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
       geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
@@ -712,11 +721,11 @@ swims.plot.multibar <- function(
         fill = ""
       ) + 
       # Add text annotation for observation range at bottom right
-      annotate("text", x = Inf, y = Inf, label = range_text, size = 4, hjust = 1, vjust = 1) +  
+      # annotate("text", x = Inf, y = Inf, label = range_text, size = 4, hjust = 1, vjust = 1) +  
       theme_minimal() +  
       theme(
         text = element_text(size = font_size),
-        strip.text.y.left = element_text(size = font_size, face = "bold", angle = 0),  
+        strip.text.y.left = element_text(size = font_size, angle = 0),  
         axis.text.y = element_text(size = font_size),  
         axis.text.x = element_text(size = font_size),  
         axis.title = element_text(size = font_size),

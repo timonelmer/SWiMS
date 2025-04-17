@@ -7,6 +7,11 @@ break_labels <- function(labels, Z = 20) {
   })
 }
 
+# Function to cut after first ","
+remove_before_and_comma <- function(x) {
+  sub("^[^,]*, *", "", x)
+}
+
 # Function to add an fake level for space
 insert_level <- function(fct, new_level, position) {
   old_levels <- levels(fct)

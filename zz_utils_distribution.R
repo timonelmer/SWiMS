@@ -7,7 +7,7 @@ swims.plot.distribution <- function(var,
                                     data = dat, 
                                     codeb = codebook,
                                     alpha_plot = 0.6,
-                                    colors_set = "Set2",
+                                    colors_set = "RdYlBu",
                                     width_bar = 0.8,
                                     width_text = 25,
                                     fct_ord = NULL,
@@ -16,7 +16,7 @@ swims.plot.distribution <- function(var,
 ){
   # Example
   # var <- "age"
-  # institution_prov <- NULL
+  # institution_prov <- target_institution
   # divider <- NULL
   # annoFontSize <- 4
   # font_size <- 12
@@ -34,6 +34,12 @@ swims.plot.distribution <- function(var,
   # Ensure var exists in the codeb
   if (!var %in% codeb$VarName) {
     stop(paste("Variable", var, "not found in the codeb."))
+  }
+  
+  # Modify institution_prov
+  if(!is.null(institution_prov)){
+    institution_prov <- remove_before_and_comma(institution_prov)
+    dat$institution <- remove_before_and_comma(dat$institution)
   }
   
   # Check for divider
@@ -374,7 +380,7 @@ swims.plot.distribution <- function(var,
                         na.value = NA,
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
       facet_wrap(~ group, ncol = 1) +
       theme_minimal() +
       theme(
@@ -407,7 +413,7 @@ swims.plot.distribution <- function(var,
       scale_fill_manual(values = setNames(fill_colors, na.omit(unique(plot_data$value_fill))),
                         breaks = unique(na.omit(plot_data$value_fill))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -440,7 +446,7 @@ swims.plot.distribution <- function(var,
                         na.value = "transparent",
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 0.8), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
