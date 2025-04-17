@@ -421,14 +421,8 @@ cronbach <- alpha(side_obj)
 
 ```
 
-Sum score of the 7 DASS-21 sub-dimension depression items
-
-For this sample:
-  Cronbach's alpha:  `r round(cronbach$total[2],2)`
-
-Removed : `r length(del)` due to at least 1 missing depression item score
-
-Categorization: above score 10 problematic (Nilges \& Essau, 2021)
+We computed a depression score by summing the 7 items from the DASS-21 depression subscale. In our sample, this measure showed internal consistency of Cronbach’s alpha = `r round(cronbach$total[2],2)`. A total of `r length(del)` observations were excluded from this analysis due to missing data on at least one of the depression items.
+Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_2021], a sum score above 10 is considered indicative of elevated depressive symptoms and may be viewed as clinically relevant.
 
 ```{r}
 swims.plot.distribution("Depression",
