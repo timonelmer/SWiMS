@@ -13,8 +13,8 @@ swims.plot.aggregation <- function(var,
 ){
   
   # Example 
-  # var <- "qrp_pressure"
-  # institution_prov <- target_institution
+  #var <- "qrp_pressure"
+  #institution_prov <- target_institution
   # data <- dat
   # codeb <- codebook
   # fill_colors <- NULL
@@ -24,7 +24,7 @@ swims.plot.aggregation <- function(var,
   # width_bar <- 0.5
   # annoFontSize <- 8
   # count_votes_at_all <- F
-   
+
   # PREPARATION ####
   # Define variable
   var_org <- var
@@ -226,8 +226,8 @@ swims.plot.aggregation <- function(var,
     plot_data <- plot_data %>%
       left_join(var_text, by = "variable") %>%
       select(-variable) %>% 
-      mutate(text = factor(text, levels = var_text$text)) %>%
       mutate(text = str_wrap(text, width = 20)) %>%
+      mutate(text = factor(text, levels = str_wrap(var_text$text, width = 20))) %>%
       filter(value %in% "quoted") %>%
       mutate(Percentage = count / sum(count))
     
@@ -252,7 +252,7 @@ swims.plot.aggregation <- function(var,
       
       # Plot erstellen
       g <- ggplot(plot_data[plot_data$value %in% "quoted",], aes(x = group, y = count, fill = text)) +  
-        geom_bar(stat = "identity", position = "fill", width = width_bar) +  # Stacked Bar Chart
+        geom_bar(stat = "identity", position = "fill", width = width_bar, color = "white", linewidth = 0.15) +  # Stacked Bar Chart
         labs(
           x = NULL,   # Entferne x-Achsen-Beschriftung
           y = "Percentage of Among All Named Categories",
@@ -288,7 +288,7 @@ swims.plot.aggregation <- function(var,
     
     plot_function <- function(plot_data) {
       g <- ggplot(plot_data, aes(x = "", y = Percentage, fill = text)) +  
-        geom_bar(stat = "identity", width = width_bar) +  
+        geom_bar(stat = "identity", width = width_bar, color = "white", linewidth = 0.15) +  
         labs(
           x = NULL,   
           y = "Percentage",

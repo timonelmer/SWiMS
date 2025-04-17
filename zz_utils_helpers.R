@@ -27,9 +27,9 @@ swims.formulation <- function(var, codeb = codebook, what = "all"){
   Labels <- codeb[codeb$VarName %in% var,"Labels"]
   Labels <- gsub("//"," ; ",Labels)
   
-  if(what == "item") return(paste0("Item: '",Item,"'"))
+  if(what == "item") return(paste0("Question: '",Item,"'"))
   if(what == "labels") return(Labels)
-  if(what == "all") return(paste0("Item: '",Item,"', with answer options: ", Labels,"."))
+  if(what == "all") return(paste0("Question: '",Item,"', with answer options: ", Labels,"."))
 }
 
 # Add watermark 

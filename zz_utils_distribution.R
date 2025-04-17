@@ -264,7 +264,7 @@ swims.plot.distribution <- function(var,
       mutate(proportion = count / sum(count))
     
     # Left join
-    plot_data <- left_join(tibble_obj, plot_data, by = var)
+    #plot_data <- left_join(tibble_obj, plot_data, by = var)
     
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
       
@@ -457,6 +457,8 @@ swims.plot.distribution <- function(var,
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
   } else if(is.null(institution_prov) & is.null(divider)){ # no-divider and no-institution
+    
+    plot_data[[var]] <- as.factor(plot_data[[var]])
     
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion")) +
