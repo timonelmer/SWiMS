@@ -112,10 +112,10 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
       summarise(count = n(), .groups = "drop") %>%
       mutate(proportion = count / sum(count))
     
-    if(plot_data$group[1] == "Other Institutions"){
-      plot_data <- plot_data %>%
-        arrange(group == "Other Institutions")
-    }
+    # if(plot_data$group[1] == "Other Institutions"){
+    #   plot_data <- plot_data %>%
+    #     arrange(group == "Other Institutions")
+    # }
     
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
     
@@ -128,6 +128,8 @@ swims.plot.distribution <- function(var, institution_prov = NULL, divider = NULL
     }
     
     fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[1]
+    
+    plot_data[[var]] <- as.factor(plot_data[[var]])
     
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion")) +
