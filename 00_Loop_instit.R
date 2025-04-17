@@ -18,7 +18,7 @@ unique(dat$institution) # sind die 13
 object.inst <- levels(dat$institution)
 
 # Loop über jede Gruppe
-for (g in 1:length(object.inst)) {
+for (g in 1:2) {
   
   if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
     obj <- "ETHZ"
@@ -35,7 +35,3 @@ for (g in 1:length(object.inst)) {
 }
 
 
-# Feedback von Neele & Patricia
-# - demograhpcis -- old gender variable
-# - distribution plot by e.g, age, bars width erhöhen dami text lesbar
-# - aggregation function: add info if "other" was specified
