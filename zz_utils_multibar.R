@@ -20,9 +20,9 @@ swims.plot.multibar <- function(
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example 
-  # var <- "resources"
-  # institution_prov <- NULL
-  # divider <- NULL
+  # var <- "stress_system3"
+  # institution_prov <- target_institution
+  # divider <- "Age"
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -31,12 +31,13 @@ swims.plot.multibar <- function(
   # fontsize_inplot <- 4
   # colors_set <- "Set2"
   # space4comp <- FALSE
-  # legend.nrow <- 1
+  # legend.nrow <- 3
   # wrap_legend <- FALSE
   # alpha_plot <- 0.6
   # width_bar <- 0.6
   # cut.small.groups <- 10
   # small.group.delete <- FALSE
+  # rev_colors_set <- FALSE
 
   # PREPARATIONS ####
   # Define variable 
@@ -525,7 +526,7 @@ swims.plot.multibar <- function(
                   size = fontsize_inplot,
                   hjust = 0) +
         guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
-               alpha = guide_legend(nrow = legend.nrow, reverse = TRUE,
+               alpha = guide_legend(nrow = 2, reverse = TRUE,
                                     override.aes = list(
                                       fill = "gray",      # just to ensure something visible
                                       color = "black",    # this adds the black frame!
@@ -584,7 +585,7 @@ swims.plot.multibar <- function(
                   size = fontsize_inplot,
                   hjust = 0) +
         guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE),
-               alpha = guide_legend(nrow = legend.nrow, reverse = FALSE,
+               alpha = guide_legend(nrow = 2, reverse = FALSE,
                                     override.aes = list(
                                       fill = "gray",      # just to ensure something visible
                                       color = "black",    # this adds the black frame!

@@ -1,5 +1,6 @@
 ---
 title: "Institution Report: SWiMS 2024 Data"
+subtitle: "Institution: `r levels(dat$institution)[params$object.inst]`"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
@@ -1343,7 +1344,7 @@ swims.plot.multibar("stress_system3",
 `r swims.formulation("stressFunding", what = "item")`
 \normalsize
 
-```{r}
+```{r, out.width = "65%"}
 swims.plot.multibar("stress_system1",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -1365,7 +1366,7 @@ swims.plot.multibar("stress_system1",
 `r swims.formulation("stressFunding", what = "item")`
 \normalsize
 
-```{r}
+```{r, out.width = "65%"}
 swims.plot.multibar("stress_system2",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -1387,7 +1388,7 @@ swims.plot.multibar("stress_system2",
 `r swims.formulation("stressFunding", what = "item")`
 \normalsize
 
-```{r}
+```{r, out.width = "65%"}
 swims.plot.multibar("stress_system3",
                     institution_prov = target_institution,
                     divider = "Gender",
@@ -4041,7 +4042,7 @@ swims.plot.aggregation("qrp_pressure",
 \newpage
 ## Effects of Pressures to Perform Questionable Reserach Practices on Mental Health
 \normalsize
-`r swims.formulation("pressureqrpFunder", what = "item")`
+`r swims.formulation("pressureqrpMentalhealth", what = "item")`
 \normalsize
 
 ```{r}
