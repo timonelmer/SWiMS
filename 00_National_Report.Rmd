@@ -7,7 +7,7 @@ params:
 output:
   pdf_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
     keep_tex: true
     fig_caption: false
 bibliography: references.bib 
@@ -58,8 +58,6 @@ institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Lab
 
 # TODOs
 
-- add item information / question formulation to each page
-- kick out irrelevant comparisons (e.g. care work in qrp)?
 - write executive summary
 - add new actionuni logo
 
@@ -1547,12 +1545,17 @@ swims.plot.aggregation("discrimination_type",
 
 ```{r Questionable Reserach Practices1, fig.height= 9, fig.width= 9}
 qrp.cols <- c("red","#2166AC","gray69","orange","#66C2A5")
-swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r Questionable Reserach Practices2, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+
+```
+
+```{r Questionable Reserach Practices3, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1560,23 +1563,27 @@ swims.plot.multibar(var = "qrp2", font_size = multibar.fontSize-1, fontsize_inpl
 ## Questionable Reserach Practices by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Age", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Age", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Age", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Age", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+```
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", divider = "Age", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 
 ## Questionable Reserach Practices by Gender
 
 ```{r, fig.height= 8.5, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r, fig.height= 8.5, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1586,57 +1593,77 @@ the 'other' category entails the non-binary response category or if both male an
 ## Questionable Reserach Practices by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Discipline", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Discipline", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Discipline", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Discipline", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+```
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", divider = "Discipline", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ## Questionable Reserach Practices by Funding Source (national only)
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Funding", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Funding", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Funding", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Funding", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+```
+
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", divider = "Funding", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ## Questionable Reserach Practices by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Position", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Position", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Position", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Position", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 ```
 
 
 ## Questionable Reserach Practices by Care Work
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Carework", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Carework", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+
+```
+
 
 
 ## Questionable Reserach Practices by Residence (national only)
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Residence", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "Residence", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Residence", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "Residence", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+
+```
+
+```{r, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", divider = "Residence", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1647,7 +1674,7 @@ swims.plot.multibar(var = "qrp2", divider = "Residence", font_size = multibar.fo
 
 `r swims.formulation("pressureqrpFunder", what = "item")`
 
-```{r qrp Dimensions, fig.height= 4, fig.width= 5}
+```{r qrp Dimensions, fig.height= 5, fig.width= 6}
 
 swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size = multibar.fontSize+4,annoFontSize = multibar.fontSizeInplot)
 
