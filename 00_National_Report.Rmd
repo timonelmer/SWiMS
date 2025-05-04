@@ -7,7 +7,10 @@ params:
 output:
   pdf_document:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
+    keep_tex: true
+    fig_caption: false
+bibliography: references.bib 
 classoption: landscape
 header-includes:
   - \usepackage{graphicx}
@@ -457,7 +460,11 @@ swims.plot.distribution(var = "DepressionCategory", divider = "Residence", annoF
 
 ## Burnout
 
-item from REF
+
+`r swims.formulation("Burnout", what = "item")` 
+
+Item developed by West and colleauges [-@west_single_2009].
+
 
 ```{r burnout, fig.height= 5 , fig.width= 6}
 swims.plot.distribution("Burnout")
@@ -577,7 +584,7 @@ Item formulation:
 
 *Taking everything into consideration, how satisfied do you feel about your job as a whole?*
 
-item by @dolbier_reliability_2005. 
+Item developed by Dolbier and colleauges [-@dolbier_reliability_2005].
 
 
 ```{r job satisfaction, fig.height= 5 , fig.width= 6}
@@ -637,6 +644,7 @@ swims.plot.distribution(var = "jobSatisfaction", divider = "Residence", annoFont
 
 ## Quitting Intentions
 
+`r swims.formulation("quitting", what = "item")`
 
 ```{r quitting intentions, fig.height= 5 , fig.width= 6}
 swims.plot.distribution("quitting")
@@ -700,8 +708,7 @@ swims.plot.distribution(var = "quitting", divider = "Residence", annoFontSize = 
 
 ## System
 
-
-To what degree is the following causing you stress currently?
+`r swims.formulation("stress", what = "item")`
 
 
 ```{r stress system12, fig.height= 6 , fig.width= 8}
@@ -808,7 +815,10 @@ swims.plot.multibar(var = c("stress_system3"), divider = "Residence", font_size 
  
 ## Stressor Supervisor
 
-To what degree is the following causing you stress currently?
+
+`r swims.formulation("stress", what = "item")`
+
+
 
 ```{r stress supervisor, fig.height= 6 , fig.width= 8}
 
@@ -870,7 +880,9 @@ swims.plot.multibar(var = "stress_supervisor", divider = "Residence", font_size 
 ## Stressor Colleagues
 
 
-To what degree is the following causing you stress currently?
+`r swims.formulation("stress", what = "item")`
+
+
 
 
 ```{r stress colleagues, fig.height= 6 , fig.width= 8}
@@ -933,7 +945,7 @@ swims.plot.multibar(var = "stress_colleagues", divider = "Residence", font_size 
 
 ## Stressor Self-Management
 
-To what degree is the following causing you stress currently?
+`r swims.formulation("stress", what = "item")`
 
 
 
@@ -997,7 +1009,7 @@ swims.plot.multibar(var = "stress_selfManagement", divider = "Residence", font_s
 
 ## Stressor Private
 
-To what degree is the following causing you stress currently?
+`r swims.formulation("stress", what = "item")`
 
 
 ```{r stress private, fig.height= 6 , fig.width= 8}
@@ -1059,6 +1071,7 @@ swims.plot.multibar(var = "stress_private", divider = "Residence", font_size = m
 
 # Statements Regarding Supervisor
 
+`r swims.formulation("worklifebalanceSup", what = "item")`
 
 ```{r Supervisor1, fig.height= 9, fig.width= 9}
 
@@ -1322,7 +1335,9 @@ swims.plot.multibar(var = c("institution2"), divider = "Residence", font_size = 
  
 # Statements Regarding Work-Group
 
-These workgroup-related were answered if they indicated to be in a working group `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
+These workgroup-related questions were asked only if the respondents indicated to be in a working group, `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
+
+`r swims.formulation("collabWorkinggroup", what = "item")`
 
 
 ```{r Workgroup, fig.height= 8, fig.width= 9}
@@ -1387,6 +1402,8 @@ swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multib
 # Discrimination
 
 ## Discrimination Experience 
+
+`r swims.formulation("discriminationWitness", what = "item")`
 
 ```{r Discrimination1, fig.height= 9, fig.width= 9}
 
@@ -1526,6 +1543,8 @@ swims.plot.aggregation("discrimination_type",
 
 # Questionable Research Practices
 
+`r swims.formulation("qrpFalsdata", what = "item")`
+
 ```{r Questionable Reserach Practices1, fig.height= 9, fig.width= 9}
 qrp.cols <- c("red","#2166AC","gray69","orange","#66C2A5")
 swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize-1, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
@@ -1626,6 +1645,7 @@ swims.plot.multibar(var = "qrp2", divider = "Residence", font_size = multibar.fo
  
 ## Pressures to Perform Questionable Reserach Practices 
 
+`r swims.formulation("pressureqrpFunder", what = "item")`
 
 ```{r qrp Dimensions, fig.height= 4, fig.width= 5}
 
@@ -1638,6 +1658,7 @@ swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size 
  
 ## Effects of Pressures to Perform Questionable Reserach Practices on Mental Health
 
+`r swims.formulation("pressureqrpMentalhealth", what = "item")`
 
 ```{r qrp_mh, fig.height= 5 , fig.width= 6}
 swims.plot.distribution("pressureqrpMentalhealth")
