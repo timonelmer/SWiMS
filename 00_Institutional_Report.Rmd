@@ -3071,6 +3071,8 @@ swims.plot.multibar("institution2",
 
 \newpage
 # Statements Regarding Work-Group
+These workgroup-related questions were asked only if the respondents indicated to be in a working group.
+
 \normalsize
 `r swims.formulation("collabWorkinggroup", what = "item")`
 \normalsize
