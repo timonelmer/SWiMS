@@ -550,6 +550,8 @@ swims.plot.distribution("DepressionCategory",
 ## Burnout
 \normalsize
 `r swims.formulation("Burnout", what = "item")`
+
+Item developed by West and colleauges [-@west_single_2009].
 \normalsize
 
 ```{r}
@@ -819,6 +821,8 @@ swims.plot.multibar("resources",
 ## Job Satisfaction
 \normalsize
 `r swims.formulation("jobSatisfaction", what = "item")`
+
+Item developed by Dolbier and colleauges [-@dolbier_reliability_2005].
 \normalsize
 
 ```{r}
