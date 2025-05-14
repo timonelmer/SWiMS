@@ -271,23 +271,6 @@ swims.plot.distribution("residenceStatus")
 Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits." Non-disclosed or unclear responses coded as NA.
 
 
-### Care work
-
-```{r , fig.height = 4, fig.width=3}
-swims.plot.distribution("Carework")
-```
-
-`r swims.formulation("careKids")`
-
-`r swims.formulation("careFamily")`
-
-Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
-\newpage
-
-### Other Demographic Variables
-
-These variables will not be used for group comparisons later, thus the name "other".
-
 #### Employment Status
 \
 
@@ -300,6 +283,24 @@ swims.plot.distribution("employmentStatus")
 `r swims.formulation("employmentStatus", what = "item")`
 
 \newpage 
+
+### Other Demographic Variables
+
+These variables will not be used for group comparisons later, thus the name "other".
+
+
+### Care Work
+
+```{r , fig.height = 4, fig.width=3}
+swims.plot.distribution("Carework")
+```
+
+`r swims.formulation("careKids")`
+
+`r swims.formulation("careFamily")`
+
+Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
+\newpage
 
 #### Employment Percentage
 \
@@ -372,10 +373,10 @@ swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize
 ```
 
 
-### General Mental Health by Care Work
+### General Mental Health by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "mentalHealth", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
@@ -438,10 +439,10 @@ swims.plot.distribution(var = "DepressionCategory", divider = "Position", annoFo
 ```
 
 
-### Depression by Care Work
+### Depression by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "DepressionCategory", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "DepressionCategory", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
@@ -503,10 +504,10 @@ swims.plot.distribution(var = "Burnout", divider = "Position", annoFontSize = 2)
 ```
 
 
-### Burnout by Care Work
+### Burnout by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "Burnout", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
@@ -558,10 +559,10 @@ swims.plot.multibar(var = "resources", divider = "Position")
 ```
 
 
-### Awarenes Resources by Care Work
+### Awarenes Resources by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.multibar(var = "resources", divider = "Carework")
+swims.plot.multibar(var = "resources", divider = "employmentStatus")
 
 ```
 
@@ -624,10 +625,10 @@ swims.plot.distribution(var = "jobSatisfaction", divider = "Position", annoFontS
 ```
 
 
-### Job Satisfaction  by Care Work
+### Job Satisfaction  by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "jobSatisfaction", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "jobSatisfaction", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
@@ -683,10 +684,10 @@ swims.plot.distribution(var = "quitting", divider = "Position", annoFontSize = 2
 ```
 
 
-### Quitting Intentions by Care Work
+### Quitting Intentions by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "quitting", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "quitting", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
@@ -785,15 +786,15 @@ swims.plot.multibar(var = c("stress_system3"), divider = "Position", font_size =
 ```
 
 
-### Stressor System by Care Work
+### Stressor System by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = c("stress_system3"), divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = c("stress_system3"), divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -858,10 +859,10 @@ swims.plot.multibar(var = "stress_supervisor", divider = "Position", font_size =
 ```
 
 
-### Stressor Supervisor by Care Work
+### Stressor Supervisor by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = "stress_supervisor", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "stress_supervisor", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -923,10 +924,10 @@ swims.plot.multibar(var = "stress_colleagues", divider = "Position", font_size =
 ```
 
 
-### Stressor Colleagues by Care Work
+### Stressor Colleagues by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = "stress_colleagues", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "stress_colleagues", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -987,10 +988,10 @@ swims.plot.multibar(var = "stress_selfManagement", divider = "Position", font_si
 ```
 
 
-### Stressor Self-Management by Care Work
+### Stressor Self-Management by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = "stress_selfManagement", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "stress_selfManagement", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -1049,10 +1050,10 @@ swims.plot.multibar(var = "stress_private", divider = "Position", font_size = mu
 ```
 
 
-### Stressor Private by Care Work
+### Stressor Private by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
-swims.plot.multibar(var = "stress_private", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "stress_private", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -1183,20 +1184,20 @@ swims.plot.multibar(var = c("supervisor3"), divider = "Position", font_size = mu
 
 
 
-## Supervisor by Care Work
+## Supervisor by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Carework", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Carework", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Carework", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
 
@@ -1304,15 +1305,15 @@ swims.plot.multibar(var = c("institution2"), divider = "Position", font_size = m
 
 
 
-## Institution by Care Work
+## Institution by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Carework", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Carework", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
 
@@ -1379,10 +1380,10 @@ swims.plot.multibar(var = "workgroup", divider = "Position", font_size = multiba
 ```
 
 
-## Workgroup by Care Work
+## Workgroup by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
+swims.plot.multibar(var = "workgroup", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot)
 
 ```
 
@@ -1480,15 +1481,15 @@ swims.plot.multibar(var = "discrimination2", divider = "Position", font_size = m
 ```
 
 
-## Discrimination Experience by Care Work
+## Discrimination Experience by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Carework", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
 
@@ -1631,20 +1632,20 @@ swims.plot.multibar(var = "qrp2", divider = "Position", font_size = multibar.fon
 ```
 
 
-## Questionable Reserach Practices by Care Work
+## Questionable Reserach Practices by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp1", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp1", divider = "employmentStatus", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp2", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp2", divider = "employmentStatus", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "qrp3", divider = "Carework", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
+swims.plot.multibar(var = "qrp3", divider = "employmentStatus", font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot, fill_color_set = qrp.cols)
 
 ```
 
@@ -1727,10 +1728,10 @@ swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Position", a
 ```
 
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Care Work
+### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
-swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Carework", annoFontSize = 3)
+swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "employmentStatus", annoFontSize = 3)
 
 ```
 
