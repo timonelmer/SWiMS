@@ -9,13 +9,13 @@ swims.plot.multibar <- function(
     fill_color_set = NULL,
     font_size = 12,
     fontsize_inplot = 4,
-    colors_set = "RdYlBu", # or "RdBu"?
+    colors_set = "RdBu", # or "RdBu"?
     rev_colors_set = F,
     space4comp = F,
     legend.nrow = 1,
     wrap_legend = FALSE,
     alpha_plot = 0.6,
-    width_bar = 0.6,
+    width_bar = 0.7,
     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
@@ -29,15 +29,15 @@ swims.plot.multibar <- function(
   # fill_color_set <- NULL
   # font_size <- 12
   # fontsize_inplot <- 4
-  # colors_set <- "Set2"
+  # colors_set <- "RdBu"
   # space4comp <- FALSE
   # legend.nrow <- 3
   # wrap_legend <- FALSE
   # alpha_plot <- 0.6
-  # width_bar <- 0.6
+  # width_bar <- 0.8
   # cut.small.groups <- 10
   # small.group.delete <- FALSE
-  # rev_colors_set <- FALSE
+  # rev_colors_set <- TRUE
 
   # PREPARATIONS ####
   # Define variable 
@@ -458,7 +458,6 @@ swims.plot.multibar <- function(
   if("count" %in% colnames(plot_data)){
     plot_data$count <- ifelse(is.na(plot_data$count), "", plot_data$count)
   }
-
   
   # PLOT ####
   if(!is.null(institution_prov) & !is.null(divider)){ # Institution and divider
@@ -532,7 +531,7 @@ swims.plot.multibar <- function(
                                       color = "black",    # this adds the black frame!
                                       size = 0.5          # optional: thinner border
                                     )
-                                    )) 
+                                    ))
       
     } else {
       
@@ -573,11 +572,11 @@ swims.plot.multibar <- function(
           plot.margin = unit(c(0,3,0,0), "cm")
         ) +
         #swims_watermark +
-        geom_text(data = plot_data,
-                  aes(x = interaction_lab, y = 0.01, label = divider),
-                  inherit.aes = FALSE,
-                  size = fontsize_inplot,
-                  hjust = 0) +
+        # geom_text(data = plot_data,
+        #           aes(x = interaction_lab, y = 0.01, label = divider),
+        #           inherit.aes = FALSE,
+        #           size = fontsize_inplot,
+        #           hjust = 0) +
         geom_text(data = plot_data,
                   aes(x = interaction_lab, y = 1.01, 
                       label = ifelse(paste0("N = ", n_total) == "N = ", "", paste0("N = ", n_total))),
@@ -623,7 +622,7 @@ swims.plot.multibar <- function(
                 inherit.aes = FALSE, 
                 size = fontsize_inplot, #fontface = "bold",
                 hjust = 0,
-                position = position_nudge(x = -0.5)) +
+                position = position_nudge(x = 0)) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -672,12 +671,12 @@ swims.plot.multibar <- function(
         #subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
-      geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
-                aes(x = divider, y = 0.05, label = divider),  
-                inherit.aes = FALSE, 
-                size = fontsize_inplot, #fontface = "bold",
-                hjust = 0,
-                position = position_nudge(x = -0.5)) +
+      # geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
+      #           aes(x = divider, y = 0.05, label = divider),  
+      #           inherit.aes = FALSE, 
+      #           size = fontsize_inplot, #fontface = "bold",
+      #           hjust = 0,
+      #           position = position_nudge(x = 0)) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -745,6 +744,87 @@ swims.plot.multibar <- function(
     
   }
   
+  # Check for group label color
+  if(rev_colors_set == T){
+    if(!is.null(institution_prov) & !is.null(divider)){
+      
+      if(space4comp){
+        g <- g + geom_shadowtext(data = plot_data,
+                               aes(x = x_pos, y = 0.01, label = divider),
+                               inherit.aes = FALSE,
+                               size = fontsize_inplot,
+                               hjust = 0)
+      } else {
+        g <- g + geom_shadowtext(data = plot_data,
+                            aes(x = interaction_lab, y = 0.01, label = divider),
+                            inherit.aes = FALSE,
+                            size = (fontsize_inplot),
+                            hjust = 0)
+      }
+      
+    } else if(!is.null(institution_prov) & is.null(divider)){
+      
+      g <- g + geom_shadowtext(data = plot_data,
+                aes(x = interaction_lab, y = 0.01, label = divider),
+                inherit.aes = FALSE,
+                size = fontsize_inplot,
+                hjust = 0)
+        
+    } else if(is.null(institution_prov) & !is.null(divider)){
+      
+      g <- g + geom_shadowtext(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
+                       aes(x = divider, y = 0.05, label = divider),  
+                       inherit.aes = FALSE, 
+                       size = fontsize_inplot, #fontface = "bold",
+                       hjust = 0,
+                       position = position_nudge(x = 0))
+      
+    } else if(is.null(institution_prov) & is.null(divider)){
+      
+      # Empty 
+      
+    }
+  } else {
+    if(!is.null(institution_prov) & !is.null(divider)){
+      
+      if(space4comp){
+        g <- g + geom_text(data = plot_data,
+                                 aes(x = x_pos, y = 0.01, label = divider),
+                                 inherit.aes = FALSE,
+                                 size = fontsize_inplot,
+                                 hjust = 0)
+      } else {
+        g <- g + geom_text(data = plot_data,
+                                 aes(x = interaction_lab, y = 0.01, label = divider),
+                                 inherit.aes = FALSE,
+                                 size = (fontsize_inplot),
+                                 hjust = 0)
+      }
+      
+    } else if(!is.null(institution_prov) & is.null(divider)){
+      
+      g <- g + geom_text(data = plot_data,
+                         aes(x = interaction_lab, y = 0.01, label = divider),
+                         inherit.aes = FALSE,
+                         size = fontsize_inplot,
+                         hjust = 0)
+      
+    } else if(is.null(institution_prov) & !is.null(divider)){
+      
+      g <- g + geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
+                         aes(x = divider, y = 0.05, label = divider),  
+                         inherit.aes = FALSE, 
+                         size = fontsize_inplot, #fontface = "bold",
+                         hjust = 0,
+                         position = position_nudge(x = 0))
+      
+    } else if(is.null(institution_prov) & is.null(divider)){
+      
+      # Empty 
+      
+    }
+  }
+
   # RETURN ####
   return(g)
   

@@ -3568,7 +3568,7 @@ swims.plot.aggregation("discrimination_type",
 \newpage
 ## Reporting Information
 \normalsize
-`r swims.formulation("discrAge", what = "item")`
+`r swims.formulation("discrReport", what = "item")`
 \normalsize
 
 ```{r}
