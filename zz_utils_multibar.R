@@ -20,9 +20,9 @@ swims.plot.multibar <- function(
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example 
-  # var <- "stress_system3"
+  # var <- "resources"
   # institution_prov <- target_institution
-  # divider <- "Age"
+  # divider <- NULL
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -37,7 +37,7 @@ swims.plot.multibar <- function(
   # width_bar <- 0.8
   # cut.small.groups <- 10
   # small.group.delete <- FALSE
-  # rev_colors_set <- TRUE
+  # rev_colors_set <- FALSE
 
   # PREPARATIONS ####
   # Define variable 
@@ -512,12 +512,12 @@ swims.plot.multibar <- function(
           # clip = "off",
           plot.margin = unit(c(0,3,0,0), "cm")
         ) +
-        #swims_watermark +
-        geom_text(data = plot_data,
-                  aes(x = x_pos, y = 0.01, label = divider),
-                  inherit.aes = FALSE,
-                  size = fontsize_inplot,
-                  hjust = 0) +
+        # swims_watermark +
+        # geom_text(data = plot_data,
+        #           aes(x = x_pos, y = 0.01, label = divider),
+        #           inherit.aes = FALSE,
+        #           size = fontsize_inplot,
+        #           hjust = 0) +
         geom_text(data = plot_data,
                   aes(x = x_pos, y = 1.01, 
                       label = ifelse(paste0("N = ", n_total) == "N = ", "", paste0("N = ", n_total))),
@@ -571,7 +571,7 @@ swims.plot.multibar <- function(
           # clip = "off",
           plot.margin = unit(c(0,3,0,0), "cm")
         ) +
-        #swims_watermark +
+        # swims_watermark +
         # geom_text(data = plot_data,
         #           aes(x = interaction_lab, y = 0.01, label = divider),
         #           inherit.aes = FALSE,
@@ -607,7 +607,7 @@ swims.plot.multibar <- function(
       ) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
-      #swims_watermark +
+      # swims_watermark +
       # Text
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
@@ -617,12 +617,12 @@ swims.plot.multibar <- function(
         #subtitle = range_text
       ) +
       # Füge Gruppenlabels für beide Balken korrekt hinzu
-      geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
-                aes(x = group, y = 0.05, label = group),  
-                inherit.aes = FALSE, 
-                size = fontsize_inplot, #fontface = "bold",
-                hjust = 0,
-                position = position_nudge(x = 0)) +
+      # geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
+      #           aes(x = group, y = 0.05, label = group),  
+      #           inherit.aes = FALSE, 
+      #           size = fontsize_inplot, #fontface = "bold",
+      #           hjust = 0,
+      #           position = position_nudge(x = 0)) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -661,7 +661,7 @@ swims.plot.multibar <- function(
       ) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
-      #swims_watermark +
+      # swims_watermark +
       # Text
       labs(
         x = NULL,   # Entferne x-Achsen-Beschriftung
@@ -749,35 +749,66 @@ swims.plot.multibar <- function(
     if(!is.null(institution_prov) & !is.null(divider)){
       
       if(space4comp){
-        g <- g + geom_shadowtext(data = plot_data,
-                               aes(x = x_pos, y = 0.01, label = divider),
-                               inherit.aes = FALSE,
-                               size = fontsize_inplot,
-                               hjust = 0)
+        
+        # g <- g + geom_shadowtext(data = plot_data,
+        #                        aes(x = x_pos, y = 0.01, label = divider),
+        #                        inherit.aes = FALSE,
+        #                        size = fontsize_inplot,
+        #                        hjust = 0)
+        
+        g <- g + geom_text(data = plot_data,
+                                 aes(x = x_pos, y = 0.01, label = divider),
+                                 inherit.aes = FALSE,
+                                 size = fontsize_inplot,
+                                 hjust = 0)
+        
       } else {
-        g <- g + geom_shadowtext(data = plot_data,
-                            aes(x = interaction_lab, y = 0.01, label = divider),
-                            inherit.aes = FALSE,
-                            size = (fontsize_inplot),
-                            hjust = 0)
+        
+        # g <- g + geom_shadowtext(data = plot_data,
+        #                     aes(x = interaction_lab, y = 0.01, label = divider),
+        #                     inherit.aes = FALSE,
+        #                     size = (fontsize_inplot),
+        #                     hjust = 0)
+        
+        g <- g + geom_text(data = plot_data,
+                                 aes(x = interaction_lab, y = 0.01, label = divider),
+                                 inherit.aes = FALSE,
+                                 size = (fontsize_inplot),
+                                 hjust = 0)
+        
       }
       
     } else if(!is.null(institution_prov) & is.null(divider)){
       
-      g <- g + geom_shadowtext(data = plot_data,
-                aes(x = interaction_lab, y = 0.01, label = divider),
-                inherit.aes = FALSE,
-                size = fontsize_inplot,
-                hjust = 0)
+      # g <- g +  geom_shadowtext(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
+      #                     aes(x = group, y = 0.05, label = group),  
+      #                     inherit.aes = FALSE, 
+      #                     size = fontsize_inplot, #fontface = "bold",
+      #                     hjust = 0,
+      #                     position = position_nudge(x = 0))
+      
+      g <- g +  geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
+                                aes(x = group, y = 0.05, label = group),  
+                                inherit.aes = FALSE, 
+                                size = fontsize_inplot, #fontface = "bold",
+                                hjust = 0,
+                                position = position_nudge(x = 0))
         
     } else if(is.null(institution_prov) & !is.null(divider)){
       
-      g <- g + geom_shadowtext(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
-                       aes(x = divider, y = 0.05, label = divider),  
-                       inherit.aes = FALSE, 
-                       size = fontsize_inplot, #fontface = "bold",
-                       hjust = 0,
-                       position = position_nudge(x = 0))
+      # g <- g + geom_shadowtext(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
+      #                  aes(x = divider, y = 0.05, label = divider),  
+      #                  inherit.aes = FALSE, 
+      #                  size = fontsize_inplot, #fontface = "bold",
+      #                  hjust = 0,
+      #                  position = position_nudge(x = 0))
+      
+      g <- g + geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
+                               aes(x = divider, y = 0.05, label = divider),  
+                               inherit.aes = FALSE, 
+                               size = fontsize_inplot, #fontface = "bold",
+                               hjust = 0,
+                               position = position_nudge(x = 0))
       
     } else if(is.null(institution_prov) & is.null(divider)){
       
@@ -788,11 +819,13 @@ swims.plot.multibar <- function(
     if(!is.null(institution_prov) & !is.null(divider)){
       
       if(space4comp){
+        
         g <- g + geom_text(data = plot_data,
                                  aes(x = x_pos, y = 0.01, label = divider),
                                  inherit.aes = FALSE,
                                  size = fontsize_inplot,
                                  hjust = 0)
+
       } else {
         g <- g + geom_text(data = plot_data,
                                  aes(x = interaction_lab, y = 0.01, label = divider),
@@ -803,11 +836,12 @@ swims.plot.multibar <- function(
       
     } else if(!is.null(institution_prov) & is.null(divider)){
       
-      g <- g + geom_text(data = plot_data,
-                         aes(x = interaction_lab, y = 0.01, label = divider),
-                         inherit.aes = FALSE,
-                         size = fontsize_inplot,
-                         hjust = 0)
+      g <- g + geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
+                         aes(x = group, y = 0.05, label = group),  
+                         inherit.aes = FALSE, 
+                         size = fontsize_inplot, #fontface = "bold",
+                         hjust = 0,
+                         position = position_nudge(x = 0))
       
     } else if(is.null(institution_prov) & !is.null(divider)){
       

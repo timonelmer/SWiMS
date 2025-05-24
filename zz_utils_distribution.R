@@ -311,7 +311,7 @@ swims.plot.distribution <- function(var,
     
   } else if(!is.null(institution_prov) && is.null(divider)){
     
-    fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[1:2]
+    fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
     
   } else if(is.null(institution_prov) && !is.null(divider)){
     
