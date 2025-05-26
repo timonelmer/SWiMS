@@ -308,6 +308,9 @@ swims.plot.distribution <- function(var,
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
     fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
     
+    if(length(divider_label) == 2){
+      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+    }
     
   } else if(!is.null(institution_prov) && is.null(divider)){
     
@@ -317,6 +320,10 @@ swims.plot.distribution <- function(var,
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
     fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
+    
+    if(length(divider_label) == 2){
+      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+    }
     
   } else if(is.null(institution_prov) && is.null(divider)){
     

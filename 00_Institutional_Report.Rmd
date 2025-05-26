@@ -101,6 +101,7 @@ swims.plot.distribution("age",
                         cut.small.groups = params$cut_off,
                         small.group.delete = params$del_small_groups,
                         width_bar = params$bar_width)
+
 ```
 \normalsize
 `r swims.formulation("age")`  

@@ -63,7 +63,14 @@ swims.plot.multibar <- function(
   if (is.null(fill_color_set)) {
     fill_colors <- RColorBrewer::brewer.pal(n = length(x_label), name = colors_set)
   } else {
+    if(length(x_label) == 2){
+      
+    }
     fill_colors <- fill_color_set[1:length(x_label)]
+    
+    if(length(x_label) == 2){
+      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+    }
   }
   
   if(rev_colors_set) fill_colors <- rev(fill_colors)
