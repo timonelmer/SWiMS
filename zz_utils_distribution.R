@@ -413,7 +413,7 @@ swims.plot.distribution <- function(var,
                         na.value = NA,
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       facet_wrap(~ group, ncol = 1) +
       theme_minimal() +
       theme(
@@ -446,7 +446,7 @@ swims.plot.distribution <- function(var,
       scale_fill_manual(values = setNames(fill_colors, na.omit(unique(plot_data$value_fill))),
                         breaks = unique(na.omit(plot_data$value_fill))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -479,7 +479,7 @@ swims.plot.distribution <- function(var,
                         na.value = "transparent",
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = 1), vjust = -0.5, size = annoFontSize) +
+      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
