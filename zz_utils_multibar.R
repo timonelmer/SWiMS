@@ -6,10 +6,12 @@ swims.plot.multibar <- function(
     data = dat,
     codeb = codebook,
     ncol_plot = 1,
-    fill_color_set = NULL,
+    #fill_color_set = NULL,
+    fill_color_set = cols_ordinal,
     font_size = 12,
     fontsize_inplot = 4,
-    colors_set = "RdBu", # or "RdBu"?
+    #colors_set = "RdBu", # or "RdBu"?
+    colors_set = NULL,
     rev_colors_set = F,
     space4comp = F,
     legend.nrow = 1,

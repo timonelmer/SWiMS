@@ -7,7 +7,8 @@ swims.plot.distribution <- function(var,
                                     data = dat, 
                                     codeb = codebook,
                                     alpha_plot = 0.6,
-                                    colors_set = "RdBu",
+                                    #colors_set = "RdBu",
+                                    colors_set = cols_categorical,
                                     width_bar = 0.7,
                                     width_text = 25,
                                     fct_ord = NULL,
@@ -16,7 +17,7 @@ swims.plot.distribution <- function(var,
 ){
   # Example
   # var <- "age"
-  # institution_prov <- target_institution
+  # institution_prov <- NULL
   # divider <- NULL
   # annoFontSize <- 4
   # font_size <- 12
@@ -24,7 +25,7 @@ swims.plot.distribution <- function(var,
   # codeb <- codebook
   # alpha_plot <- 0.6
   # colors_set <- "Set2"
-  # width_bar <- 0.8
+  # width_bar <- 0.9
   # width_text <- 25
   # cut.small.groups <- 10
   # small.group.delete <- F
@@ -306,28 +307,53 @@ swims.plot.distribution <- function(var,
   if(!is.null(divider) && !is.null(institution_prov)){
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
-    fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
     
-    if(length(divider_label) == 2){
-      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
-    }
+      if(length(colors_set) > 1){ # if it is a vector of colors
+        fill_colors <- colors_set[1:length(divider_label)]
+      }else{ # if it is the name of a colors set
+        fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
+        
+        if(length(divider_label) == 2){
+          fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+        }
+        
+      }
     
   } else if(!is.null(institution_prov) && is.null(divider)){
     
-    fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+      if(length(colors_set) > 1){ # if it is a vector of colors
+        fill_colors <- colors_set[1:2]
+      }else{ # if it is the name of a colors set
+    
+        fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+      }
+      
     
   } else if(is.null(institution_prov) && !is.null(divider)){
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
-    fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
     
-    if(length(divider_label) == 2){
-      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+    if(length(colors_set) > 1){ # if it is a vector of colors
+      fill_colors <- colors_set[1:length(divider_label)]
+    }else{ # if it is the name of a colors set
+      
+      fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
+      
+      if(length(divider_label) == 2){
+        fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+      }
     }
+    
+    
     
   } else if(is.null(institution_prov) && is.null(divider)){
     
-    fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[1]
+    if(length(colors_set) > 1){ # if it is a vector of colors
+      fill_colors <- colors_set[1]
+    }else{ # if it is the name of a colors set
+      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[1]
+    }
+    
     
   }
   
