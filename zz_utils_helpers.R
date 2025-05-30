@@ -3,6 +3,7 @@
 
 # Define Palette for categorical  – Okabe-Ito / Color Universal Design (CUD)
 cols_categorical <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
+cols_categorical <- c("#E69F00", "#56B4E9", "#009E73",  "#0072B2", "#F0E442")
 # Define Palette for oridnal variables
 
 cols_ordinal <- c("#DD8452", "#F1A719", "#afd4e3","#67A9CF", "#3c75b0")
