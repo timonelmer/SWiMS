@@ -9,7 +9,14 @@ cols_categorical <- c("#E69F00", "#56B4E9", "#009E73",  "#0072B2", "#F0E442")
 cols_ordinal <- c("#DD8452", "#F1A719", "#afd4e3","#67A9CF", "#3c75b0")
 cols_ordinal <- c("#DD8452", "#F1A719", "#f5d8a2","#67A9CF", "#638eba")
 cols_ordinal <- c("#DD8452", "#F1A719", "#f5d8a2","#67A9CF", "#638eba", "#3c75b0")
-
+cols_ordinal <- c("#DD8452", "#F1A719", "#afd4e3","#67A9CF", "#3c75b0")
+cols_ordinal <- c("#DD8452", "#F1A719", "#a2bf8f","#67A9CF", "#638eba")
+cols_ordinal <- c("#E88C00", "#FFBF00", "#00A896","#007BFF", "#4A00B8")
+cols_ordinal <- c("#D67C30", "#FFB74D", "#6EC4A6","#2196F3", "#42A5F5")
+cols_ordinal <- c("#D67C30", "#FFB74D", "#6EC4A6", "#4CAF50", "#2196F3", "#42A5F5")
+cols_ordinal <- c("#DD8452", "#FFBF00", "#f5d8a2","#42A5F5", "#007BFF", "#3c75b0")
+cols_ordinal <- c("#A50026", "#D73027", "#FDAE61","#A6D96A", "#1A9850", "#006837")
+cols_ordinal <- c("#D73027", "#DD8452", "#FFBF00","#AFD4E3", "#5EB7FF", "#2D7DE6")
 # 
 # palette1 <- c("#B2182B", "#EF8A62", "#F7F7F7", "#67A9CF", "#2166AC")
 # 
