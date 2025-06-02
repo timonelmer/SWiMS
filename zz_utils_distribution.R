@@ -12,7 +12,7 @@ swims.plot.distribution <- function(var,
                                     width_bar = 0.7,
                                     width_text = 25,
                                     fct_ord = NULL,
-                                    proportion.label = T, 
+                                    proportion.label = F, 
                                     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
