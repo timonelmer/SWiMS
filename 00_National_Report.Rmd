@@ -76,14 +76,13 @@ width_bar_default <- 0.9
 - aggregation function: do not exclude if there is one NA
 - aggregation function: add info if "other" was specified
 
-- codebook cutting of many variables on separate pages
 - resources + discReport variable
 
 
 - für paper: year in phd as important factor!
 
 - @ ZORAN: rename Discrimination Dimensions to "Sources of Discrimination"
-
+- @ ZORAN: - stress measure to mental health section?
 
 # Executive Summary
 
@@ -433,7 +432,7 @@ We computed a depression score by summing the 7 items from the DASS-21 depressio
 
 Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_2021], a sum score above 10 is considered indicative of elevated depressive symptoms and may be viewed as clinically relevant.
 
-```{r depression, fig.height= 4 , fig.width= 5}
+```{r depression, fig.height= 4 , fig.width= 8}
 swims.plot.distribution("Depression")
 ```
 
@@ -675,7 +674,7 @@ swims.plot.distribution(var = "jobSatisfaction", divider = "employmentStatus", a
 swims.plot.distribution(var = "jobSatisfaction", divider = "Residence", annoFontSize = 3)
 
 ```
-
+\newpage
 
 ## Quitting Intentions
 
@@ -699,6 +698,7 @@ swims.plot.distribution(var = "quitting", divider = "Age", annoFontSize = 3)
 swims.plot.distribution(var = "quitting", divider = "Gender", annoFontSize = 3)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Quitting Intentions by Research Discipline

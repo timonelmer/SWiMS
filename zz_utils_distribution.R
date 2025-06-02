@@ -12,6 +12,7 @@ swims.plot.distribution <- function(var,
                                     width_bar = 0.7,
                                     width_text = 25,
                                     fct_ord = NULL,
+                                    proportion.label = T, 
                                     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
@@ -523,6 +524,8 @@ swims.plot.distribution <- function(var,
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
+      if(proportion.label){g <- g + geom_text(aes(label = ifelse(proportion > 0.05, paste0(round(proportion * 100), "%"), "")),
+                                              vjust = +1.5, size = annoFontSize, color = "white")}
   }
   
   # RETURN ####
