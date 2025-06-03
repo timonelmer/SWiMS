@@ -18,7 +18,7 @@ unique(dat$institution) # sind die 13
 object.inst <- levels(dat$institution)
 
 # Loop über jede Gruppe
-for (g in 1:2) {
+for (g in 1:8) {
   
   if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
     obj <- "ETHZ"

@@ -11,7 +11,7 @@ params:
   cut_off: 10
   del_small_groups: FALSE
   alpha_val: 0.4
-  bar_width: 1
+  bar_width: 0.8
 output:
   pdf_document:
     toc: true
