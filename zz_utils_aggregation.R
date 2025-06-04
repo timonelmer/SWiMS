@@ -9,6 +9,7 @@ swims.plot.aggregation <- function(var,
                                    font_size = 12,
                                    width_bar = 0.5,
                                    annoFontSize = 8,
+                                   proportion.label = F,
                                    count_votes_at_all = FALSE # Creates plot only showing how many did something at all
 ){
   
@@ -320,11 +321,18 @@ swims.plot.aggregation <- function(var,
         ) 
       
       
-      if(showCount){
-        return(g + geom_text(aes(label = count), vjust = -0.5, size = annoFontSize, color = "black"))
-      } else {
-        return(g)
+      if(showCount){g <- g + geom_text(aes(label = count), vjust = -0.5, size = annoFontSize, color = "black") }
+      if (proportion.label) {
+        g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 1), "%")),
+                           position = position_stack(vjust = 0.5), color = "white")
       }
+      return(g)
+      
+      # if(showCount){
+      #   return(g + geom_text(aes(label = count), vjust = -0.5, size = annoFontSize, color = "black"))
+      # } else {
+      #   return(g)
+      # }
     }
   }
   

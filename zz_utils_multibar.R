@@ -18,6 +18,7 @@ swims.plot.multibar <- function(
     wrap_legend = FALSE,
     alpha_plot = 0.6,
     width_bar = 0.7,
+    proportion.label = F,
     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
@@ -751,6 +752,14 @@ swims.plot.multibar <- function(
       ) +
       guides(fill = guide_legend(nrow = legend.nrow, reverse = TRUE)) 
     
+    # Add white percentage labels if flag is set
+    if (proportion.label) {
+      g <- g + geom_text(
+        aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
+        position = position_fill(vjust = 0.5),
+        color = "white"
+      )
+    }
   }
   
   # Check for group label color
