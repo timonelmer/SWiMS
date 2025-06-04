@@ -524,7 +524,7 @@ swims.plot.distribution <- function(var,
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
-      if(proportion.label){g <- g + geom_text(aes(label = ifelse(proportion > 0.05, paste0(round(proportion * 100), "%"), "")),
+      if(proportion.label){g <- g + geom_text(aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
                                               vjust = +1.5, size = annoFontSize, color = "white")}
   }
   
