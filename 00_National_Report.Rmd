@@ -1209,13 +1209,13 @@ swims.plot.multibar(var = "stress_private", divider = "Residence", font_size = m
 
 `r swims.formulation("worklifebalanceSup", what = "item")`
 
-```{r Supervisor1, fig.height= 7, fig.width= 9}
+```{r Supervisor1, fig.height= 6, fig.width= 9}
 
 swims.plot.multibar(var = c("supervisor1") , font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot+3)
 
 ```
 
-```{r Supervisor2, fig.height= 9, fig.width= 9}
+```{r Supervisor2, fig.height= 6, fig.width= 9}
 
 swims.plot.multibar(var = c("supervisor2") , font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot+3)
 
@@ -1391,7 +1391,7 @@ swims.plot.multibar(var = c("institution2"), divider = "Age", font_size = multib
 
 ## Institution by Gender
 
-```{r, fig.height= 7, fig.width= 9}
+```{r, fig.height= 6.5, fig.width= 9}
 swims.plot.multibar(var = c("institution1"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
@@ -1399,7 +1399,7 @@ swims.plot.multibar(var = c("institution1"), divider = "Gender", font_size = mul
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 
-```{r, fig.height= 7, fig.width= 9}
+```{r, fig.height= 6.5, fig.width= 9}
 swims.plot.multibar(var = c("institution2"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
 
 ```
@@ -1685,7 +1685,7 @@ This plot shows the responses of the subset of respondents (n = `r sum(table(dat
 
 `r swims.formulation("qrpFalsdata", what = "item")`
 
-```{r Questionable Reserach Practices1, fig.height= 8, fig.width= 9}
+```{r Questionable Reserach Practices1, fig.height= 7, fig.width= 9}
 qrp.cols <- c("red","#66C2A5","gray69","orange","#2166AC")
 swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
@@ -1719,12 +1719,12 @@ swims.plot.multibar(var = "qrp3", divider = "Age", font_size = multibar.fontSize
 
 ## Questionable Reserach Practices by Gender
 
-```{r, fig.height= 8, fig.width= 9}
+```{r, fig.height= 7, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
 
-```{r, fig.height= 8, fig.width= 9}
+```{r, fig.height= 7, fig.width= 9}
 swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
