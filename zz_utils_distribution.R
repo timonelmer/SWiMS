@@ -17,9 +17,9 @@ swims.plot.distribution <- function(var,
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example
-  # var <- "age"
-  # institution_prov <- NULL
-  # divider <- NULL
+  # var <- "mentalHealth"
+  # institution_prov <- target_institution
+  # divider <- "Position"
   # annoFontSize <- 4
   # font_size <- 12
   # data <- dat
@@ -415,7 +415,10 @@ swims.plot.distribution <- function(var,
                         breaks = unique(na.omit(plot_data$divider))
       ) +
       geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
-      facet_wrap(~ group, ncol = 1) +
+      facet_wrap(~ group, 
+                 ncol = 1
+                 # axes = "all"
+                 ) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),

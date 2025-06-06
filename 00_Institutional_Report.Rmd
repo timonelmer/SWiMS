@@ -65,6 +65,83 @@ target_institution <- levels(dat$institution)[params$object.inst]
 The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the institution **`r target_institution`**, comparing its responses to those from other institutions.
 
 ---
+
+<!-- # How to read the plots -->
+<!-- Here is a short description of how to read the more sophisticated plots. There are two types of sophisticated plots that are used. Type A is showing the variable distribution of your institution divided by a specific demographical variable on top and below you can see slightly transparent the same variable divided by the same demographical variable for all other institutions together. Type B is showing the distribution of multiple variables in one plot above each other. On the left side you can see the variable and the right side the distribution of the variable for your institution (upper half from the variable description) and all other institutions together (lower half from the variable description). The demographical variable used as divider - if any - is shown in the legend. -->
+<!-- ```{r} -->
+<!-- # Dummy plot Type A -->
+<!-- exp_plot_a <- expand.grid( -->
+<!--   value = c("Category A", "Category B", "Category C", "Category D", "Longer Category Name E"), -->
+<!--   group = c("YOUR INSTITUTION", "ALL OTHER TOGETHER"), -->
+<!--   value_fill = c("Fill Option 1", "Fill Option 2") -->
+<!-- ) %>% -->
+<!--   as_tibble() %>% -->
+<!--   mutate( -->
+<!--     # Create dummy proportions (make sure they sum to 1 within each group and value combination if needed) -->
+<!--     proportion = runif(n(), 0.05, 0.45), # Random proportions between 5% and 45% -->
+<!--     # Create dummy counts for geom_text -->
+<!--     count = round(proportion * 1000) # Assuming proportion is out of 1000 observations for simplicity -->
+<!--   ) -->
+
+<!-- exp_plot_a$count <- ifelse(exp_plot_a$count == max(exp_plot_a$count[exp_plot_a$group == "YOUR INSTITUTION"]) |  -->
+<!--                              exp_plot_a$count == max(exp_plot_a$count[exp_plot_a$group == "ALL OTHER TOGETHER"]), paste0("Absolute number of responses:", exp_plot_a$count), NA) -->
+
+<!-- # Add a 'divider' column, which is used for the fill legend breaks -->
+<!-- # Let's make 'divider' a simplified version of 'value_fill' or a subset -->
+<!-- exp_plot_a <- exp_plot_a %>% -->
+<!--   mutate( -->
+<!--     divider = case_when( -->
+<!--       value_fill == "Fill Option 1" ~ "Option One", -->
+<!--       value_fill == "Fill Option 2" ~ "Option Two", -->
+<!--       TRUE ~ NA_character_ -->
+<!--     ) -->
+<!--   ) -->
+
+<!-- # Define fill colors - ensure these match unique values in plot_data$value_fill -->
+<!-- exp_alpha_labels_for_scale <- c("YOUR INSTITUTION", "ALL OTHER TOGETHER") -->
+<!-- exp_alpha_values_for_groups <- c(1, params$alpha_val,  params$alpha_val) -->
+<!-- exp_fill_colors <- c("Fill Option 1" = cols_categorical[1], "Fill Option 2" = cols_categorical[2]) -->
+
+<!-- ggplot(exp_plot_a, aes_string(x = "value", y = "proportion", fill = "value_fill", alpha = "group")) + -->
+<!--   geom_bar(stat = "identity", position = "dodge", width = params$bar_width) + -->
+<!--   scale_y_continuous(labels = scales::percent, -->
+<!--                      limits = c(0, max(exp_plot_a$proportion + 0.05))) + -->
+<!--   # Make sure alpha_labels matches the unique values of 'group' -->
+<!--   scale_alpha_manual(values = setNames(exp_alpha_values_for_groups, exp_alpha_labels_for_scale), -->
+<!--                      labels = exp_alpha_labels_for_scale) + # Set labels explicitly for clarity -->
+<!--   labs( -->
+<!--     x = "", -->
+<!--     y = "Proportion within Group", -->
+<!--     fill = "Fill Divider", # Changed 'divider' to a static string for testing -->
+<!--     title = paste("TYPE A Plot") -->
+<!--   ) + -->
+<!--   scale_fill_manual(values = exp_fill_colors, -->
+<!--                     na.value = NA, -->
+<!--                     breaks = unique(na.omit(exp_plot_a$divider)) -->
+<!--   ) + -->
+<!--   geom_text(aes(label = count),  -->
+<!--                 position = position_dodge(width = params$bar_width), vjust = -0.5, size = (params$font_anno - 3)) + -->
+<!--   facet_wrap(~ group, ncol = 1) + -->
+<!--   theme_minimal() + -->
+<!--   theme( -->
+<!--     text = element_text(size = params$font_text), -->
+<!--     axis.text.x = element_text(size = params$font_text, angle = 45, hjust = 1), -->
+<!--     axis.text.y = element_text(size = params$font_text), -->
+<!--     axis.title = element_text(size = params$font_text), -->
+<!--     legend.text = element_text(size = params$font_text), -->
+<!--     legend.title = element_text(size = params$font_text), -->
+<!--     panel.grid.major.x = element_blank(), -->
+<!--     panel.grid.minor.x = element_blank(), -->
+<!--     plot.title = element_text(size = params$font_text, hjust = 0.5), -->
+<!--     strip.text = element_text(size = params$font_text) -->
+<!--   ) + -->
+<!--   guides(alpha = "none") + -->
+<!--   scale_x_discrete(labels = function(x) str_wrap(x, width = 20))  -->
+
+
+<!-- ``` -->
+
+
   
 # Sample Description
 
@@ -1092,7 +1169,6 @@ swims.plot.distribution("quitting",
 \normalsize
 
 \newpage
-# Stressors
 ## Stress
 \normalsize
 `r swims.formulation("stress", what = "item")`
@@ -1229,6 +1305,7 @@ swims.plot.distribution("quitting",
 \normalsize
 
 \newpage
+# Stressors
 ## System Stressors
 \normalsize
 `r swims.formulation("stressFunding", what = "item")`
@@ -3550,21 +3627,23 @@ swims.plot.multibar("discrimination2",
 ```{r}
 swims.plot.aggregation("discrimination_type",
                        institution_prov = target_institution,
-                       font_size = params$font_text)
+                       font_size = params$font_text,
+                       colors_set = "Set1"
+                       )
 ```
 
-\newpage
-## Amount of Sources of Discrimination
-\normalsize
-`r swims.formulation("discrAge", what = "item")`
-\normalsize
+<!-- \newpage -->
+<!-- ## Amount of Sources of Discrimination -->
+<!-- \normalsize -->
+<!-- `r swims.formulation("discrAge", what = "item")` -->
+<!-- \normalsize -->
 
-```{r}
-swims.plot.aggregation("discrimination_type",
-                       institution_prov = target_institution,
-                       font_size = (params$font_text + 5),
-                       count_votes_at_all = TRUE)
-```
+<!-- ```{r} -->
+<!-- swims.plot.aggregation("discrimination_type", -->
+<!--                        institution_prov = target_institution, -->
+<!--                        font_size = (params$font_text + 5), -->
+<!--                        count_votes_at_all = TRUE) -->
+<!-- ``` -->
 
 \newpage
 ## Reporting Information
@@ -3589,6 +3668,7 @@ swims.plot.distribution("discrReport",
 \normalsize
 
 ```{r, out.width = "70%"}
+qrp.cols <- c("red","#66C2A5","gray69","orange","#2166AC")
 swims.plot.multibar("qrp1",
                     institution_prov = target_institution,
                     font_size = params$font_text,
@@ -3598,7 +3678,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3618,7 +3700,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3638,7 +3722,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3661,7 +3747,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3682,7 +3770,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3703,7 +3793,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3726,7 +3818,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3747,7 +3841,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3768,7 +3864,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3791,7 +3889,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3812,7 +3912,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3833,7 +3935,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3856,7 +3960,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3877,7 +3983,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3898,7 +4006,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3921,7 +4031,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3942,7 +4054,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3963,7 +4077,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -3986,7 +4102,9 @@ swims.plot.multibar("qrp1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -4007,7 +4125,9 @@ swims.plot.multibar("qrp2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -4028,7 +4148,9 @@ swims.plot.multibar("qrp3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    fill_color_set = qrp.cols
+                    )
 ```
 \normalsize
 `r imp_mess`
@@ -4043,7 +4165,8 @@ swims.plot.multibar("qrp3",
 ```{r}
 swims.plot.aggregation("qrp_pressure",
                        institution_prov = target_institution,
-                       font_size = params$font_text)
+                       font_size = params$font_text,
+                       colors_set = "Set1")
 ```
 
 \newpage

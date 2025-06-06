@@ -23,9 +23,9 @@ swims.plot.multibar <- function(
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example 
-  # var <- "resources"
-  # institution_prov <- target_institution
-  # divider <- NULL
+  # var <- "discrimination1"
+  # institution_prov <- NULL
+  # divider <- "Age"
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -35,13 +35,13 @@ swims.plot.multibar <- function(
   # colors_set <- "RdBu"
   # space4comp <- FALSE
   # legend.nrow <- 3
-  # wrap_legend <- FALSE
   # alpha_plot <- 0.6
   # width_bar <- 0.8
+  # wrap_legend = TRUE
   # cut.small.groups <- 10
   # small.group.delete <- FALSE
   # rev_colors_set <- FALSE
-
+  
   # PREPARATIONS ####
   # Define variable 
   var_org <- var
@@ -400,7 +400,9 @@ swims.plot.multibar <- function(
   
   # Length of institute names
   if(wrap_legend){
+    if("group" %in% colnames(plot_data)){
     levels(plot_data$group) <- str_wrap(levels(plot_data$group), width = 20)
+    } 
   }
   
   # Add Item text to plot_data and cut it

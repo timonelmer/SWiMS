@@ -1562,7 +1562,7 @@ swims.plot.multibar(var = c("discrimination2"), font_size = multibar.fontSize+4,
 ## Discrimination Experience by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, wrap_legend = T)
 ```
 
 
