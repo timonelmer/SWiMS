@@ -416,8 +416,8 @@ swims.plot.distribution <- function(var,
       ) +
       geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       facet_wrap(~ group, 
-                 ncol = 1
-                 # axes = "all"
+                 ncol = 1,
+                 axes = "all"
                  ) +
       theme_minimal() +
       theme(
