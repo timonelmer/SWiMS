@@ -66,83 +66,20 @@ The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level
 
 ---
 
-<!-- # How to read the plots -->
-<!-- Here is a short description of how to read the more sophisticated plots. There are two types of sophisticated plots that are used. Type A is showing the variable distribution of your institution divided by a specific demographical variable on top and below you can see slightly transparent the same variable divided by the same demographical variable for all other institutions together. Type B is showing the distribution of multiple variables in one plot above each other. On the left side you can see the variable and the right side the distribution of the variable for your institution (upper half from the variable description) and all other institutions together (lower half from the variable description). The demographical variable used as divider - if any - is shown in the legend. -->
-<!-- ```{r} -->
-<!-- # Dummy plot Type A -->
-<!-- exp_plot_a <- expand.grid( -->
-<!--   value = c("Category A", "Category B", "Category C", "Category D", "Longer Category Name E"), -->
-<!--   group = c("YOUR INSTITUTION", "ALL OTHER TOGETHER"), -->
-<!--   value_fill = c("Fill Option 1", "Fill Option 2") -->
-<!-- ) %>% -->
-<!--   as_tibble() %>% -->
-<!--   mutate( -->
-<!--     # Create dummy proportions (make sure they sum to 1 within each group and value combination if needed) -->
-<!--     proportion = runif(n(), 0.05, 0.45), # Random proportions between 5% and 45% -->
-<!--     # Create dummy counts for geom_text -->
-<!--     count = round(proportion * 1000) # Assuming proportion is out of 1000 observations for simplicity -->
-<!--   ) -->
+# How to read the key plots
 
-<!-- exp_plot_a$count <- ifelse(exp_plot_a$count == max(exp_plot_a$count[exp_plot_a$group == "YOUR INSTITUTION"]) |  -->
-<!--                              exp_plot_a$count == max(exp_plot_a$count[exp_plot_a$group == "ALL OTHER TOGETHER"]), paste0("Absolute number of responses:", exp_plot_a$count), NA) -->
+## Distribution plots
+```{r, echo=FALSE, fig.align='center', out.width='100%'}
+knitr::include_graphics("../data/howtoread_plot1.pdf")
+```
+\newpage
 
-<!-- # Add a 'divider' column, which is used for the fill legend breaks -->
-<!-- # Let's make 'divider' a simplified version of 'value_fill' or a subset -->
-<!-- exp_plot_a <- exp_plot_a %>% -->
-<!--   mutate( -->
-<!--     divider = case_when( -->
-<!--       value_fill == "Fill Option 1" ~ "Option One", -->
-<!--       value_fill == "Fill Option 2" ~ "Option Two", -->
-<!--       TRUE ~ NA_character_ -->
-<!--     ) -->
-<!--   ) -->
+## Grouped questions plots
+```{r, echo=FALSE, fig.align='center', out.width='100%'}
+knitr::include_graphics("../data/howtoread_plot2.pdf")
+```
+\newpage
 
-<!-- # Define fill colors - ensure these match unique values in plot_data$value_fill -->
-<!-- exp_alpha_labels_for_scale <- c("YOUR INSTITUTION", "ALL OTHER TOGETHER") -->
-<!-- exp_alpha_values_for_groups <- c(1, params$alpha_val,  params$alpha_val) -->
-<!-- exp_fill_colors <- c("Fill Option 1" = cols_categorical[1], "Fill Option 2" = cols_categorical[2]) -->
-
-<!-- ggplot(exp_plot_a, aes_string(x = "value", y = "proportion", fill = "value_fill", alpha = "group")) + -->
-<!--   geom_bar(stat = "identity", position = "dodge", width = params$bar_width) + -->
-<!--   scale_y_continuous(labels = scales::percent, -->
-<!--                      limits = c(0, max(exp_plot_a$proportion + 0.05))) + -->
-<!--   # Make sure alpha_labels matches the unique values of 'group' -->
-<!--   scale_alpha_manual(values = setNames(exp_alpha_values_for_groups, exp_alpha_labels_for_scale), -->
-<!--                      labels = exp_alpha_labels_for_scale) + # Set labels explicitly for clarity -->
-<!--   labs( -->
-<!--     x = "", -->
-<!--     y = "Proportion within Group", -->
-<!--     fill = "Fill Divider", # Changed 'divider' to a static string for testing -->
-<!--     title = paste("TYPE A Plot") -->
-<!--   ) + -->
-<!--   scale_fill_manual(values = exp_fill_colors, -->
-<!--                     na.value = NA, -->
-<!--                     breaks = unique(na.omit(exp_plot_a$divider)) -->
-<!--   ) + -->
-<!--   geom_text(aes(label = count),  -->
-<!--                 position = position_dodge(width = params$bar_width), vjust = -0.5, size = (params$font_anno - 3)) + -->
-<!--   facet_wrap(~ group, ncol = 1) + -->
-<!--   theme_minimal() + -->
-<!--   theme( -->
-<!--     text = element_text(size = params$font_text), -->
-<!--     axis.text.x = element_text(size = params$font_text, angle = 45, hjust = 1), -->
-<!--     axis.text.y = element_text(size = params$font_text), -->
-<!--     axis.title = element_text(size = params$font_text), -->
-<!--     legend.text = element_text(size = params$font_text), -->
-<!--     legend.title = element_text(size = params$font_text), -->
-<!--     panel.grid.major.x = element_blank(), -->
-<!--     panel.grid.minor.x = element_blank(), -->
-<!--     plot.title = element_text(size = params$font_text, hjust = 0.5), -->
-<!--     strip.text = element_text(size = params$font_text) -->
-<!--   ) + -->
-<!--   guides(alpha = "none") + -->
-<!--   scale_x_discrete(labels = function(x) str_wrap(x, width = 20))  -->
-
-
-<!-- ``` -->
-
-
-  
 # Sample Description
 
 ## Response Rate
@@ -181,7 +118,7 @@ swims.plot.distribution("age",
 
 ```
 \normalsize
-`r swims.formulation("age")`  
+`r swims.formulation("age")`
 For the subsequent analyses this variable was grouped into three categories: "18-30", "31-40", and ">41". Respondents unwilling to disclose their age were coded as missing.
 \normalsize
 
@@ -199,7 +136,7 @@ swims.plot.distribution("Gender",
 ```
 
 \normalsize
-`r swims.formulation("genderNA")`  
+`r swims.formulation("genderNA")`
 Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). "Prefer not to say" responses were coded as missing (NA).
 \normalsize
 
@@ -216,7 +153,7 @@ swims.plot.distribution("researchDiscipline",
                         small.group.delete = params$del_small_groups)
 ```
 \normalsize
-`r swims.formulation("researchDiscipline")`  
+`r swims.formulation("researchDiscipline")`
 Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Social Sciences", and "Humanities". "Prefer not to say" responses coded as NA.
 \normalsize
 
@@ -234,8 +171,8 @@ swims.plot.distribution("mainPosition",
                         width_text = 25)
 ```
 \normalsize
-`r swims.formulation("mainPosition")`  
-Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as NA. 
+`r swims.formulation("mainPosition")`
+Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as NA.
 \normalsize
 
 \newpage
@@ -251,7 +188,7 @@ Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postd
                          small.group.delete = params$del_small_groups)
 ```
 \normalsize
-`r swims.formulation("funding")`  
+`r swims.formulation("funding")`
 Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing (NA).
 \normalsize
 
@@ -268,7 +205,7 @@ swims.plot.distribution("residenceStatus",
                         small.group.delete = params$del_small_groups)
 ```
 \normalsize
-`r swims.formulation("residenceStatus")`  
+`r swims.formulation("residenceStatus")`
 Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits." Non-disclosed or unclear responses coded as NA.
 \normalsize
 
@@ -285,17 +222,17 @@ swims.plot.distribution("Carework",
                         small.group.delete = params$del_small_groups)
 ```
 \normalsize
-`r swims.formulation("careFamily")`  
-`r swims.formulation("careKids")`  
+`r swims.formulation("careFamily")`
+`r swims.formulation("careKids")`
 Simplified into "care work" (if respondents indicated caring for children/family) or "no care work". Missing or unclear responses were coded as missing.
 \normalsize
 
 \newpage
 ### Other demographic variables
-  
+
 These variables will not be used for group comparisons later, thus the name "other".
-  
-  
+
+
 #### Employment Status
 
 ```{r }
@@ -308,7 +245,7 @@ swims.plot.distribution("employmentStatus",
                           small.group.delete = params$del_small_groups)
 ```
 \normalsize
-`r imp_mess`  
+`r imp_mess`
 `r swims.formulation("employmentStatus", what = "item")`
 \normalsize
 
@@ -399,7 +336,7 @@ swims.plot.distribution("mentalHealth",
 \normalsize
 `r imp_mess`
 \normalsize
- 
+
 \newpage
 ### General Mental Health by Research Discipline
 \normalsize
@@ -510,7 +447,7 @@ swims.plot.distribution("Depression",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = (params$bar_width - 0.5),
-                        small.group.delete = params$del_small_groups, 
+                        small.group.delete = params$del_small_groups,
                         fct_ord = c(0:21))
 
 swims.plot.distribution("DepressionCategory",
@@ -896,7 +833,7 @@ swims.plot.multibar("resources",
 \normalsize
 
 \newpage
-## Job Satisfaction
+# Job Satisfaction
 \normalsize
 `r swims.formulation("jobSatisfaction", what = "item")`
 

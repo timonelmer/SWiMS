@@ -16,6 +16,7 @@ load("../data/SWiMS2024_Data_2025-03-30.RData")
 unique(dat$institution) # sind die 13 
 
 object.inst <- levels(dat$institution)
+# g <- 7
 
 # Loop über jede Gruppe
 for (g in 1:8) {
