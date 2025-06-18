@@ -25,7 +25,7 @@ swims.plot.multibar <- function(
   # Example 
   # var <- "discrimination1"
   # institution_prov <- NULL
-  # divider <- "Age"
+  # divider <- NULL
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -411,7 +411,7 @@ swims.plot.multibar <- function(
     left_join(var_text, by = "variable") %>%
     select(-variable) %>%
     mutate(text = str_wrap(text, width = cut_width))
-  
+
   
   # Compute the range of the sum of counts per text variable
   if(!is.null(institution_prov)){
@@ -470,6 +470,8 @@ swims.plot.multibar <- function(
   if("count" %in% colnames(plot_data)){
     plot_data$count <- ifelse(is.na(plot_data$count), "", plot_data$count)
   }
+  
+  
   
   # PLOT ####
   if(!is.null(institution_prov) & !is.null(divider)){ # Institution and divider
@@ -716,7 +718,9 @@ swims.plot.multibar <- function(
     
   } else if (is.null(institution_prov) & is.null(divider)){ # no-Institution and no-divider
     
-    g <- ggplot(plot_data, aes(x = text, y = proportion, fill = value_fill)) +   
+    plot_data$text <- fct_rev(as.factor(plot_data$text))
+  
+    ggplot(plot_data, aes(x = text, y = proportion, fill = value_fill)) +   
       geom_bar(stat = "identity", position = "fill", width = width_bar) +  # Stacked bar chart  
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
