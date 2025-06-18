@@ -1,32 +1,42 @@
 ---
-title: "National Report: SWiMS 2024 Data"
+  title: "National Report: SWiMS 2024 Data"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
   width_bar: 1
 output:
   pdf_document:
-    toc: true
-    toc_depth: 2
-    keep_tex: true
-    fig_caption: false
+  toc: true
+toc_depth: 2
+keep_tex: true
+fig_caption: false
 bibliography: references.bib 
 classoption: landscape
 header-includes:
   - \usepackage{graphicx}
-  - \usepackage{fancyhdr}
-  - \pagestyle{fancy}
-  - \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
-  - \fancyhead[C]{}
-  - \fancyhead[R]{SWiMS 2024 National Report}
-  - \usepackage{draftwatermark}
-  - \SetWatermarkText{DRAFT}
-  - \SetWatermarkScale{1} # Adjust size of watermark
-  - \SetWatermarkLightness{0.9} # Adjust transparency (1 = invisible, 0 = solid)
+- \usepackage{fancyhdr}
+- \usepackage{hyperref}
+- \usepackage{xcolor}
+- \pagestyle{fancy}
+- \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_logo_2025_small.jpg}}
+- \fancyhead[C]{}
+- \fancyhead[R]{SWiMS 2024 National Report}
+- \usepackage{draftwatermark}
+- \SetWatermarkText{DRAFT}
+- \SetWatermarkScale{1} # Adjust size of watermark
+- \SetWatermarkLightness{0.9} # Adjust transparency (1 = invisible, 0 = solid)
+# - \hypersetup{
+#     colorlinks=T,
+#     linkcolor=blue,
+#     urlcolor=blue,
+#     citecolor=blue,
+#     pdfborder={0 0 1}
+#   }
+- \hypersetup{colorlinks=T}
 ---
-
-
-```{r setup, include=FALSE}
+  
+  
+  ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
                       fig.width = 9, 
                       fig.height = 5, 
@@ -72,7 +82,7 @@ width_bar_default <- 0.9
 - add questions to each page (not just the first time it is mentioned)
 
 - new grouping in position type (in codebook)!
-- distribution plot by e.g, age, bars width erhöhen damit text lesbar
+  - distribution plot by e.g, age, bars width erhöhen damit text lesbar
 
 - aggregation function: do not exclude if there is one NA
 - aggregation function: add info if "other" was specified
@@ -81,15 +91,20 @@ width_bar_default <- 0.9
 
 
 - für paper: year in phd as important factor!
+  
+  - @ ZORAN: rename Discrimination Dimensions to "Sources of Discrimination"
 
-- @ ZORAN: rename Discrimination Dimensions to "Sources of Discrimination"
-- @ ZORAN: - stress measure to mental health section?
+\newpage
+
 
 # Executive Summary
 
-SOURCE FILE LOCALLY, DO NOT UPLOAD TO GITHUB
- \newpage  
- 
+
+```{r child = '../Executive_Summary/Excecutive_Summary_V1.rmd'}
+```
+
+\newpage  
+
 # Introduction
 
 
@@ -109,19 +124,38 @@ Despite growing awareness of these issues, Switzerland lacks comprehensive natio
 To address this gap, actionuni, in collaboration with 12 mid-level academic staff associations, launched SWiMS 2024 as a bottom-up initiative. The survey provides the first nationwide assessment of mental health among early career researchers in Switzerland, highlighting both stressors and protective factors.
 
 By systematically analyzing the collected data, the project aims to:
-
-- Expand the knowledge base on mental health in academia.
+  
+  - Expand the knowledge base on mental health in academia.
 - Identify key stress factors affecting mid-level academic staff.
 - Enable institutions to learn from best practices, improving support systems.
 - Provide an evidence-based foundation for discussions on mental health policies.
 
 Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia.
 
+## How to read the key plots
+
+### Distribution plots
+
+\begin{figure}[h]
+\centering
+\includegraphics[trim=0 30 30 0,clip,page = 1, width=1\linewidth]{../how_to_read_plots_national.pdf}
+\end{figure}
+
+\newpage 
+
+### Grouped questions plots
+
+\begin{figure}[h]
+\centering
+\includegraphics[trim=0 30 30 0,clip,page = 2, width=1\linewidth]{../how_to_read_plots_national.pdf}
+\end{figure}
+
 
 ---
   
- \newpage  
- 
+  
+  \newpage  
+
 # Sample Description
 
 ## Data cleaning 
@@ -159,7 +193,7 @@ ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y
     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
   ) +
   labs(
-   # title = "Number of Responses by Institution",
+    # title = "Number of Responses by Institution",
     x = "Institution Name",
     y = "Number of Responses",
     caption = paste("Total count: ",sum_count ,"\n",
@@ -175,40 +209,40 @@ ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y
 The average duration of responding to the survey was `r round(mean(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)` minutes (SD = `r round(sd(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)`).
 
 <!-- ### Response Rate -->
-
-<!-- ```{r} -->
-
-<!-- institution_counts <- institution_counts %>% -->
-<!--   left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers -->
+  
+  <!-- ```{r} -->
+  
+  <!-- institution_counts <- institution_counts %>% -->
+  <!--   left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers -->
 <!-- institution_counts$response_rate <- institution_counts$count/institution_counts$Members -->
-
-<!-- # Create the bar chart -->
-<!-- ggplot(institution_counts, aes(x = reorder(inst, count))) +  -->
-<!--   geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) +  -->
-<!--   geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) +  -->
-<!--   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)),  -->
-<!--             hjust = -0.1, size = 3.5) + -->
-<!--   labs(x = "Institution Name",  -->
-<!--        y = "Number of estimated Members (in gray)\n and Responses (in blue)") +  -->
-<!--   theme_minimal(base_size = 12) +  -->
-<!--   theme( -->
-<!--     axis.text.x = element_text(size = 10), -->
-<!--     axis.text.y = element_text(size = 10), -->
-<!--     axis.title.x = element_text(size = 12), -->
-<!--     axis.title.y = element_text(size = 12), -->
-<!--     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic") -->
-<!--   ) + -->
-<!--   coord_flip() + -->
-<!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) -->
-
-<!-- #ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8) -->
-
-<!-- ``` -->
-
-\newpage
+  
+  <!-- # Create the bar chart -->
+  <!-- ggplot(institution_counts, aes(x = reorder(inst, count))) +  -->
+  <!--   geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) +  -->
+  <!--   geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) +  -->
+  <!--   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)),  -->
+                     <!--             hjust = -0.1, size = 3.5) + -->
+  <!--   labs(x = "Institution Name",  -->
+                <!--        y = "Number of estimated Members (in gray)\n and Responses (in blue)") +  -->
+  <!--   theme_minimal(base_size = 12) +  -->
+  <!--   theme( -->
+                  <!--     axis.text.x = element_text(size = 10), -->
+                  <!--     axis.text.y = element_text(size = 10), -->
+                  <!--     axis.title.x = element_text(size = 12), -->
+                  <!--     axis.title.y = element_text(size = 12), -->
+                  <!--     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic") -->
+                  <!--   ) + -->
+  <!--   coord_flip() + -->
+  <!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) -->
+  
+  <!-- #ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8) -->
+  
+  <!-- ``` -->
+  
+  \newpage
 
 ## Demographics 
-  
+
 The figures below summarize the key demographic characteristics of all parttaking institutions.
 
 ### Age
@@ -228,8 +262,8 @@ For the subsequent analyses this variable was grouped into three categories: "18
 
 
 
- \newpage  
- 
+\newpage  
+
 ### Gender
 
 `r swims.formulation("female", what = "item")` with answer options "male","female","non-binary", or "prefer not to say".
@@ -241,8 +275,8 @@ swims.plot.distribution("Gender")
 Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). "prefer not to say" responses were coded as missing.
 
 
- \newpage  
- 
+\newpage  
+
 ### Research Discipline
 
 
@@ -258,8 +292,8 @@ swims.plot.distribution("researchDiscipline")
 Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Social Sciences", and "Humanities". "Prefer not to say" responses coded as missing.
 
 
- \newpage  
- 
+\newpage  
+
 ### Position Type
 
 `r swims.formulation("mainPosition", what = "item")`
@@ -267,15 +301,15 @@ Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Soc
 
 ```{r , fig.height = 4, fig.width=9}
 swims.plot.distribution("mainPosition") # + 
-    #scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
+#scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
 
 ```
 
 Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as missing.
 
 
- \newpage  
- 
+\newpage  
+
 ### Funding Source
 
 `r swims.formulation("funding", what = "item")`
@@ -288,8 +322,8 @@ swims.plot.distribution("funding")
 Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing missing.
 
 
- \newpage  
- 
+\newpage  
+
 ### Residence Status
 
 
@@ -303,8 +337,8 @@ swims.plot.distribution("residenceStatus")
 Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits". Non-disclosed or unclear responses coded as missing.
 
 
- \newpage  
- 
+\newpage  
+
 #### Employment Status
 
 `r swims.formulation("employmentStatus", what = "item")`
@@ -380,8 +414,8 @@ swims.plot.distribution("mentalHealth")
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ### General Mental Health by Age
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -390,8 +424,8 @@ swims.plot.distribution("mentalHealth")
 swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 3)
 ```
 
- \newpage  
- 
+\newpage  
+
 ### General Mental Health by Gender
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -403,7 +437,8 @@ swims.plot.distribution(var = "mentalHealth", divider = "Gender", annoFontSize =
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 
- \newpage  
+\newpage  
+
 ### General Mental Health by Research Discipline
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -413,8 +448,8 @@ swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSi
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ### General Mental Health by Funding Source
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -424,8 +459,8 @@ swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize 
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ### General Mental Health by Position Type
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -435,8 +470,8 @@ swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ### General Mental Health by Employment Status
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -447,7 +482,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", anno
 ```
 
 
- \newpage  
+\newpage  
 ### General Mental Health by Residence
 
 `r swims.formulation("mentalHealth", what = "item")`
@@ -458,8 +493,8 @@ swims.plot.distribution(var = "mentalHealth", divider = "Residence", annoFontSiz
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ## Depression
 
 We computed a depression score by summing the 7 items from the DASS-21 depression subscale. In our sample, this measure showed excellent internal consistency (Cronbach’s alpha = .91), indicating that the items reliably measure the same underlying construct. A total of 62 observations were excluded from this analysis due to missing data on at least one of the depression items.
@@ -643,16 +678,16 @@ swims.plot.multibar(var = "resources", divider = "Residence")
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 # Job Satisfaction 
 
 Item formulation: 
-
-*Taking everything into consideration, how satisfied do you feel about your job as a whole?*
-
-Item developed by Dolbier and colleauges [-@dolbier_reliability_2005].
+  
+  *Taking everything into consideration, how satisfied do you feel about your job as a whole?*
+  
+  Item developed by Dolbier and colleauges [-@dolbier_reliability_2005].
 
 
 ```{r jobsatis, fig.height= 5 , fig.width= 6}
@@ -770,16 +805,16 @@ swims.plot.distribution(var = "quitting", divider = "Residence", annoFontSize = 
 ```
 
 
- \newpage  
- 
+\newpage  
 
-## Stress 
+
+# Stress 
 
 Item formulation: 
-
-*Stress means a situation in which a person feels tense, restless, nervous or anxious or is unable to sleep at night because their mind is troubled all the time. Do you feel this kind of stress these days?*
-
-Item developed by Elo and colleauges [-@elo_validity_2003].
+  
+  *Stress means a situation in which a person feels tense, restless, nervous or anxious or is unable to sleep at night because their mind is troubled all the time. Do you feel this kind of stress these days?*
+  
+  Item developed by Elo and colleauges [-@elo_validity_2003].
 
 
 ```{r stress_item, fig.height= 5 , fig.width= 6}
@@ -788,18 +823,19 @@ swims.plot.distribution("stress")
 ```
 
 
-### Stress  by Age
+### Stress by Age
 
 ```{r, fig.height= 5, fig.width= 6.5}
 swims.plot.distribution(var = "stress", divider = "Age", annoFontSize = 3)
 ```
 
-### Stress  by Gender
+### Stress by Gender
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "stress", divider = "Gender", annoFontSize = 3)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Stress  by Research Discipline
@@ -808,7 +844,7 @@ the 'other' category entails the non-binary response category or if both male an
 swims.plot.distribution(var = "stress", divider = "Discipline", annoFontSize = 2)
 ```
 
-### Stress  by Funding Source
+### Stress by Funding Source
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "stress", divider = "Funding", annoFontSize = 2)
@@ -829,7 +865,7 @@ swims.plot.distribution(var = "stress", divider = "employmentStatus", annoFontSi
 ```
 
 
-### Stressby Residence
+### Stress by Residence
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "stress", divider = "Residence", annoFontSize = 3)
@@ -946,8 +982,8 @@ swims.plot.multibar(var = c("stress_system3"), divider = "Residence", font_size 
 
 ```
 
- \newpage  
- 
+\newpage  
+
 ## Stressor Supervisor
 
 
@@ -1010,8 +1046,8 @@ swims.plot.multibar(var = "stress_supervisor", divider = "Residence", font_size 
 
 ```
 
- \newpage  
- 
+\newpage  
+
 ## Stressor Colleagues
 
 
@@ -1076,8 +1112,8 @@ swims.plot.multibar(var = "stress_colleagues", divider = "Residence", font_size 
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 ## Stressor Self-Management
 
@@ -1140,8 +1176,8 @@ swims.plot.multibar(var = "stress_selfManagement", divider = "Residence", font_s
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 ## Stressor Private
 
@@ -1202,8 +1238,8 @@ swims.plot.multibar(var = "stress_private", divider = "Residence", font_size = m
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 # Statements Regarding Supervisor
 
@@ -1358,8 +1394,8 @@ swims.plot.multibar(var = c("supervisor3"), divider = "Residence", font_size = m
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 # Statements Regarding Institution 
 
@@ -1467,8 +1503,8 @@ swims.plot.multibar(var = c("institution2"), divider = "Residence", font_size = 
 
 ```
 
- \newpage  
- 
+\newpage  
+
 # Statements Regarding Work-Group
 
 These workgroup-related questions were asked only if the respondents indicated to be in a working group, `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
@@ -1532,17 +1568,17 @@ swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multib
 
 ```
 
- \newpage  
- 
+\newpage  
+
 
 # Discrimination
 
 <span style="color:red">TODO: check that the legend labels are not cut</span>
-
-
-## Discrimination Experience 
-
-`r swims.formulation("discriminationWitness", what = "item")`
+  
+  
+  ## Discrimination Experience 
+  
+  `r swims.formulation("discriminationWitness", what = "item")`
 
 ```{r Discrimination1, fig.height= 8, fig.width= 9}
 
@@ -1648,8 +1684,8 @@ swims.plot.multibar(var = "discrimination2", divider = "Residence", font_size = 
 
 
 
- \newpage  
- 
+\newpage  
+
 ## Sources of Discrimination Dimensions 
 
 
@@ -1667,19 +1703,19 @@ This plot shows the responses of the subset of respondents (n = `r sum(table(dat
 
 
 <!-- ## Amount of Sources of Discrimination -->
-<!-- \normalsize -->
-<!-- `r swims.formulation("discrAge", what = "item")` -->
-<!-- \normalsize -->
-<!-- ```{r} -->
-<!-- swims.plot.aggregation("discrimination_type", -->
-<!--                        font_size = (10 + 5), -->
-<!--                        count_votes_at_all = TRUE) -->
-<!-- ``` -->
+  <!-- \normalsize -->
+  <!-- `r swims.formulation("discrAge", what = "item")` -->
+  <!-- \normalsize -->
+  <!-- ```{r} -->
+  <!-- swims.plot.aggregation("discrimination_type", -->
+                                <!--                        font_size = (10 + 5), -->
+                                <!--                        count_votes_at_all = TRUE) -->
+  <!-- ``` -->
+  
+  
+  
+  \newpage  
 
-
-
- \newpage  
- 
 
 # Questionable Research Practices
 
@@ -1810,8 +1846,8 @@ swims.plot.multibar(var = "qrp3", divider = "Residence", font_size = multibar.fo
 ```
 
 
- \newpage  
- 
+\newpage  
+
 ## Pressures to Perform Questionable Reserach Practices 
 
 `r swims.formulation("pressureqrpFunder", what = "item")`
@@ -1823,8 +1859,8 @@ swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size 
 
 ```
 
- \newpage  
- 
+\newpage  
+
 ## Effects of Pressures to Perform Questionable Reserach Practices on Mental Health
 
 `r swims.formulation("pressureqrpMentalhealth", what = "item")`
@@ -1888,12 +1924,12 @@ swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Residence", 
 ---
   
   
- \newpage  
- 
+  \newpage  
+
 # Appendix
-  
+
 ## Codebook
-  
+
 Detailed variable names, item formulations, etc. can be found in the codebook [link]
 
 # References 
