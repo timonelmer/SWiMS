@@ -720,7 +720,7 @@ swims.plot.multibar <- function(
     
     plot_data$text <- fct_rev(as.factor(plot_data$text))
   
-    ggplot(plot_data, aes(x = text, y = proportion, fill = value_fill)) +   
+    g <- ggplot(plot_data, aes(x = text, y = proportion, fill = value_fill)) +   
       geom_bar(stat = "identity", position = "fill", width = width_bar) +  # Stacked bar chart  
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
