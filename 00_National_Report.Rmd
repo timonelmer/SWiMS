@@ -1,5 +1,5 @@
 ---
-  title: "National Report: SWiMS 2024 Data"
+title: "National Report: SWiMS 2024 Data"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
@@ -14,29 +14,30 @@ bibliography: references.bib
 classoption: landscape
 header-includes:
   - \usepackage{graphicx}
-- \usepackage{fancyhdr}
-- \usepackage{hyperref}
-- \usepackage{xcolor}
-- \pagestyle{fancy}
-- \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_logo_2025_small.jpg}}
-- \fancyhead[C]{}
-- \fancyhead[R]{SWiMS 2024 National Report}
-- \usepackage{draftwatermark}
-- \SetWatermarkText{DRAFT}
-- \SetWatermarkScale{1} # Adjust size of watermark
-- \SetWatermarkLightness{0.9} # Adjust transparency (1 = invisible, 0 = solid)
-# - \hypersetup{
-#     colorlinks=T,
-#     linkcolor=blue,
-#     urlcolor=blue,
-#     citecolor=blue,
-#     pdfborder={0 0 1}
-#   }
-- \hypersetup{colorlinks=T}
+  - \usepackage{fancyhdr}
+  - \usepackage{hyperref}
+  - \usepackage{xcolor}
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_logo_2025_small.jpg}}
+  - \fancyhead[C]{}
+  - \fancyhead[R]{SWiMS 2024 National Report}
+  - \usepackage{draftwatermark}
+  - \SetWatermarkText{DRAFT}
+  - \SetWatermarkScale{1} # Adjust size of watermark
+  - \SetWatermarkLightness{0.9} # Adjust transparency (1 = invisible, 0 = solid)
+  # - \hypersetup{
+  #     colorlinks=T,
+  #     linkcolor=blue,
+  #     urlcolor=blue,
+  #     citecolor=blue,
+  #     pdfborder={0 0 1}
+  #   }
+  - \hypersetup{colorlinks=T}
+
 ---
   
   
-  ```{r setup, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
                       fig.width = 9, 
                       fig.height = 5, 
@@ -131,6 +132,10 @@ By systematically analyzing the collected data, the project aims to:
 - Provide an evidence-based foundation for discussions on mental health policies.
 
 Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia.
+
+## Sharing of Raw Data
+
+As resources for preparing the data for open access are currently unavailable, it is possible that a public release of anonmyized raw data may not take place. For this reason, the present report provides a detailed overview of the findings -— spanning nearly 200 pages -- to provide broad accessibility of the results.
 
 ## How to read the key plots
 
@@ -708,6 +713,7 @@ swims.plot.distribution(var = "jobSatisfaction", divider = "Age", annoFontSize =
 swims.plot.distribution(var = "jobSatisfaction", divider = "Gender", annoFontSize = 3)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Job Satisfaction  by Research Discipline
@@ -1010,6 +1016,7 @@ swims.plot.multibar(var = "stress_supervisor", divider = "Age", font_size = mult
 swims.plot.multibar(var = "stress_supervisor", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Stressor Supervisor by Research Discipline
@@ -1140,6 +1147,7 @@ swims.plot.multibar(var = "stress_selfManagement", divider = "Age", font_size = 
 swims.plot.multibar(var = "stress_selfManagement", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Stressor Self-Management by Research Discipline
@@ -1202,6 +1210,7 @@ swims.plot.multibar(var = "stress_private", divider = "Age", font_size = multiba
 swims.plot.multibar(var = "stress_private", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T)
 
 ```
+
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 ### Stressor Private by Research Discipline
@@ -1267,31 +1276,31 @@ swims.plot.multibar(var = c("supervisor3") , font_size = multibar.fontSize+3, fo
 ## Supervisor by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ## Supervisor by Gender
 
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = c("supervisor1"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 
 ```
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = c("supervisor2"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 
 ```
@@ -1299,8 +1308,8 @@ swims.plot.multibar(var = c("supervisor2"), divider = "Gender", font_size = mult
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = c("supervisor3"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1309,49 +1318,49 @@ the 'other' category entails the non-binary response category or if both male an
 ## Supervisor by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Supervisor by Funding Source
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ## Supervisor by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
@@ -1360,17 +1369,17 @@ swims.plot.multibar(var = c("supervisor3"), divider = "Position", font_size = mu
 ## Supervisor by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1379,18 +1388,18 @@ swims.plot.multibar(var = c("supervisor3"), divider = "employmentStatus", font_s
 ## Supervisor by Residence
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("supervisor3"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("supervisor3"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1403,40 +1412,40 @@ swims.plot.multibar(var = c("supervisor3"), divider = "Residence", font_size = m
 `r swims.formulation("focusInst", what = "item")`
 \normalsize
 
-```{r Institution, fig.height= 7, fig.width= 9}
+```{r Institution, fig.height= 6, fig.width= 9}
 
-swims.plot.multibar(var = c("institution1"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r Institution2, fig.height= 8, fig.width= 9}
 
-swims.plot.multibar(var = c("institution2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ## Institution by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Institution by Gender
 
-```{r, fig.height= 6.5, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = c("institution1"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
 
-```{r, fig.height= 6.5, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = c("institution2"), divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1445,35 +1454,35 @@ the 'other' category entails the non-binary response category or if both male an
 ## Institution by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Institution by Funding Source
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ## Institution by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
@@ -1481,12 +1490,12 @@ swims.plot.multibar(var = c("institution2"), divider = "Position", font_size = m
 ## Institution by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1494,12 +1503,12 @@ swims.plot.multibar(var = c("institution2"), divider = "employmentStatus", font_
 ## Institution by Residence
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = c("institution2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = c("institution2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1514,7 +1523,7 @@ These workgroup-related questions were asked only if the respondents indicated t
 
 ```{r Workgroup, fig.height= 4, fig.width= 9}
 
-swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1522,13 +1531,13 @@ swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize+4, fontsize
 ## Workgroup by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Workgroup by Gender
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "workgroup", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1537,26 +1546,26 @@ the 'other' category entails the non-binary response category or if both male an
 ## Workgroup by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Workgroup by Funding Source
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 ## Workgroup by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 ```
 
 
 ## Workgroup by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1564,7 +1573,7 @@ swims.plot.multibar(var = "workgroup", divider = "employmentStatus", font_size =
 ## Workgroup by Residence
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2)
+swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 2)
 
 ```
 
@@ -1572,24 +1581,21 @@ swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multib
 
 
 # Discrimination
-
-<span style="color:red">TODO: check that the legend labels are not cut</span>
   
-  
-  ## Discrimination Experience 
+## Discrimination Experience 
   
   `r swims.formulation("discriminationWitness", what = "item")`
 
-```{r Discrimination1, fig.height= 8, fig.width= 9}
+```{r Discrimination1, fig.height= 6, fig.width= 9}
 
-swims.plot.multibar(var = c("discrimination1"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = c("discrimination1"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
 
 ```{r Discrimination2, fig.height= 9, fig.width= 9}
 
-swims.plot.multibar(var = c("discrimination2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = c("discrimination2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
@@ -1598,27 +1604,27 @@ swims.plot.multibar(var = c("discrimination2"), font_size = multibar.fontSize+4,
 ## Discrimination Experience by Age
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, wrap_legend = T)
+swims.plot.multibar(var = "discrimination1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, wrap_legend = T, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 
 
 ## Discrimination Experience by Gender
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "discrimination1", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-```{r, fig.height= 8, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+```{r, fig.height= 6, fig.width= 9}
+swims.plot.multibar(var = "discrimination2", divider = "Gender", font_size = multibar.fontSize+1, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
@@ -1628,44 +1634,44 @@ the 'other' category entails the non-binary response category or if both male an
 ## Discrimination Experience by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 ## Discrimination Experience by Funding Source
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 ## Discrimination Experience by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 ```
 
 
 ## Discrimination Experience by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
@@ -1673,12 +1679,12 @@ swims.plot.multibar(var = "discrimination2", divider = "employmentStatus", font_
 ## Discrimination Experience by Residence
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination1", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination1", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
 ```{r, fig.height= 9, fig.width= 9}
-swims.plot.multibar(var = "discrimination2", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T)
+swims.plot.multibar(var = "discrimination2", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
 
 ```
 
@@ -1721,7 +1727,7 @@ This plot shows the responses of the subset of respondents (n = `r sum(table(dat
 
 `r swims.formulation("qrpFalsdata", what = "item")`
 
-```{r Questionable Reserach Practices1, fig.height= 7, fig.width= 9}
+```{r Questionable Reserach Practices1, fig.height= 6, fig.width= 7}
 qrp.cols <- c("red","#66C2A5","gray69","orange","#2166AC")
 swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
@@ -1755,12 +1761,12 @@ swims.plot.multibar(var = "qrp3", divider = "Age", font_size = multibar.fontSize
 
 ## Questionable Reserach Practices by Gender
 
-```{r, fig.height= 7, fig.width= 9}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
 
-```{r, fig.height= 7, fig.width= 9}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
