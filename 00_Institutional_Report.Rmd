@@ -51,7 +51,7 @@ library(dplyr)
 
 ```{r load-data, include=FALSE}
 # Load data
-load("../data/SWiMS2024_Data_2025-03-29.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
+load("../data/SWiMS2024_Data_2025-03-31.RData") # ToDo: wir müssen unbedingt drauf achten dass alles nutzbar ist für beide ich kann data cleaningn icht nutzen weil mir ien objekt fehlt
 source("zz_utils_helpers.R")
 source("zz_utils_distribution.R")
 source("zz_utils_aggregation.R")
