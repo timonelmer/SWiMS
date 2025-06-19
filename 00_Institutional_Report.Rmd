@@ -60,11 +60,14 @@ source("zz_utils_multibar.R")
 target_institution <- levels(dat$institution)[params$object.inst]
 ```
 
+\newpage 
+
 # Introduction
 
 The **SWiMS 2024 Survey** explores the mental health and well-being of mid-level academic staff (e.g., doctoral researchers, scientific associates, postdocs, and other scientific staff) in Switzerland. The goal is to identify problems and areas for improvement in working conditions and research environments. This report focuses on the institution **`r target_institution`**, comparing its responses to those from other institutions.
 
----
+
+\newpage
 
 # How to read the key plots
 
