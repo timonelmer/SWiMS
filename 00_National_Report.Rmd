@@ -1,5 +1,5 @@
 ---
-title: "National Report: SWiMS 2024 Data"
+title: "Swiss-Wide Mental Health Survey (SWiMS) 2024: National Report"
 author: "actionuni Survey Team"
 date: "`r Sys.Date()`"
 params:
@@ -9,6 +9,8 @@ output:
   toc: true
 toc_depth: 2
 keep_tex: true
+#latex_engine: pdflatex  # or xelatex/lualatex
+fig_pos: 'H'            # <--- forces figure position
 fig_caption: false
 bibliography: references.bib 
 classoption: landscape
@@ -16,6 +18,7 @@ header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \usepackage{hyperref}
+  - \usepackage{float}
   - \usepackage{xcolor}
   - \pagestyle{fancy}
   - \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_logo_2025_small.jpg}}
@@ -33,6 +36,10 @@ header-includes:
   #     pdfborder={0 0 1}
   #   }
   - \hypersetup{colorlinks=T}
+  - \usepackage{titling}
+  - \pretitle{\begin{center}
+    \includegraphics[width=2in,height=2in]{actionuni_logo_2025_small.jpg}\LARGE\\}
+  - \posttitle{\end{center}}
 
 ---
   
@@ -75,10 +82,6 @@ width_bar_default <- 0.9
 
 \newpage
 
-# TODO
-
-- references in intro text
-
 # Executive Summary
 
 
@@ -90,29 +93,35 @@ width_bar_default <- 0.9
 # Introduction
 
 
-The Swiss-Wide Mental Health Survey (SWiMS) 2024 examines the mental health and well-being of mid-level academic staff across Switzerland, including doctoral researchers, scientific staff, and postdocs. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
+The Swiss-Wide Mental Health Survey (SWiMS) 2024 examines the mental health and well-being of mid-level academic staff across Switzerland, including doctoral researchers, postdocs, and (non-faculty) scientific staff. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
 
 This report presents the national-level findings, offering descriptive data into mental health outcomes, stressors, available resources, sources of discrimination, and questionable research practices. Each of the 13 part-taking institution also received an institution-specific report, in which the responses of the specific institution are compared to all other part-taking institutions combined. 
 
 ## Background and Motivation
-Mid-level academic staff are essential to research, teaching, and student supervision, making up approximately 48% of the academic workforce in Switzerland (Federal Statistical Office, 2024). Despite their crucial role, many experience high levels of stress and job insecurity, which can negatively impact both their mental health and the quality of academic work (REFs).
+Mid-level academic staff are essential to research, teaching, and student supervision, making up approximately 48% of the academic workforce in Switzerland (Federal Statistical Office, 2024). 
+This group plays a decisive role, not only in carrying out day-to-day research, but also in teaching and supervising students. The mid-level faculty thus makes a decisive contribution to the innovative strength and competitiveness of the university system as well as to the quality of teaching and training.  
+Despite their central role, mid-level academic staff are often exposed to a variety of stresses. The work pressure is high due to the demands of research, teaching and administrative tasks [@barkhuizen2014; @mattijssen2020]. Added to this is the increasing pressure to publish, reinforced by the “publish or perish” principle, which has a significant influence on academic careers [@miller2011; @tijdink2013]. Many early career researchers also struggle with the uncertainty of their professional future, as most positions are temporary and the prospect of a long-term academic career is very limited [@petersen2012; @nagy2019; @guidetti2022].
 
-Several factors contribute to these challenges, including intense workload, administrative responsibilities, publication pressure, and uncertain career prospects due to the prevalence of temporary contracts. These stressors are well-documented in international research, with studies indicating that 30-40% of early career researchers report mental health issues (Divaris et al., 2012; Gloria & Steinhardt, 2016; Levecque et al., 2017; Evans et al., 2018). Burnout, depression, and anxiety are particularly prevalent, threatening both individual well-being and the sustainability of academic careers (Bolotnyy et al., 2022; Boone et al., 2022; Satinsky et al., 2021).
+These factors in the academic environment can have a negative impact on the mental health of early career researchers [@bolotnyy2022; @urbina2020]. International studies show that 30–40% of researchers suffer from mental health problems [@divaris2012; @gloria2016; @levecque2017; @evans2018; @mattijssen2020; @estupina2024]. Other international studies also document high rates of burnout (9%), depression (17–24%) and anxiety (17%) among early career researchers [@bolotnyy2022; @boone2022; @evans2018; @satinsky2021]. In the long term, this jeopardizes the quality of research and the innovative strength of universities [@amer2022; @barry2018].
 
-Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of mid-level academic staff. While some institutions have conducted internal surveys (e.g., ETH Zurich’s employee survey), a coordinated, nationwide effort has been missing that allows to indentfy national and local areas of improvement. 
+
+Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of mid-level academic staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows to indentfy national and local areas of improvement. 
 
 ## The Swiss-Wide Mental Health Survey (SWiMS)
 
 To address this gap, actionuni, in collaboration with 13 mid-level academic staff associations, launched SWiMS 2024 as a bottom-up initiative. The survey provides a nationwide assessment of mental health among mid-level staff in Switzerland, highlighting both stressors and protective factors.
 
-By systematically analyzing the collected data, the project aims to:
-  
-- Expand the knowledge base on mental health in academia.
-- Identify key stress factors affecting mid-level academic staff.
-- Enable institutions to learn from best practices, improving support systems.
-- Provide an evidence-based foundation for discussions on mental health policies.
+<!-- By systematically analyzing the collected data, the project aims to: -->
 
-Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia.
+<!-- - Expand the knowledge base on mental health in academia. -->
+<!-- - Identify key stress factors affecting mid-level academic staff. -->
+<!-- - Enable institutions to learn from best practices, improving support systems. -->
+<!-- - Provide an evidence-based foundation for discussions on mental health policies. -->
+
+<!-- Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia. -->
+
+
+Participation in the survey was entirely anonymous and voluntary, and respondents could withdraw at any time during the process. Ethical approval was obtained from the ethics Committee of the Faculty of Philosophy of the University of Zurich (nr. 23.12.07). Data was collected between May 13th and October 31st 2024. 
 
 ## Sharing of Raw Data
 
@@ -122,7 +131,7 @@ As resources for preparing the data for open access are currently unavailable, i
 
 ### Distribution plots
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[trim=0 30 30 0,clip,page = 1, width=1\linewidth]{../how_to_read_plots_national.pdf}
 \end{figure}
@@ -131,7 +140,7 @@ As resources for preparing the data for open access are currently unavailable, i
 
 ### Grouped questions plots
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[trim=0 30 30 0,clip,page = 2, width=1\linewidth]{../how_to_read_plots_national.pdf}
 \end{figure}
@@ -150,7 +159,7 @@ Only institutions with more than 10 responses were considered in this report. 43
 
 ## Parttaking institutions and response
 
-```{r, echo = F}
+```{r, echo = F, width = 8, height = 6}
 
 # Calculate the number of participants for each institution
 institution_counts <- dat %>%
@@ -229,7 +238,7 @@ The average duration of responding to the survey was `r round(mean(dat[dat$durat
 
 ## Demographics 
 
-The figures below summarize the key demographic characteristics of all parttaking institutions.
+The figures below summarize the key demographic characteristics of all part-taking institutions.
 
 ### Age
 
@@ -404,7 +413,6 @@ swims.plot.distribution("mentalHealth")
 
 ### General Mental Health by Age
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 6.5}
 swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 3)
@@ -414,7 +422,6 @@ swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 3)
 
 ### General Mental Health by Gender
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "mentalHealth", divider = "Gender", annoFontSize = 3, width_bar = width_bar_default)
@@ -427,7 +434,6 @@ the 'other' category entails the non-binary response category or if both male an
 
 ### General Mental Health by Research Discipline
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSize = 2, width_bar = width_bar_default)
@@ -438,7 +444,6 @@ swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSi
 
 ### General Mental Health by Funding Source
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize = 2)
@@ -449,7 +454,6 @@ swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize 
 
 ### General Mental Health by Position Type
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize = 2, width_bar = width_bar_default)
@@ -460,7 +464,6 @@ swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize
 
 ### General Mental Health by Employment Status
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", annoFontSize = 3, width_bar = width_bar_default)
@@ -471,7 +474,6 @@ swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", anno
 \newpage  
 ### General Mental Health by Residence
 
-`r swims.formulation("mentalHealth", what = "item")`
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "mentalHealth", divider = "Residence", annoFontSize = 3, width_bar = width_bar_default)
@@ -563,13 +565,13 @@ swims.plot.distribution("Burnout")
 
 ### Burnout by Age
 
-```{r, fig.height= 5, fig.width= 6.5}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Age", annoFontSize = 3)
 ```
 
 ### Burnout by Gender
 
-```{r, fig.height= 5, fig.width= 7}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Gender", annoFontSize = 3)
 ```
 
@@ -577,26 +579,26 @@ the 'other' category entails the non-binary response category or if both male an
 
 ### Burnout by Research Discipline
 
-```{r, fig.height= 5, fig.width= 8}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Discipline", annoFontSize = 2)
 ```
 
 ### Burnout by Funding Source
 
-```{r, fig.height= 5, fig.width= 8}
+```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "Funding", annoFontSize = 2)
 ```
 
 ### Burnout by Position Type
 
-```{r, fig.height= 5, fig.width= 8}
+```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "Position", annoFontSize = 2)
 ```
 
 
 ### Burnout by Employment Status
 
-```{r, fig.height= 5, fig.width= 8}
+```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontSize = 3)
 
 ```
@@ -604,14 +606,14 @@ swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontS
 
 ### Burnout by Residence
 
-```{r, fig.height= 5, fig.width= 7}
+```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Residence", annoFontSize = 3)
 
 ```
 
 ## Awarenes Resources 
 
-```{r awareness resources, fig.height= 5 , fig.width= 6}
+```{r awareness resources, fig.height= 5 , fig.width= 6.5}
 swims.plot.multibar("resources")
 
 ```
