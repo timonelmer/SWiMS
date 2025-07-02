@@ -1576,7 +1576,7 @@ swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multib
   
 ## Discrimination Experience 
   
-  `r swims.formulation("discriminationWitness", what = "item")`
+`r swims.formulation("discriminationWitness", what = "item")`
 
 ```{r Discrimination1, fig.height= 5, fig.width= 8}
 
@@ -1719,24 +1719,24 @@ This plot shows the responses of the subset of respondents (n = `r sum(table(dat
 
 `r swims.formulation("qrpFalsdata", what = "item")`
 
-```{r Questionable Reserach Practices1, fig.height= 6, fig.width= 8}
+```{r Questionable Research Practices1, fig.height= 6, fig.width= 8}
 qrp.cols <- c("red","#66C2A5","gray69","orange","#2166AC")
 swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, fill_color_set = qrp.cols)
 
 ```
 
-```{r Questionable Reserach Practices2, fig.height= 9, fig.width= 9}
+```{r Questionable Research Practices2, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp2", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
 
-```{r Questionable Reserach Practices3, fig.height= 9, fig.width= 9}
+```{r Questionable Research Practices3, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp3", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 
 ```
 
 
-## Questionable Reserach Practices by Age
+## Questionable Research Practices by Age
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1751,7 +1751,7 @@ swims.plot.multibar(var = "qrp3", divider = "Age", font_size = multibar.fontSize
 ```
 
 
-## Questionable Reserach Practices by Gender
+## Questionable Research Practices by Gender
 
 ```{r, fig.height= 6, fig.width= 8}
 swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, fill_color_set = qrp.cols)
@@ -1766,7 +1766,7 @@ swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontS
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-## Questionable Reserach Practices by Research Discipline
+## Questionable Research Practices by Research Discipline
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1780,7 +1780,7 @@ swims.plot.multibar(var = "qrp2", divider = "Discipline", font_size = multibar.f
 swims.plot.multibar(var = "qrp3", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 ```
 
-## Questionable Reserach Practices by Funding Source
+## Questionable Research Practices by Funding Source
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1796,7 +1796,7 @@ swims.plot.multibar(var = "qrp2", divider = "Funding", font_size = multibar.font
 swims.plot.multibar(var = "qrp3", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
 ```
 
-## Questionable Reserach Practices by Position Type
+## Questionable Research Practices by Position Type
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1807,7 +1807,7 @@ swims.plot.multibar(var = "qrp2", divider = "Position", font_size = multibar.fon
 ```
 
 
-## Questionable Reserach Practices by Employment Status
+## Questionable Research Practices by Employment Status
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1826,7 +1826,7 @@ swims.plot.multibar(var = "qrp3", divider = "employmentStatus", font_size = mult
 
 
 
-## Questionable Reserach Practices by Residence
+## Questionable Research Practices by Residence
 
 ```{r, fig.height= 9, fig.width= 9}
 swims.plot.multibar(var = "qrp1", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
@@ -1846,7 +1846,7 @@ swims.plot.multibar(var = "qrp3", divider = "Residence", font_size = multibar.fo
 
 \newpage  
 
-## Pressures to Perform Questionable Reserach Practices 
+## Pressures to Perform Questionable Research Practices 
 
 `r swims.formulation("pressureqrpFunder", what = "item")`
 
@@ -1859,7 +1859,7 @@ swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size 
 
 \newpage  
 
-## Effects of Pressures to Perform Questionable Reserach Practices on Mental Health
+## Effects of Pressures to Perform Questionable Research Practices on Mental Health
 
 `r swims.formulation("pressureqrpMentalhealth", what = "item")`
 
@@ -1869,13 +1869,13 @@ swims.plot.distribution("pressureqrpMentalhealth")
 ```
 
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Age
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Age
 
 ```{r, fig.height= 5, fig.width= 6.5}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Age", annoFontSize = 3)
 ```
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Gender
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Gender
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Gender", annoFontSize = 3)
@@ -1884,26 +1884,26 @@ swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Gender", ann
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Research Discipline
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Research Discipline
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Discipline", annoFontSize = 2)
 ```
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Funding Source
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Funding Source
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Funding", annoFontSize = 2)
 ```
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Position Type
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Position Type
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Position", annoFontSize = 2)
 ```
 
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Employment Status
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "employmentStatus", annoFontSize = 3)
@@ -1911,7 +1911,7 @@ swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "employmentSt
 ```
 
 
-### Effects of Pressures to Perform Questionable Reserach Practices on Mental Health by Residence
+### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Residence
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Residence", annoFontSize = 3)
