@@ -25,7 +25,7 @@ header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  #- \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
+  - \fancyhead[L]{\includegraphics[width=2.5cm]{../data/actionuni_MAIN_LOGO_RVB.jpg}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 Institution Report}
   - \usepackage{draftwatermark}
