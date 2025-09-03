@@ -12,7 +12,7 @@ library(rmarkdown)
 # Aus Timons national dokument
 
 # Load data
-load("../data/SWiMS2024_Data_2025-03-31.RData")
+load("../data/SWiMS2024_Data_2025-09-03.RData")
 unique(dat$institution) # sind die 13 
 
 object.inst <- levels(dat$institution)

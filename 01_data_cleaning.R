@@ -399,10 +399,23 @@ dat <- dat %>%
 # Burnout
 dat$Burnout <- dat$burnOut
 
+
+# employment status label
+dat <- dat %>%
+  mutate(employmentStatus = recode_factor(
+    employmentStatus,
+    "Yes, with a non-permanent contract" = "Non-permanent contract",
+    "Yes, with a permanent contract"     = "Permanent contract",
+    "No"                                 = "Not employed"
+  ))
+
+
+
 ## some codebook processing
 codebook <- openxlsx::read.xlsx("SWiMS_Codebook_v5.xlsx")
 codebook$question <- gsub(pattern = " \\(q_.*$", replacement = "", codebook$Item)
 
+codebook[codebook$VarName %in% "employmentStatus","Labels"] <- "Non-permanent contract//Permanent contract//Not employed"
 ## data on institutions
 dat.meta <- openxlsx::read.xlsx("../SWiMS_institutions.xlsx")
 
