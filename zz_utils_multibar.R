@@ -24,8 +24,8 @@ swims.plot.multibar <- function(
 ){
   # Example 
   # var <- "discrimination1"
-  # institution_prov <- NULL
-  # divider <- NULL
+  # institution_prov <- target_institution
+  # divider <- "Age"
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1

@@ -145,8 +145,8 @@ To address this gap, actionuni, in collaboration with 13 academic mid-level staf
 
 Participation in the survey was entirely anonymous and voluntary, and respondents could withdraw at any time during the process. Ethical approval was obtained from the ethics Committee of the Faculty of Philosophy of the University of Zurich (nr. 23.12.07). Data was collected between May 13th and October 31st 2024. The survey was presented to participants in English.
 
-### Anonymisation
-To prevent potential re-identification and protect individual privacy, any demographic categories with fewer than 10 data points were excluded from the analysis. This measure ensures that no specific demographic group can be linked back to a particular individual, thereby upholding the anonymity and confidentiality of the participants. This exclusion criterion was applied exclusively to demographic categories in the relation to other variables in the dataset.
+### Anonymity
+To protect the anonymity of participants, any demographic categories with fewer than 10 data points were excluded from the analysis (e.g., if there were fewer than 10 participants in the age group > 41). This exclusion criterion was only applied when demographic categories are shown in relation to other variables in the dataset.
 
 ### Sharing of raw data
 
