@@ -56,20 +56,6 @@ header-includes:
         }%
       }%
     }
-  - |
-    % ---- Title-page left-side text, first page only ----
-    \newcommand\TitlePageText{%
-      \put(\LenToUnit{2cm},\LenToUnit{11cm}){%  % moved 4cm up
-        \parbox[t][0.6\textheight][t]{0.7\textwidth}{%
-          Key Takeaways:
-          \begin{itemize}
-
-          \end{itemize}
-        }%
-      }%
-    }
-    \AddToShipoutPicture*{\TitlePageText}
-
 ---
 
 ```{r setup, include=FALSE}
