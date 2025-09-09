@@ -12,16 +12,16 @@ library(rmarkdown)
 # Aus Timons national dokument
 
 # Load data
-load("../data/SWiMS2024_Data_2025-09-03.RData")
+load("../data/SWiMS2024_Data_2025-09-08.RData")
 unique(dat$institution) # sind die 13 
 
 object.inst <- levels(dat$institution)
 # g <- 7
 
 # Loop über jede Gruppe
-for (g in c(6,12)) {
+for (g in c(1)) {
   
-  if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
+  if(object.inst[g] == "Eidgen�ssische Technische Hochschule Z�rich, ETH Z�rich"){
     obj <- "ETHZ"
   } else {
     obj <- object.inst[g]
