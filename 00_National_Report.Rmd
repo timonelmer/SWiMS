@@ -30,10 +30,10 @@ header-includes:
   - \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_MAIN_LOGO_RVB.jpg}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 National Report}
-  - \usepackage{draftwatermark}
-  - \SetWatermarkText{DRAFT}
-  - \SetWatermarkScale{1}
-  - \SetWatermarkLightness{0.9}
+  # - \usepackage{draftwatermark}
+  # - \SetWatermarkText{DRAFT}
+  # - \SetWatermarkScale{1}
+  # - \SetWatermarkLightness{0.9}
   - \usepackage{titling}
   - |
     \preauthor{\begin{center}}
@@ -53,10 +53,11 @@ header-includes:
     % ---- Title-page left-side text, first page only ----
     \newcommand\TitlePageText{%
       \put(\LenToUnit{2cm},\LenToUnit{11cm}){%  % moved 4cm up
-        \parbox[t][0.6\textheight][t]{0.7\textwidth}{%
+        \parbox[t][0.6\textheight][t]{0.8\textwidth}{%
+        \large
           Key Takeaways:
           \begin{itemize}
-
+         
           \end{itemize}
         }%
       }%
@@ -120,11 +121,13 @@ width_bar_default <- 0.9
 \vfill  
 **CRediT (Contribution Roles Taxonomy) author statement:** 
 
-**Zoran Kovacevic\*, Neele H. Heiser\*, Patricia Eiche\* , Timon Elmer\* **: Conceptualization; Methodology; Validation; Investigation; Supervision; Project administration 
+**Zoran Kovacevic\*, Neele H. Heiser\*, Patricia Eiche\* , Timon Elmer\* **: Conceptualization; Methodology; Validation; Investigation; Supervision; Project administration; ; Writing – Review & Editing 
 
-**Zoran Kovacevic\*, Timon Elmer\* **: Formal analysis; Data Curation; Visualization
+**Zoran Kovacevic\*, Timon Elmer\* **: Formal analysis; Data Curation; Visualization; Resources; Writing – Original Draft
 
 \* shared first-authorship
+
+Contact: \href{mailto:survey@actionuni.ch}{survey@actionuni.ch}
 
 \textit{Version 1.0 — `r Sys.Date()`}  
 
@@ -134,8 +137,7 @@ width_bar_default <- 0.9
 
 # Introduction
 
-
-The Swiss-Wide Mental Health Survey (SWiMS) 2024 explores the mental health and well-being of Swiss academic mid-level staff, including doctoral researchers, postdoctoral researchers, and other non-faculty academic staff. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
+The Swiss-Wide Mental Health Survey (SWiMS) 2024 explores the mental health and well-being of academic mid-level staff in Switzerland, including doctoral researchers, postdoctoral researchers, and other academic staff not in professorial positions (see figure on [p.11](#position-type) for details). The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
 
 This report presents the national-level findings, offering descriptive data into mental health outcomes, stressors, available resources, sources of discrimination, and questionable research practices. Each of the 13 participating institution also received an institution-specific report, in which the responses of the specific institution are compared to all other part-taking institutions combined. 
 
@@ -146,7 +148,7 @@ Despite their central role, academic mid-level staff are often exposed to a vari
 These factors in the academic environment can have a negative impact on the mental health of early career researchers [@bolotnyy2022; @urbina2020]. International studies show that 30–40% of researchers suffer from mental health problems [@divaris2012; @gloria2016; @levecque2017; @evans2018; @mattijssen2020; @estupina2024]. Other international studies also document high rates of burnout (9%), depression (17–24%) and anxiety (17%) among early career researchers [@bolotnyy2022; @boone2022; @evans2018; @satinsky2021]. In the long term, this jeopardizes the quality of research and the innovative strength of universities [@amer2022; @barry2018].
 
 
-Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of academic mid-level staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows identification of national and local areas of improvement. The last nationwide report on the working conditions of Swiss mid-level staff was conducted -- also by actionuni -- in 2009 (see SBFI report [here](https://www.sbfi.admin.ch/sbfi/en/home/services/publications/data-base-publications/study-research-and-teaching-assistants.html)).
+Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of academic mid-level staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows identification of national and local areas of improvement. The last nationwide report on the working conditions of academic mid-level staff in Switzerland was conducted -- also by actionuni -- in 2009 (see SBFI report [here](https://www.sbfi.admin.ch/sbfi/en/home/services/publications/data-base-publications/study-research-and-teaching-assistants.html)).
 
 ## The Swiss-Wide Mental Health Survey (SWiMS)
 
@@ -162,7 +164,7 @@ To address this gap, actionuni, in collaboration with 13 academic mid-level staf
 <!-- Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia. -->
 
 
-Participation in the survey was entirely anonymous and voluntary, and respondents could withdraw at any time during the process. Ethical approval was obtained from the ethics Committee of the Faculty of Philosophy of the University of Zurich (nr. 23.12.07). Data was collected between May 13th and October 31st 2024. 
+Participation in the survey was entirely anonymous and voluntary, and respondents could withdraw at any time during the process. Ethical approval was obtained from the ethics Committee of the Faculty of Philosophy of the University of Zurich (nr. 23.12.07). Data was collected between May 13th and October 31st 2024. The survey was conducted in English only.
 
 ## Detailed survey content and codebook
 
@@ -443,9 +445,9 @@ swims.plot.distribution("nonacademicJob")
 
 \newpage 
 
-# Mental Health
+<!-- # Mental Health -->
 
-## General Mental Health
+# General Mental Health
 
 `r swims.formulation("mentalHealth", what = "item")`
 
@@ -456,7 +458,7 @@ swims.plot.distribution("mentalHealth")
 
 \newpage  
 
-### General Mental Health by Age
+## General Mental Health by Age
 
 
 ```{r, fig.height= 5, fig.width= 6.5}
@@ -465,7 +467,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 2)
 
 \newpage  
 
-### General Mental Health by Gender
+## General Mental Health by Gender
 
 
 ```{r, fig.height= 5, fig.width= 7}
@@ -477,7 +479,7 @@ the 'other' category entails the non-binary response category or if both male an
 
 \newpage  
 
-### General Mental Health by Research Discipline
+## General Mental Health by Research Discipline
 
 
 ```{r, fig.height= 5, fig.width= 8}
@@ -487,7 +489,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSi
 
 \newpage  
 
-### General Mental Health by Funding Source
+## General Mental Health by Funding Source
 
 
 ```{r, fig.height= 5, fig.width= 8}
@@ -497,7 +499,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize 
 
 \newpage  
 
-### General Mental Health by Position Type
+## General Mental Health by Position Type
 
 
 ```{r, fig.height= 5, fig.width= 8}
@@ -507,7 +509,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize
 
 \newpage  
 
-### General Mental Health by Employment Status
+## General Mental Health by Employment Status
 
 
 ```{r, fig.height= 5, fig.width= 8}
@@ -517,7 +519,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", anno
 
 
 \newpage  
-### General Mental Health by Residence
+## General Mental Health by Residence
 
 
 ```{r, fig.height= 5, fig.width= 7}
@@ -528,7 +530,7 @@ swims.plot.distribution(var = "mentalHealth", divider = "Residence", annoFontSiz
 
 \newpage  
 
-## Depression
+# Depression
 
 We computed a depression score by summing the 7 items from the DASS-21 depression subscale. In our sample, this measure showed excellent internal consistency (Cronbach’s alpha = .91), indicating that the items reliably measure the same underlying construct. A total of 62 observations were excluded from this analysis due to missing data on at least one of the depression items.
 
@@ -543,13 +545,13 @@ Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_20
 swims.plot.distribution("DepressionCategory")
 ```
 
-### Depression by Age
+## Depression by Age
 
 ```{r, fig.height= 5, fig.width= 6.5}
 swims.plot.distribution(var = "DepressionCategory", divider = "Age", annoFontSize = 3)
 ```
 
-### Depression by Gender
+## Depression by Gender
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "DepressionCategory", divider = "Gender", annoFontSize = 3)
@@ -557,26 +559,26 @@ swims.plot.distribution(var = "DepressionCategory", divider = "Gender", annoFont
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-### Depression by Research Discipline
+## Depression by Research Discipline
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "DepressionCategory", divider = "Discipline", annoFontSize = 2)
 ```
 
-### Depression by Funding Source
+## Depression by Funding Source
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "DepressionCategory", divider = "Funding", annoFontSize = 2)
 ```
 
-### Depression by Position Type
+## Depression by Position Type
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "DepressionCategory", divider = "Position", annoFontSize = 2)
 ```
 
 
-### Depression by Employment Status
+## Depression by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.distribution(var = "DepressionCategory", divider = "employmentStatus", annoFontSize = 3)
@@ -584,7 +586,7 @@ swims.plot.distribution(var = "DepressionCategory", divider = "employmentStatus"
 ```
 
 
-### Depression by Residence
+## Depression by Residence
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.distribution(var = "DepressionCategory", divider = "Residence", annoFontSize = 3)
@@ -594,7 +596,7 @@ swims.plot.distribution(var = "DepressionCategory", divider = "Residence", annoF
 \newpage 
 
 
-## Burnout
+# Burnout
 
 
 `r swims.formulation("Burnout", what = "item")` 
@@ -608,13 +610,13 @@ swims.plot.distribution("Burnout")
 ```
 
 
-### Burnout by Age
+## Burnout by Age
 
 ```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Age", annoFontSize = 3)
 ```
 
-### Burnout by Gender
+## Burnout by Gender
 
 ```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Gender", annoFontSize = 3)
@@ -622,26 +624,26 @@ swims.plot.distribution(var = "Burnout", divider = "Gender", annoFontSize = 3)
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-### Burnout by Research Discipline
+## Burnout by Research Discipline
 
 ```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Discipline", annoFontSize = 2)
 ```
 
-### Burnout by Funding Source
+## Burnout by Funding Source
 
 ```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "Funding", annoFontSize = 2)
 ```
 
-### Burnout by Position Type
+## Burnout by Position Type
 
 ```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "Position", annoFontSize = 2)
 ```
 
 
-### Burnout by Employment Status
+## Burnout by Employment Status
 
 ```{r, fig.height= 6, fig.width= 9}
 swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontSize = 3)
@@ -649,27 +651,27 @@ swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontS
 ```
 
 
-### Burnout by Residence
+## Burnout by Residence
 
 ```{r, fig.height= 6, fig.width= 8}
 swims.plot.distribution(var = "Burnout", divider = "Residence", annoFontSize = 3)
 
 ```
 
-## Awareness Resources
+# Awareness Resources
 
 ```{r awareness resources, fig.height= 5 , fig.width= 6.5}
 swims.plot.multibar("resources")
 
 ```
 
-### Awareness Resources by Age
+## Awareness Resources by Age
 
 ```{r, fig.height= 5, fig.width= 6.5}
 swims.plot.multibar(var = "resources", divider = "Age")
 ```
 
-### Awareness Resources by Gender
+## Awareness Resources by Gender
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.multibar(var = "resources", divider = "Gender")
@@ -677,26 +679,26 @@ swims.plot.multibar(var = "resources", divider = "Gender")
 
 the 'other' category entails the non-binary response category or if both male and female gender were indicated
 
-### Awareness Resources by Research Discipline
+## Awareness Resources by Research Discipline
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.multibar(var = "resources", divider = "Discipline")
 ```
 
-### Awareness Resources by Funding Source
+## Awareness Resources by Funding Source
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.multibar(var = "resources", divider = "Funding")
 ```
 
-### Awareness Resources by Position Type
+## Awareness Resources by Position Type
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.multibar(var = "resources", divider = "Position")
 ```
 
 
-### Awareness Resources by Employment Status
+## Awareness Resources by Employment Status
 
 ```{r, fig.height= 5, fig.width= 8}
 swims.plot.multibar(var = "resources", divider = "employmentStatus")
@@ -704,7 +706,7 @@ swims.plot.multibar(var = "resources", divider = "employmentStatus")
 ```
 
 
-### Awareness Resources by Residence
+## Awareness Resources by Residence
 
 ```{r, fig.height= 5, fig.width= 7}
 swims.plot.multibar(var = "resources", divider = "Residence")
