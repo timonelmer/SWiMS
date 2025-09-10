@@ -102,7 +102,7 @@ target_institution <- levels(dat$institution)[params$object.inst]
 
 # Introduction
 
-The Swiss-Wide Mental Health Survey (SWiMS) 2024 explores the mental health and well-being of Swiss academic mid-level staff, including doctoral researchers, postdoctoral researchers, and other non-faculty academic staff. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
+The Swiss-Wide Mental Health Survey (SWiMS) 2024 explores the mental health and well-being of academic mid-level staff in Switzerland, including doctoral researchers, postdoctoral researchers, and other academic staff not in professorial positions. The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
 
 This report presents the findings of the institution **`r target_institution`**, offering descriptive data into mental health outcomes, stressors, available resources, sources of discrimination, and questionable research practices. The responses of the specific institution are compared to all other part-taking institutions combined (see Chapter: Partaking institutions and response counts). 
 
