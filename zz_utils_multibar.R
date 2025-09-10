@@ -746,7 +746,8 @@ swims.plot.multibar <- function(
       theme(
         text = element_text(size = font_size),
         strip.text.y.left = element_text(size = font_size, angle = 0),  
-        axis.text.y = element_text(size = font_size),  
+        #axis.text.y = element_text(size = font_size),  
+        axis.text.y = element_text(size = font_size, hjust = 0.5), # center the category labels
         axis.text.x = element_text(size = font_size),  
         axis.title = element_text(size = font_size),
         legend.text = element_text(size = font_size),

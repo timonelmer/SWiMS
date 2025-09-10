@@ -30,15 +30,16 @@ header-includes:
   - \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_MAIN_LOGO_RVB.jpg}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 National Report}
-  # - \usepackage{draftwatermark}
-  # - \SetWatermarkText{DRAFT}
-  # - \SetWatermarkScale{1}
-  # - \SetWatermarkLightness{0.9}
+  - \usepackage{draftwatermark}
+  - \SetWatermarkText{DRAFT}
+  - \SetWatermarkScale{1}
+  - \SetWatermarkLightness{0.9}
   - \usepackage{titling}
   - |
     \preauthor{\begin{center}}
     \postauthor{\par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=8cm]{actionuni_EN_LOGO_DEF_RVB.jpeg}}\\
     \href{https://actionuni.ch/}{actionuni.ch}\end{center}}
+    
   - \usepackage{eso-pic}
   - |
     % ---- Title-page bottom-right image, first page only ----
@@ -57,7 +58,7 @@ header-includes:
         \large
           Key Takeaways:
           \begin{itemize}
-         
+            \item placeholder
           \end{itemize}
         }%
       }%
