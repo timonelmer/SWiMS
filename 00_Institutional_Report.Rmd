@@ -196,7 +196,7 @@ The average duration of responding to the survey was `r round(mean(dat[dat$durat
 
 ### Distribution plots
 ```{r, echo=FALSE, fig.align='center', out.width='100%'}
-knitr::include_graphics("../data/howtoread_plot1.pdf")
+knitr::include_graphics("../data/howtoread_plot1b.pdf")
 ```
 \newpage
 
