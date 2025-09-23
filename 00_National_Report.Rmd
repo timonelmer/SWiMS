@@ -10,9 +10,8 @@ output:
     toc_depth: 2
     keep_tex: true
     latex_engine: xelatex   # or lualatex
-    #latex_engine: pdflatex  # or xelatex/lualatex
   classoption: 14pt
-fig_pos: 'H'            # <--- forces figure position
+fig_pos: 'H'
 fig_caption: false
 bibliography: references.bib 
 classoption: landscape
@@ -35,30 +34,69 @@ header-includes:
   - \SetWatermarkScale{1}
   - \SetWatermarkLightness{0.9}
   - \usepackage{titling}
-  - |
-    \preauthor{\begin{center}}
-    \postauthor{\par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=8cm]{actionuni_EN_LOGO_DEF_RVB.jpeg}}\\
-    \href{https://actionuni.ch/}{actionuni.ch}\end{center}}
-    
   - \usepackage{eso-pic}
+  - \usepackage{tikz}
+  - \definecolor{barred}{HTML}{ED6B66}
+  - \definecolor{bargreen}{HTML}{007D3D}
+  - \definecolor{barpink}{HTML}{D472AA}
+  - \definecolor{ead7b7}{HTML}{EAD7B7}
+  - \definecolor{background}{HTML}{F4E9DD}
   - |
-    % ---- Title-page bottom-right image, first page only ----
+    \pretitle{\begin{center}\LARGE\bfseries
+    \par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=10cm]{SECONDARY_LOGO_RVB.png}}\\ \vspace{1cm}}
+    \posttitle{\end{center}}
+    \preauthor{\begin{center}\Large}
+    \postauthor{ \href{https://actionuni.ch/}{actionuni}\end{center}}
+  - |
+    % ---- Title-page background color ----
     \AddToShipoutPicture*{%
-      \put(\LenToUnit{\paperwidth-2cm},\LenToUnit{1cm}){%
-        \makebox(0,0)[rb]{%
-          \includegraphics[width=0.5\paperwidth,keepaspectratio]{actionuni_frontpage.jpeg}%
-        }%
+      \AtPageLowerLeft{%
+        \color{background}\rule{\paperwidth}{\paperheight}%
+      }%
+    }
+  - |
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          \def\barheight{0.4cm}
+          \fill[barred]   (0,0) rectangle (0.33\paperwidth,\barheight);
+          \fill[bargreen] (0.33\paperwidth,0) rectangle (0.66\paperwidth,\barheight);
+          \fill[barpink]  (0.66\paperwidth,0) rectangle (\paperwidth,\barheight);
+        \end{tikzpicture}%
+      }%
+    }
+  - |
+    \definecolor{blackbar}{HTML}{1D1D1B}
+
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          % ----- Black bar -----
+          \def\blackbarheight{0.9cm}
+          \fill[blackbar] (0,0) rectangle (\paperwidth,\blackbarheight);
+
+          % ----- Three colored bars (above black bar) -----
+          \def\barheight{0.35cm}
+          \fill[barred]   (0,\blackbarheight) rectangle (0.33\paperwidth,\blackbarheight+\barheight);
+          \fill[bargreen] (0.33\paperwidth,\blackbarheight) rectangle (0.66\paperwidth,\blackbarheight+\barheight);
+          \fill[barpink]  (0.66\paperwidth,\blackbarheight) rectangle (\paperwidth,\blackbarheight+\barheight);
+
+          % ----- Contact info text (centered in black bar) -----
+          \node[anchor=center, text=ead7b7, font=\fontsize{9pt}{11pt}\selectfont\rmfamily] 
+            at (0.5\paperwidth,0.45) 
+            { \href{https://actionuni.ch}{actionuni.ch} \quad |  \quad \href{mailto:president@actionuni.ch}{president@actionuni.ch}};
+        \end{tikzpicture}%
       }%
     }
   - |
     % ---- Title-page left-side text, first page only ----
     \newcommand\TitlePageText{%
-      \put(\LenToUnit{2cm},\LenToUnit{11cm}){%  % moved 4cm up
+      \put(\LenToUnit{2cm},\LenToUnit{7.5cm}){%  % moved 4cm up
         \parbox[t][0.6\textheight][t]{0.8\textwidth}{%
         \large
           Key Takeaways:
           \begin{itemize}
-            \item placeholder
+            \item 
           \end{itemize}
         }%
       }%
@@ -89,7 +127,7 @@ library(readxl)
 ```{r load-data, include=FALSE}
 rm(list = ls())
 # Load data
-load("../data/SWiMS2024_Data_2025-09-03.RData")
+load("../data/SWiMS2024_Data_2025-09-08.RData")
 source("zz_utils_helpers.R")
 source("zz_utils_distribution.R")
 source("zz_utils_aggregation.R")
@@ -128,7 +166,7 @@ width_bar_default <- 0.9
 
 \* shared first-authorship
 
-Contact: \href{mailto:survey@actionuni.ch}{survey@actionuni.ch}
+Contact: \href{mailto:president@actionuni.ch}{president@actionuni.ch} or \href{mailto:survey@actionuni.ch}{survey@actionuni.ch}
 
 \textit{Version 1.0 — `r Sys.Date()`}  
 
@@ -149,7 +187,7 @@ Despite their central role, academic mid-level staff are often exposed to a vari
 These factors in the academic environment can have a negative impact on the mental health of early career researchers [@bolotnyy2022; @urbina2020]. International studies show that 30–40% of researchers suffer from mental health problems [@divaris2012; @gloria2016; @levecque2017; @evans2018; @mattijssen2020; @estupina2024]. Other international studies also document high rates of burnout (9%), depression (17–24%) and anxiety (17%) among early career researchers [@bolotnyy2022; @boone2022; @evans2018; @satinsky2021]. In the long term, this jeopardizes the quality of research and the innovative strength of universities [@amer2022; @barry2018].
 
 
-Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of academic mid-level staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows identification of national and local areas of improvement. The last nationwide report on the working conditions of academic mid-level staff in Switzerland was conducted -- also by actionuni -- in 2009 (see SBFI report [here](https://www.sbfi.admin.ch/sbfi/en/home/services/publications/data-base-publications/study-research-and-teaching-assistants.html)).
+Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of academic mid-level staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows identification of national and local areas of improvement. The last nationwide report on the working conditions of academic mid-level staff in Switzerland was conducted -- also by actionuni -- in 2009 (see SBFI report [here](https://edudoc.ch/record/35876/)).
 
 ## The Swiss-Wide Mental Health Survey (SWiMS)
 
@@ -181,7 +219,7 @@ As resources for preparing the data for open access are currently unavailable, i
 
 \begin{figure}[H]
 \centering
-\includegraphics[trim=0 30 30 0,clip,page = 1, width=1\linewidth]{../how_to_read_plots_national.pdf}
+\includegraphics[trim=0 30 0 0,clip,page = 1, width=1\linewidth]{../how_to_read_plots_national_v2.pdf}
 \end{figure}
 
 \newpage 
