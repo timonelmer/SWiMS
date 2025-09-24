@@ -25,37 +25,86 @@ geometry: top=1.5cm, bottom=1.2cm, left=1cm, right=1cm
 header-includes:
   - \usepackage{graphicx}
   - \usepackage{fancyhdr}
-  - \usepackage{hyperref}
   - \usepackage{float}
-  - \usepackage{fontspec}
-  - \setmainfont{blue_highway_rg.otf}[ Path = ../data/Fonts/, BoldFont = Blue_Highway_Bd.otf]
   - \usepackage{xcolor}
+  - \usepackage{hyperref}
+  - \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdfborder={0 0 1}}
+  - \usepackage{fontspec}
+  - \setmainfont{blue_highway_rg.otf}[Path=../data/Fonts/, BoldFont=Blue_Highway_Bd.otf]
   - \pagestyle{fancy}
   - \fancyhead[L]{\includegraphics[width=2.5cm]{../data/actionuni_MAIN_LOGO_RVB.jpg}}
-  #- \fancyhead[L]{\includegraphics[width=1.5cm]{actionuni_logo_klein.png}}
   - \fancyhead[C]{}
   - \fancyhead[R]{SWiMS 2024 `r levels(dat$institution)[params$object.inst]` Report}
-  - \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdfborder={0 0 1}}
-  - \usepackage{titling}
   - \usepackage{draftwatermark}
   - \SetWatermarkText{DRAFT}
   - \SetWatermarkScale{1}
   - \SetWatermarkLightness{0.9}
   - \usepackage{titling}
-  - |
-    \preauthor{\begin{center}}
-    \postauthor{\par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=8cm]{../data/actionuni_EN_LOGO_DEF_RVB.jpeg}}\\
-    \href{https://actionuni.ch/}{actionuni.ch}\end{center}}
   - \usepackage{eso-pic}
+  - \usepackage{tikz}
+  - \definecolor{barred}{HTML}{ED6B66}
+  - \definecolor{bargreen}{HTML}{007D3D}
+  - \definecolor{barpink}{HTML}{D472AA}
+  - \definecolor{ead7b7}{HTML}{EAD7B7}
+  - \definecolor{background}{HTML}{F4E9DD}
   - |
-    % ---- Title-page bottom-right image, first page only ----
+    \pretitle{\begin{center}\LARGE\bfseries
+    \par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=10cm]{../data/SECONDARY_LOGO_RVB.png}}\\ \vspace{1cm}}
+    \posttitle{\end{center}}
+    \preauthor{\begin{center}\Large}
+    \postauthor{ \href{https://actionuni.ch/}{actionuni}\end{center}}
+  - |
+    % ---- Title-page background color ----
     \AddToShipoutPicture*{%
-      \put(\LenToUnit{\paperwidth-2cm},\LenToUnit{1cm}){%
-        \makebox(0,0)[rb]{%
-          \includegraphics[width=0.5\paperwidth,keepaspectratio]{../data/actionuni_frontpage.jpeg}%
+      \AtPageLowerLeft{%
+        \color{background}\rule{\paperwidth}{\paperheight}%
+      }%
+    }
+  - |
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          \def\barheight{0.4cm}
+          \fill[barred]   (0,0) rectangle (0.33\paperwidth,\barheight);
+          \fill[bargreen] (0.33\paperwidth,0) rectangle (0.66\paperwidth,\barheight);
+          \fill[barpink]  (0.66\paperwidth,0) rectangle (\paperwidth,\barheight);
+        \end{tikzpicture}%
+      }%
+    }
+  - |
+    \definecolor{blackbar}{HTML}{1D1D1B}
+
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          % ----- Black bar -----
+          \def\blackbarheight{0.9cm}
+          \fill[blackbar] (0,0) rectangle (\paperwidth,\blackbarheight);
+
+          % ----- Three colored bars (above black bar) -----
+          \def\barheight{0.35cm}
+          \fill[barred]   (0,\blackbarheight) rectangle (0.33\paperwidth,\blackbarheight+\barheight);
+          \fill[bargreen] (0.33\paperwidth,\blackbarheight) rectangle (0.66\paperwidth,\blackbarheight+\barheight);
+          \fill[barpink]  (0.66\paperwidth,\blackbarheight) rectangle (\paperwidth,\blackbarheight+\barheight);
+
+          % ----- Contact info text (centered in black bar) -----
+          \node[anchor=center, text=ead7b7, font=\fontsize{9pt}{11pt}\selectfont\rmfamily] 
+            at (0.5\paperwidth,0.45) 
+            { \href{https://actionuni.ch}{actionuni.ch} \quad |  \quad \href{mailto:president@actionuni.ch}{president@actionuni.ch}};
+        \end{tikzpicture}%
+      }%
+    }
+  - |
+    % ---- Title-page left-side text, first page only ----
+    \newcommand\TitlePageText{%
+      \put(\LenToUnit{2cm},\LenToUnit{7.5cm}){%  % moved 4cm up
+        \parbox[t][0.6\textheight][t]{0.8\textwidth}{%
+        
         }%
       }%
     }
+    \AddToShipoutPicture*{\TitlePageText}
+
 ---
 
 ```{r setup, include=FALSE}
