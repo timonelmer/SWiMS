@@ -1,7 +1,7 @@
 ---
-title: "Institution Report: SWiMS 2024 Data"
-subtitle: "Institution: `r levels(dat$institution)[params$object.inst]`"
-author: "a project by"
+title: "Swiss-Wide Mental Health Survey (SWiMS) 2024: Institution Report"
+subtitle: "_____________________________"
+author: "Institution: `r levels(dat$institution)[params$object.inst]` \n \n a survey initiated and conducted by"
 # date: "`r Sys.Date()`"
 params:
   object.inst: 2
@@ -49,7 +49,7 @@ header-includes:
   - \definecolor{background}{HTML}{F4E9DD}
   - |
     \pretitle{\begin{center}\LARGE\bfseries
-    \par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=10cm]{../data/SECONDARY_LOGO_RVB.png}}\\ \vspace{1cm}}
+    \par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=8cm]{../data/SECONDARY_LOGO_RVB.png}}\\ \vspace{1cm}}
     \posttitle{\end{center}}
     \preauthor{\begin{center}\Large}
     \postauthor{ \href{https://actionuni.ch/}{actionuni}\end{center}}
