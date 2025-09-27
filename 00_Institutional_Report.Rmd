@@ -2534,6 +2534,7 @@ swims.plot.multibar("supervisor1",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 \normalsize
@@ -2551,6 +2552,7 @@ swims.plot.multibar("supervisor2",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 \normalsize
@@ -2568,6 +2570,7 @@ swims.plot.multibar("supervisor3",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 
@@ -2975,6 +2978,7 @@ swims.plot.multibar("institution1",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 \normalsize
@@ -2992,6 +2996,7 @@ swims.plot.multibar("institution2",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 
@@ -3275,6 +3280,7 @@ swims.plot.multibar("workgroup",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
+                    legend.nrow = 2,
                     small.group.delete = params$del_small_groups)
 ```
 

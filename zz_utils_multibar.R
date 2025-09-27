@@ -19,13 +19,15 @@ swims.plot.multibar <- function(
     alpha_plot = 0.6,
     width_bar = 0.7,
     proportion.label = F,
+    individual_cut = 1,
     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
     small.group.delete = FALSE # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example 
-  # var <- "discrimination1"
+  # target_institution <- levels(dat$institution)[5]
+  # var <- "supervisor1"
   # institution_prov <- target_institution
-  # divider <- "Age"
+  # divider <- "Gender"
   # data <- dat
   # codeb <- codebook
   # ncol_plot <- 1
@@ -39,9 +41,10 @@ swims.plot.multibar <- function(
   # width_bar <- 0.8
   # wrap_legend = TRUE
   # cut.small.groups <- 10
+  # individual_cut <- 1
   # small.group.delete <- FALSE
   # rev_colors_set <- FALSE
-  
+
   # PREPARATIONS ####
   # Define variable 
   var_org <- var
@@ -51,7 +54,7 @@ swims.plot.multibar <- function(
   # Modify institution_prov
   if(!is.null(institution_prov)){
     institution_prov <- remove_before_and_comma(institution_prov)
-    dat$institution <- remove_before_and_comma(dat$institution)
+    data$institution <- remove_before_and_comma(data$institution)
   }
   
   # Ensure var exists in the codeb
@@ -107,7 +110,7 @@ swims.plot.multibar <- function(
   } else {
     stop("cut.small.groups and small.group.delete must be always defined together.")
   }
-
+  
   # PREPROCESSING ####
   if(!is.null(institution_prov) & !is.null(divider)){ # Instituion and divider
     
@@ -143,6 +146,11 @@ swims.plot.multibar <- function(
           group_by(divider) %>% 
           summarise(count = sum(count))
         
+        side_obj2 <- obj[[sub_plot_data]] %>%
+          filter(group == institution_prov) %>%
+          group_by(divider, value) %>% 
+          summarise(count = sum(count))
+        
         if(any(side_obj$count <= cut.small.groups)){
           
           problem_divider <- which(side_obj$count <= cut.small.groups)
@@ -153,7 +161,7 @@ swims.plot.multibar <- function(
           } else {
             problem_divider <- as.character(side_obj$divider[problem_divider])
           }
-
+          
           if(length(problem_divider) == length(divider_label)){
             
             mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
@@ -163,6 +171,73 @@ swims.plot.multibar <- function(
           } else if (length(problem_divider) > 0){
             
             obj[[sub_plot_data]]$drop <- ifelse(obj[[sub_plot_data]]$divider %in% problem_divider, "drop", "keep")
+            
+          }
+        } 
+        
+        if(any(side_obj2$count <= individual_cut)) {
+          
+          problem_value1 <- which(side_obj2$count <= individual_cut)
+          
+          if(!all(unique(obj[[sub_plot_data]]$value) %in% side_obj2$value)){
+            problem_value2 <- setdiff(unique(obj[[sub_plot_data]]$value), side_obj2$value)
+          } else {
+            problem_value2 <- NULL
+          }
+          
+          problem_value_ges <- c(problem_value1, problem_value2)
+          
+          problem_divider1 <- which(side_obj2$count <= individual_cut)
+          
+          if(!all(unique(obj[[sub_plot_data]]$divider) %in% side_obj$divider)){
+            problem_divider2 <- setdiff(unique(obj[[sub_plot_data]]$divider), side_obj$divider)
+          } else {
+            problem_divider2 <- NULL
+          }
+
+          
+          if (length(problem_value_ges) > 0){
+            
+            if("drop" %in% names(obj[[sub_plot_data]])){
+              
+              if(length(problem_value1) > 0){
+                
+              problem_value1 <- side_obj2$value[problem_value1]
+              problem_divider1 <- side_obj2$divider[problem_divider1]
+              
+              for(kk in 1:length(problem_value1)){
+                
+                obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$value == problem_value1[kk] & obj[[sub_plot_data]]$divider == problem_divider1[kk]] <- "drop"
+                
+                }
+              }
+              
+              if(length(problem_value2) > 0){
+              problem_value2 <- side_obj2$value[problem_value2]
+                
+              obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$value == problem_value2] <- "drop"
+              }
+              
+              
+            } else {
+              
+              if(length(problem_value1) > 0){
+                problem_value1 <- side_obj2$value[problem_value1]
+                problem_divider1 <- side_obj2$divider[problem_divider1]
+                obj[[sub_plot_data]]$drop <- ifelse(obj[[sub_plot_data]]$value %in% problem_value1 & obj[[sub_plot_data]]$divider %in% problem_divider1, "drop", "keep")
+              }
+              
+              if(length(problem_value2) > 0){
+                problem_value2 <- side_obj2$value[problem_value2]
+                obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$value == problem_value2] <- "drop"
+              }
+              
+              if(length(problem_divider2) > 0){
+                problem_divider2 <- side_obj$divider[problem_divider2]
+                obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$divider %in% problem_divider2] <- "drop"
+              }
+              
+            }
             
           }
         } else {
@@ -202,25 +277,25 @@ swims.plot.multibar <- function(
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
       
       obj <- lapply(1:length(obj), function(sub_plot_data){
+        
+        side_obj <- obj[[sub_plot_data]] %>%
+          filter(group == institution_prov)
+        
+        if(sum(side_obj$count) < cut.small.groups){
           
-          side_obj <- obj[[sub_plot_data]] %>%
-            filter(group == institution_prov)
+          mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
           
-          if(sum(side_obj$count) < cut.small.groups){
-            
-            mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
-            
-            return(mess) 
-          } else {
-            
-            obj[[sub_plot_data]]$drop <- "keep"
-            
-          } 
+          return(mess) 
+        } else {
+          
+          obj[[sub_plot_data]]$drop <- "keep"
+          
+        } 
         
         return(obj[[sub_plot_data]])
       }) 
     }
-
+    
   } else if(is.null(institution_prov) & !is.null(divider)){ # no-Instituion and divider
     
     # Reference tibble
@@ -320,16 +395,16 @@ swims.plot.multibar <- function(
         side_obj <- obj[[sub_plot_data]] %>%
           summarise(count = sum(count))
         
-      if(sum(side_obj$count) < cut.small.groups){
-        
-        mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
-        
-        return(mess) 
-      } else {
-        
-        obj[[sub_plot_data]]$drop <- "keep"
-        
-      }
+        if(sum(side_obj$count) < cut.small.groups){
+          
+          mess <- paste("No data for this variable in", institution_prov, "after filtering for group size under", cut.small.groups, "responses.")
+          
+          return(mess) 
+        } else {
+          
+          obj[[sub_plot_data]]$drop <- "keep"
+          
+        }
         
         return(obj[[sub_plot_data]])
       })
@@ -343,7 +418,7 @@ swims.plot.multibar <- function(
       })
       
     }
-
+    
   }
   
   # Combine all objects
@@ -370,15 +445,15 @@ swims.plot.multibar <- function(
     plot_data <- left_join(tibble_obj, plot_data, by = c("divider", "variable", "value"))
     
     plot_data$divider <- factor(plot_data$divider, levels = rev(divider_label))
-
+    
   } else if(is.null(divider) && !is.null(institution_prov)){
     
     plot_data <- left_join(tibble_obj, plot_data, by = c("group", "variable", "value"))
-
+    
   } else if(is.null(divider) && is.null(institution_prov)){
     
     plot_data <- left_join(tibble_obj, plot_data, by = c("variable", "value"))
-
+    
   }
   
   # MODIFICATIONS FOR PLOT ####
@@ -387,9 +462,9 @@ swims.plot.multibar <- function(
     plot_data$group <- factor(plot_data$group, levels = unique(plot_data$group))
     
     if(is.null(divider)){
-    plot_data <- plot_data %>%
-      arrange(group == institution_prov) %>% 
-      mutate(group = factor(group, levels = unique(group)))
+      plot_data <- plot_data %>%
+        arrange(group == institution_prov) %>% 
+        mutate(group = factor(group, levels = unique(group)))
     }
     
     
@@ -401,7 +476,7 @@ swims.plot.multibar <- function(
   # Length of institute names
   if(wrap_legend){
     if("group" %in% colnames(plot_data)){
-    levels(plot_data$group) <- str_wrap(levels(plot_data$group), width = 20)
+      levels(plot_data$group) <- str_wrap(levels(plot_data$group), width = 20)
     } 
   }
   
@@ -411,17 +486,17 @@ swims.plot.multibar <- function(
     left_join(var_text, by = "variable") %>%
     select(-variable) %>%
     mutate(text = str_wrap(text, width = cut_width))
-
+  
   
   # Compute the range of the sum of counts per text variable
   if(!is.null(institution_prov)){
-
+    
     range_values <- plot_data %>%
       filter(group == institution_prov) %>%
       group_by(text) %>%
       summarise(total_count = sum(count, na.rm = T)) %>%
       summarise(min_obs = min(total_count, na.rm = T), max_obs = max(total_count, na.rm = T)) 
-
+    
   } else {
     
     range_values <- plot_data %>%
@@ -489,7 +564,7 @@ swims.plot.multibar <- function(
       
       # Plot
       g <- ggplot(plot_data, aes(x = x_pos, y = proportion, fill = value_fill, alpha = group)) + 
-        geom_bar(stat = "identity", position = "fill", width = width_bar) +
+        geom_bar(stat = "identity", position = "fill", width = width_bar, show.legend = c(fill = TRUE)) +
         # Aussehen
         scale_alpha_manual(values = setNames(c(1, alpha_plot), alpha_labels)) +
         scale_y_continuous(labels = scales::percent) + 
@@ -497,8 +572,9 @@ swims.plot.multibar <- function(
                            labels = plot_data$interaction_lab) +
         scale_fill_manual(values = fill_colors,
                           na.value = "transparent",
-                          breaks = unique(na.omit(plot_data$value))
-                          ) + 
+                          breaks = unique(na.omit(plot_data$value)),
+                          limits = unique(na.omit(plot_data$value))
+        ) + 
         facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
         coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
         # Text
@@ -546,18 +622,19 @@ swims.plot.multibar <- function(
                                       color = "black",    # this adds the black frame!
                                       size = 0.5          # optional: thinner border
                                     )
-                                    ))
+               ))
       
     } else {
       
       g <- ggplot(plot_data, aes(x = interaction_lab, y = proportion, fill = value_fill, alpha = group)) + 
-        geom_bar(stat = "identity", position = "fill", width = width_bar) +
+        geom_bar(stat = "identity", position = "fill", width = width_bar, show.legend = c(fill = TRUE)) +
         # Aussehen
         scale_alpha_manual(values = setNames(c(1, alpha_plot), alpha_labels)) +
         scale_y_continuous(labels = scales::percent) + 
         scale_fill_manual(values = fill_colors,
                           na.value = "transparent",
-                          breaks = unique(na.omit(plot_data$value))
+                          breaks = unique(na.omit(plot_data$value)),
+                          limits = unique(na.omit(plot_data$value))
         ) + 
         facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
         coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
@@ -611,15 +688,16 @@ swims.plot.multibar <- function(
     }
     
   } else if (!is.null(institution_prov) & is.null(divider)){ # Institution and no-divider
-
+    
     g <- ggplot(plot_data, aes(x = group, y = proportion, fill = value_fill, alpha = ifelse(group == "Other Institutions", "TRUE", "FALSE"))) + 
-      geom_bar(stat = "identity", position = "fill", width = width_bar) +
+      geom_bar(stat = "identity", position = "fill", width = width_bar, show.legend = c(fill = TRUE)) +
       # Aussehen
       scale_alpha_manual(values = c("TRUE" = alpha_plot, "FALSE" = 1)) +
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         na.value = "transparent",
-                        breaks = unique(na.omit(plot_data$value))
+                        breaks = unique(na.omit(plot_data$value)),
+                        limits = unique(na.omit(plot_data$value))
       ) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
@@ -669,12 +747,13 @@ swims.plot.multibar <- function(
   } else if (is.null(institution_prov) & !is.null(divider)){ # no-Institution and divider
     
     g <- ggplot(plot_data, aes(x = divider, y = proportion, fill = value_fill)) + 
-      geom_bar(stat = "identity", position = "fill", width = width_bar) +
+      geom_bar(stat = "identity", position = "fill", width = width_bar, show.legend = c(fill = TRUE)) +
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         na.value = "transparent",
-                        breaks = unique(na.omit(plot_data$value))
+                        breaks = unique(na.omit(plot_data$value)),
+                        limits = unique(na.omit(plot_data$value))
       ) +  
       facet_wrap(~ text, ncol = ncol_plot, strip.position = "left") +  # Zwei-Spalten-Layout
       coord_flip(clip = "off") +  # Dreht das Diagramm (horizontal)
@@ -723,14 +802,15 @@ swims.plot.multibar <- function(
   } else if (is.null(institution_prov) & is.null(divider)){ # no-Institution and no-divider
     
     plot_data$text <- fct_rev(as.factor(plot_data$text))
-  
+    
     g <- ggplot(plot_data, aes(x = text, y = proportion, fill = value_fill)) +   
-      geom_bar(stat = "identity", position = "fill", width = width_bar) +  # Stacked bar chart  
+      geom_bar(stat = "identity", position = "fill", width = width_bar, show.legend = c(fill = TRUE)) +  # Stacked bar chart  
       # Aussehen
       scale_y_continuous(labels = scales::percent) + 
       scale_fill_manual(values = fill_colors,
                         na.value = "transparent",
-                        breaks = unique(na.omit(plot_data$value))
+                        breaks = unique(na.omit(plot_data$value)),
+                        limits = unique(na.omit(plot_data$value))
       ) +   
       coord_flip(clip = "off") +  # Horizontal bars  
       #swims_watermark +
@@ -787,10 +867,10 @@ swims.plot.multibar <- function(
         #                        hjust = 0)
         
         g <- g + geom_text(data = plot_data,
-                                 aes(x = x_pos, y = 0.01, label = divider),
-                                 inherit.aes = FALSE,
-                                 size = fontsize_inplot,
-                                 hjust = 0)
+                           aes(x = x_pos, y = 0.01, label = divider),
+                           inherit.aes = FALSE,
+                           size = fontsize_inplot,
+                           hjust = 0)
         
       } else {
         
@@ -801,10 +881,10 @@ swims.plot.multibar <- function(
         #                     hjust = 0)
         
         g <- g + geom_text(data = plot_data,
-                                 aes(x = interaction_lab, y = 0.01, label = divider),
-                                 inherit.aes = FALSE,
-                                 size = (fontsize_inplot),
-                                 hjust = 0)
+                           aes(x = interaction_lab, y = 0.01, label = divider),
+                           inherit.aes = FALSE,
+                           size = (fontsize_inplot),
+                           hjust = 0)
         
       }
       
@@ -818,12 +898,12 @@ swims.plot.multibar <- function(
       #                     position = position_nudge(x = 0))
       
       g <- g +  geom_text(data = plot_data %>% distinct(text, group, .keep_all = TRUE), 
-                                aes(x = group, y = 0.05, label = group),  
-                                inherit.aes = FALSE, 
-                                size = fontsize_inplot, #fontface = "bold",
-                                hjust = 0,
-                                position = position_nudge(x = 0))
-        
+                          aes(x = group, y = 0.05, label = group),  
+                          inherit.aes = FALSE, 
+                          size = fontsize_inplot, #fontface = "bold",
+                          hjust = 0,
+                          position = position_nudge(x = 0))
+      
     } else if(is.null(institution_prov) & !is.null(divider)){
       
       # g <- g + geom_shadowtext(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
@@ -834,11 +914,11 @@ swims.plot.multibar <- function(
       #                  position = position_nudge(x = 0))
       
       g <- g + geom_text(data = plot_data %>% distinct(text, divider, .keep_all = TRUE), 
-                               aes(x = divider, y = 0.05, label = divider),  
-                               inherit.aes = FALSE, 
-                               size = fontsize_inplot, #fontface = "bold",
-                               hjust = 0,
-                               position = position_nudge(x = 0))
+                         aes(x = divider, y = 0.05, label = divider),  
+                         inherit.aes = FALSE, 
+                         size = fontsize_inplot, #fontface = "bold",
+                         hjust = 0,
+                         position = position_nudge(x = 0))
       
     } else if(is.null(institution_prov) & is.null(divider)){
       
@@ -851,17 +931,17 @@ swims.plot.multibar <- function(
       if(space4comp){
         
         g <- g + geom_text(data = plot_data,
-                                 aes(x = x_pos, y = 0.01, label = divider),
-                                 inherit.aes = FALSE,
-                                 size = fontsize_inplot,
-                                 hjust = 0)
-
+                           aes(x = x_pos, y = 0.01, label = divider),
+                           inherit.aes = FALSE,
+                           size = fontsize_inplot,
+                           hjust = 0)
+        
       } else {
         g <- g + geom_text(data = plot_data,
-                                 aes(x = interaction_lab, y = 0.01, label = divider),
-                                 inherit.aes = FALSE,
-                                 size = (fontsize_inplot),
-                                 hjust = 0)
+                           aes(x = interaction_lab, y = 0.01, label = divider),
+                           inherit.aes = FALSE,
+                           size = (fontsize_inplot),
+                           hjust = 0)
       }
       
     } else if(!is.null(institution_prov) & is.null(divider)){
@@ -888,7 +968,7 @@ swims.plot.multibar <- function(
       
     }
   }
-
+  
   # RETURN ####
   return(g)
   

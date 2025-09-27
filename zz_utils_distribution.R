@@ -13,13 +13,14 @@ swims.plot.distribution <- function(var,
                                     width_text = 25,
                                     fct_ord = NULL,
                                     proportion.label = F, 
+                                    individual_cut = 1,
                                     cut.small.groups = NULL, # Remove groups with less or equal to this number of responses
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example
-  # var <- "mentalHealth"
+  # var <- "jobSatisfaction"
   # institution_prov <- target_institution
-  # divider <- "Position"
+  # divider <- "Gender"
   # annoFontSize <- 4
   # font_size <- 12
   # data <- dat
@@ -31,6 +32,7 @@ swims.plot.distribution <- function(var,
   # cut.small.groups <- 10
   # small.group.delete <- F
   # fct_ord <- NULL
+  # individual_cut <- 1
 
   # PREPARATION ####
   # Ensure var exists in the codeb
@@ -41,7 +43,7 @@ swims.plot.distribution <- function(var,
   # Modify institution_prov
   if(!is.null(institution_prov)){
     institution_prov <- remove_before_and_comma(institution_prov)
-    dat$institution <- remove_before_and_comma(dat$institution)
+    data$institution <- remove_before_and_comma(data$institution)
   }
   
   # Check for divider
@@ -130,6 +132,11 @@ swims.plot.distribution <- function(var,
         group_by(divider) %>% 
         summarise(count = sum(count, na.rm = TRUE))
       
+      side_obj2 <- plot_data %>%
+        filter(group == institution_prov) %>%
+        group_by(divider, value) %>% 
+        summarise(count = sum(count, na.rm = TRUE))
+      
       if(any(side_obj$count <= cut.small.groups)){
         
         problem_divider <- which(side_obj$count <= cut.small.groups)
@@ -147,6 +154,36 @@ swims.plot.distribution <- function(var,
           plot_data$drop <- ifelse(plot_data$divider %in% drop_divider, "drop", "keep")
           
         }
+        
+      } 
+      
+      if(any(side_obj2$count <= individual_cut)) {
+        
+        problem_value <- which(side_obj2$count <= individual_cut)
+        
+        if (length(problem_value) > 0){
+          
+          drop_value <- side_obj2$value[problem_value]
+          
+          drop_divider2 <- side_obj2$divider[problem_value]
+          
+          if("drop" %in% names(plot_data)){
+            
+            for(kk in 1:length(drop_divider2)){
+              
+              plot_data$drop[plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk]] <- "drop"
+              
+            }
+            
+            
+          } else {
+          
+            plot_data$drop <- ifelse(plot_data$value %in% drop_value & plot_data$divider %in% drop_divider2, "drop", "keep")
+          
+          }
+          
+        }
+        
       } else {
         
         plot_data$drop <- "keep"
