@@ -66,9 +66,9 @@ swims.plot.distribution <- function(var,
   if(!is.null(cut.small.groups) && !is.null(small.group.delete)){
     
     if(cut.small.groups > 0 || small.group.delete == F){
-      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are not visible in the plot.")
+      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are not visible in the plot (marked in white).")
     } else if(cut.small.groups > 0 || small.group.delete == T){
-      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are deleted from the plot.")
+      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are deleted from the plot (marked in white).")
     }
   } else if((is.null(cut.small.groups) && !is.null(small.group.delete)) ||
             (!is.null(cut.small.groups) && is.null(small.group.delete))){

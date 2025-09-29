@@ -103,9 +103,9 @@ swims.plot.multibar <- function(
   if(!is.null(cut.small.groups) || !is.null(small.group.delete)){
     
     if(cut.small.groups > 0 || small.group.delete == F){
-      imp_mess <<- paste("Groups with less than", cut.small.groups, "responses are not visible in the plot.")
+      imp_mess <<- paste("Groups with less than", cut.small.groups, "responses are not visible in the plot (marked in white).")
     } else if(cut.small.groups == 0 || small.group.delete == T){
-      imp_mess <<- paste("Groups with less than", cut.small.groups, "responses are deleted from the plot.")
+      imp_mess <<- paste("Groups with less than", cut.small.groups, "responses are deleted from the plot (marked in white).")
     }
   } else {
     stop("cut.small.groups and small.group.delete must be always defined together.")
