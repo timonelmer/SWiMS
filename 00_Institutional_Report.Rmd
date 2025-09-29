@@ -608,25 +608,8 @@ swims.plot.distribution("mentalHealth",
 \newpage
 ## Depression
 
-```{r}
-library(psych)
-
-side_obj <- dat %>%
-  filter(inst == target_institution) %>%
-  select(paste0("depression_", c(1:7)))
-
-del <- which(!complete.cases(side_obj))
-
-if(length(del) > 0) {
-  side_obj <- side_obj[-del, ]
-}
-
-cronbach <- alpha(side_obj)
-
-```
-
 We computed a depression score by summing the 7 items from the DASS-21 depression subscale. In our sample, this measure showed internal consistency of Cronbach’s alpha = `r round(cronbach$total[2],2)`. A total of `r length(del)` observations were excluded from this analysis due to missing data on at least one of the depression items.
-**Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_2021], a sum score above 10 is considered indicative of elevated depressive symptoms and may be viewed as clinically relevant**.
+**Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_2021], a sum score above 10 is considered indicative of elevated depressive symptoms and may be viewed as clinically relevant** (for more information about the used scale, see: $\href{https://www2.psy.unsw.edu.au/groups/dass/}{here}$).
 
 ```{r}
 swims.plot.distribution("Depression",

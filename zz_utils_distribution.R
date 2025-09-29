@@ -171,14 +171,20 @@ swims.plot.distribution <- function(var,
             
             for(kk in 1:length(drop_divider2)){
               
-              plot_data$drop[plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk]] <- "drop"
+              # plot_data$drop[plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk]] <- "drop" # Zoran Version
+              
+              # plot_data$drop[plot_data$divider == drop_divider2[kk]] <- "drop" # timon version
+              
+              plot_data$drop[plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk]] <- "drop" # Zoran Version 2
               
             }
             
             
           } else {
           
-            plot_data$drop <- ifelse(plot_data$value %in% drop_value & plot_data$divider %in% drop_divider2, "drop", "keep")
+            # plot_data$drop <- ifelse(plot_data$value %in% drop_value & plot_data$divider %in% drop_divider2, "drop", "keep") # Zoran Version
+            
+            # plot_data$drop <- ifelse(plot_data$divider %in% drop_divider2, "drop", "keep") # timon version
           
           }
           

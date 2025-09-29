@@ -207,7 +207,9 @@ swims.plot.multibar <- function(
               
               for(kk in 1:length(problem_value1)){
                 
-                obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$value == problem_value1[kk] & obj[[sub_plot_data]]$divider == problem_divider1[kk]] <- "drop"
+                # obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$value == problem_value1[kk] & obj[[sub_plot_data]]$divider == problem_divider1[kk]] <- "drop"
+                
+                obj[[sub_plot_data]]$drop[obj[[sub_plot_data]]$divider == problem_divider1[kk]] <- "drop"
                 
                 }
               }
@@ -224,7 +226,9 @@ swims.plot.multibar <- function(
               if(length(problem_value1) > 0){
                 problem_value1 <- side_obj2$value[problem_value1]
                 problem_divider1 <- side_obj2$divider[problem_divider1]
-                obj[[sub_plot_data]]$drop <- ifelse(obj[[sub_plot_data]]$value %in% problem_value1 & obj[[sub_plot_data]]$divider %in% problem_divider1, "drop", "keep")
+                
+                # obj[[sub_plot_data]]$drop <- ifelse(obj[[sub_plot_data]]$value %in% problem_value1 & obj[[sub_plot_data]]$divider %in% problem_divider1, "drop", "keep")
+                obj[[sub_plot_data]]$drop <- ifelse(obj[[sub_plot_data]]$divider %in% problem_divider1, "drop", "keep")
               }
               
               if(length(problem_value2) > 0){

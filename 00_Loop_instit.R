@@ -19,7 +19,7 @@ object.inst <- levels(dat$institution)
 # g <- 7
 
 # Loop über jede Gruppe
-for (g in c(5,6,11)) {
+for (g in c(11)) {
   
   if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
     obj <- "ETHZ"
