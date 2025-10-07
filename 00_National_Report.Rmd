@@ -26,11 +26,11 @@ header-includes:
   - \usepackage{fontspec}
   - \setmainfont{blue_highway_rg.otf}[Path=Fonts/, BoldFont=Blue_Highway_Bd.otf]
   - \pagestyle{fancy}
-  - \fancyhead[L]{\includegraphics[width=2.5cm]{actionuni_MAIN_LOGO_RVB.jpg}}
-  - \fancyhead[C]{}
+  - \fancyhead[L]{\leftmark}
+  - \fancyhead[C]{\includegraphics[width=2.5cm]{actionuni_MAIN_LOGO_RVB.jpg}}
   - \fancyhead[R]{SWiMS 2024 National Report}
   - \usepackage{draftwatermark}
-  - \SetWatermarkText{DRAFT}
+  - \SetWatermarkText{}
   - \SetWatermarkScale{1}
   - \SetWatermarkLightness{0.9}
   - \usepackage{titling}
@@ -91,12 +91,12 @@ header-includes:
   - |
     % ---- Title-page left-side text, first page only ----
     \newcommand\TitlePageText{%
-      \put(\LenToUnit{2cm},\LenToUnit{7.5cm}){%  % moved 4cm up
+      \put(\LenToUnit{2cm},\LenToUnit{10cm}){%  % moved 4cm up
         \parbox[t][0.6\textheight][t]{0.8\textwidth}{%
         \large
           Key Takeaways:
           \begin{itemize}
-            \item 
+            \item placeholder
           \end{itemize}
         }%
       }%
@@ -112,6 +112,7 @@ header-includes:
 knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
                       fig.width = 9, 
                       fig.height = 5, 
+                      #fig.align='center',
                       out.width = "100%", 
                       dpi = 300)
 library(tidyverse)
