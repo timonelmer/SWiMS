@@ -1,0 +1,2008 @@
+---
+title: "Swiss-Wide Mental Health Survey (SWiMS) 2024: National Report (Short Version)"
+author: "a survey initiated and conducted by "
+# date: "`r Sys.Date()`"
+params:
+  width_bar: 1
+output:
+  pdf_document:
+    toc: false
+    toc_depth: 2
+    keep_tex: true
+    latex_engine: xelatex   # or lualatex
+  classoption: 14pt
+fig_pos: 'H'
+fig_caption: false
+bibliography: references.bib 
+classoption: landscape
+geometry: top=2.54cm, bottom=1.5cm, left=2.54cm, right=2.54cm
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{fancyhdr}
+  - \usepackage{float}
+  - \usepackage{xcolor}
+  - \usepackage{hyperref}
+  - \hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue,pdfborder={0 0 1}}
+  - \usepackage{fontspec}
+  - \setmainfont{blue_highway_rg.otf}[Path=Fonts/, BoldFont=Blue_Highway_Bd.otf]
+  - \pagestyle{fancy}
+  - \fancyhead[L]{\leftmark}
+  - \fancyhead[C]{\includegraphics[width=2.5cm]{actionuni_MAIN_LOGO_RVB.jpg}}
+  - \fancyhead[R]{SWiMS 2024 National Report (short)}
+  - \usepackage{draftwatermark}
+  - \SetWatermarkText{}
+  - \SetWatermarkScale{1}
+  - \SetWatermarkLightness{0.9}
+  - \usepackage{titling}
+  - \usepackage{eso-pic}
+  - \usepackage{tikz}
+  - \definecolor{barred}{HTML}{ED6B66}
+  - \definecolor{bargreen}{HTML}{007D3D}
+  - \definecolor{barpink}{HTML}{D472AA}
+  - \definecolor{ead7b7}{HTML}{EAD7B7}
+  - \definecolor{background}{HTML}{F4E9DD}
+  - |
+    \pretitle{\begin{center}\LARGE\bfseries
+    \par\vspace{1em}\href{https://actionuni.ch/}{\includegraphics[width=10cm]{SECONDARY_LOGO_RVB.png}}\\ \vspace{1cm}}
+    \posttitle{\end{center}}
+    \preauthor{\begin{center}\Large}
+    \postauthor{ \href{https://actionuni.ch/}{actionuni}\end{center}}
+  - |
+    % ---- Title-page background color ----
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \color{background}\rule{\paperwidth}{\paperheight}%
+      }%
+    }
+  - |
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          \def\barheight{0.4cm}
+          \fill[barred]   (0,0) rectangle (0.33\paperwidth,\barheight);
+          \fill[bargreen] (0.33\paperwidth,0) rectangle (0.66\paperwidth,\barheight);
+          \fill[barpink]  (0.66\paperwidth,0) rectangle (\paperwidth,\barheight);
+        \end{tikzpicture}%
+      }%
+    }
+  - |
+    \definecolor{blackbar}{HTML}{1D1D1B}
+
+    \AddToShipoutPicture*{%
+      \AtPageLowerLeft{%
+        \begin{tikzpicture}[remember picture,overlay]
+          % ----- Black bar -----
+          \def\blackbarheight{0.9cm}
+          \fill[blackbar] (0,0) rectangle (\paperwidth,\blackbarheight);
+
+          % ----- Three colored bars (above black bar) -----
+          \def\barheight{0.35cm}
+          \fill[barred]   (0,\blackbarheight) rectangle (0.33\paperwidth,\blackbarheight+\barheight);
+          \fill[bargreen] (0.33\paperwidth,\blackbarheight) rectangle (0.66\paperwidth,\blackbarheight+\barheight);
+          \fill[barpink]  (0.66\paperwidth,\blackbarheight) rectangle (\paperwidth,\blackbarheight+\barheight);
+
+          % ----- Contact info text (centered in black bar) -----
+          \node[anchor=center, text=ead7b7, font=\fontsize{9pt}{11pt}\selectfont\rmfamily] 
+            at (0.5\paperwidth,0.45) 
+            { \href{https://actionuni.ch}{actionuni.ch} \quad |  \quad \href{mailto:president@actionuni.ch}{president@actionuni.ch}};
+        \end{tikzpicture}%
+      }%
+    }
+  - |
+    % ---- Title-page left-side text, first page only ----
+    \newcommand\TitlePageText{%
+      \put(\LenToUnit{2cm},\LenToUnit{10cm}){%  % moved 4cm up
+        \parbox[t][0.6\textheight][t]{0.8\textwidth}{%
+        \large
+          Key Takeaways:
+          \begin{itemize}
+            \item placeholder
+          \end{itemize}
+        }%
+      }%
+    }
+    \AddToShipoutPicture*{\TitlePageText}
+
+
+---
+  
+\newpage
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = FALSE, message = FALSE,
+                      fig.width = 9, 
+                      fig.height = 5, 
+                      #fig.align='center',
+                      out.width = "100%", 
+                      dpi = 300)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+library(readxl)
+
+
+
+
+```
+
+```{r load-data, include=FALSE}
+rm(list = ls())
+# Load data
+load("../data/SWiMS2024_Data_2025-09-08.RData")
+source("zz_utils_helpers.R")
+source("zz_utils_distribution.R")
+source("zz_utils_aggregation.R")
+source("zz_utils_multibar.R")
+
+
+institution_labels <- strsplit(codebook[codebook$VarName %in% "institution","Labels"],"//")[[1]]
+
+
+# define some global parameters
+width_bar_default <- 0.9
+
+
+
+```
+
+\setcounter{tocdepth}{1}
+
+
+# Executive Summary
+
+\small
+```{r child = '../Executive_Summary/Excecutive_Summary_V3.rmd'}
+```
+
+
+\newpage  
+\textcolor{red}{This is the short version of the report, focusing on overall descriptive findings. For detailed comparisons across demographic groups (i.e., age, gender, discipline, position type, funding source, or residence status), please consult the full report.}
+\tableofcontents
+\vfill  
+**CRediT (Contribution Roles Taxonomy) author statement:** 
+
+**Zoran Kovacevic\*, Neele H. Heiser\*, Patricia Eiche\* , Timon Elmer\* **: Conceptualization; Methodology; Validation; Investigation; Supervision; Project administration; ; Writing – Review & Editing 
+
+**Zoran Kovacevic\*, Timon Elmer\* **: Formal analysis; Data Curation; Visualization; Resources; Writing – Original Draft
+
+\* shared first-authorship
+
+Contact: \href{mailto:president@actionuni.ch}{president@actionuni.ch} or \href{mailto:survey@actionuni.ch}{survey@actionuni.ch}
+
+\textit{Version 1.0 — `r Sys.Date()`}  
+
+
+
+\newpage
+
+# Introduction
+
+The Swiss-Wide Mental Health Survey (SWiMS) 2024 explores the mental health and well-being of academic mid-level staff in Switzerland, including doctoral researchers, postdoctoral researchers, and other academic staff not in professorial positions (see figure on [p.11](#position-type) for details). The survey aims to identify key challenges in working conditions and research environments, providing a data-driven foundation for improving policies and support systems at Swiss higher education institutions.
+
+This report presents the national-level findings, offering descriptive data into mental health outcomes, stressors, available resources, sources of discrimination, and questionable research practices. Each of the 13 participating institution also received an institution-specific report, in which the responses of the specific institution are compared to all other part-taking institutions combined. 
+
+## Background and motivation
+Academic mid-level staff are essential to research, teaching, and student supervision, making up approximately 48% of the academic workforce in Switzerland (Federal Statistical Office, 2024). The mid-level faculty thus makes a decisive contribution to the innovative strength and competitiveness of the university system as well as to the quality of teaching and training.  
+Despite their central role, academic mid-level staff are often exposed to a variety of stresses. The work pressure is high due to the demands of research, teaching and administrative tasks [@barkhuizen2014; @mattijssen2020]. Added to this is the increasing pressure to publish, reinforced by the “publish or perish” principle, which has a significant influence on academic careers [@miller2011; @tijdink2013]. Many early career researchers also struggle with the uncertainty of their professional future, as most positions are temporary and the prospect of a long-term academic career is very limited [@petersen2012; @nagy2019; @guidetti2022].
+
+These factors in the academic environment can have a negative impact on the mental health of early career researchers [@bolotnyy2022; @urbina2020]. International studies show that 30–40% of researchers suffer from mental health problems [@divaris2012; @gloria2016; @levecque2017; @evans2018; @mattijssen2020; @estupina2024]. Other international studies also document high rates of burnout (9%), depression (17–24%) and anxiety (17%) among early career researchers [@bolotnyy2022; @boone2022; @evans2018; @satinsky2021]. In the long term, this jeopardizes the quality of research and the innovative strength of universities [@amer2022; @barry2018].
+
+
+Despite growing awareness of these issues inernationally, Switzerland lacks comprehensive national data on the mental health of academic mid-level staff. While some institutions have conducted internal surveys (e.g., [ETH Zurich’s employee survey](https://vseth.ethz.ch/politik/wiegeths/)), a coordinated, nationwide effort has been missing that allows identification of national and local areas of improvement. The last nationwide report on the working conditions of academic mid-level staff in Switzerland was conducted -- also by actionuni -- in 2009 (see SBFI report [here](https://edudoc.ch/record/35876/)).
+
+## The Swiss-Wide Mental Health Survey (SWiMS)
+
+To address this gap, actionuni, in collaboration with 13 academic mid-level staff associations, launched SWiMS 2024 as a bottom-up initiative. The survey was developed jointly by the actionuni survey team and representatives of academic mid-level staff associations, and formally approved at the actionuni General Assembly in late 2023. The survey provides a nationwide assessment of mental health among academic mid-level staff in Switzerland, highlighting both stressors and protective factors.
+
+<!-- By systematically analyzing the collected data, the project aims to: -->
+
+<!-- - Expand the knowledge base on mental health in academia. -->
+<!-- - Identify key stress factors affecting mid-level academic staff. -->
+<!-- - Enable institutions to learn from best practices, improving support systems. -->
+<!-- - Provide an evidence-based foundation for discussions on mental health policies. -->
+
+<!-- Ultimately, fostering a healthier academic work environment benefits not only early career researchers but also research quality, institutional innovation, and the broader university system. Ensuring well-being at all career stages is essential for maintaining the long-term excellence and sustainability of Swiss academia. -->
+
+
+Participation in the survey was entirely anonymous and voluntary, and respondents could withdraw at any time during the process. Ethical approval was obtained from the ethics Committee of the Faculty of Philosophy of the University of Zurich (nr. 23.12.07). Data was collected between May 13th and October 31st 2024. The survey was conducted in English only.
+
+## Detailed survey content and codebook
+
+Detailed item formulations, variables, etc. can be found in the codebook and survey-PDF on the [OSF repository of this project: https://osf.io/kqdnm](https://osf.io/kqdnm).
+
+## Sharing of raw data
+
+As resources for preparing the data for open access are currently unavailable, it is possible that a public release of anonymized raw data may not take place. 
+<!-- For this reason, the present report provides a detailed overview of the findings -- spanning more than 200 pages -- to provide broad accessibility of the results. -->
+
+## How to read the key plots
+
+### Distribution plots
+
+\begin{figure}[H]
+\centering
+\includegraphics[trim=0 0 0 0,clip,page = 3, width=1\linewidth]{../how_to_read_plots_national_v3.pdf}
+\end{figure}
+
+\newpage 
+
+### Grouped questions plots
+
+\begin{figure}[H]
+\centering
+\includegraphics[trim=0 0 0 0,clip,page = 4, width=1\linewidth]{../how_to_read_plots_national_v3.pdf}
+\end{figure}
+
+
+  
+  \newpage  
+
+# Sample Description
+
+## Data cleaning 
+Only institutions with more than 10 responses were considered in this report. 43 participants of 16 institution with a mean of 2.7 (SD = 1.81) participants were removed from the dataset. 62 additional responses were removed because institution "Other" (n = 44), "Prefer not to say" (n = 15), or were missing (n = 3) were indicated. We also excluded participants that took shorter than 4 minutes to respond (n = 4). In total, `r nrow(dat)` responses were part of this report. Responses numbers in the different plots may vary due to missing responses on a particular question or on grouping variables (e.g., age category).
+
+
+## Parttaking institutions and response counts
+
+```{r, echo = F, fig.width = 8, fig.height = 4.5}
+
+# Calculate the number of participants for each institution
+institution_counts <- dat %>%
+  group_by(inst) %>%
+  summarise(count = n()) %>%
+  filter(count > 10)
+
+# Filter the data to include only institutions with more than 20 participants
+filtered_dat <- dat %>%
+  filter(inst %in% institution_counts$inst)
+
+# Get the maximum count to set y-axis limit
+max_count <- max(institution_counts$count)
+sum_count <- sum(institution_counts$count)
+
+# Create the plot
+ggplot(filtered_dat, aes(x = reorder(factor(inst), table(inst)[factor(inst)]), y = ..count..)) +  
+  geom_bar(fill = cols_categorical[1]) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 0, vjust = 0.5, hjust = 1),
+    axis.text.y = element_text(size = 10),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
+    plot.title = element_text(size = 16, hjust = 0.5),
+    plot.caption = element_text(size = 8, hjust = 0.5, face = "italic")
+  ) +
+  labs(
+    # title = "Number of Responses by Institution",
+    x = "Institution Name",
+    y = "Number of Responses",
+    caption = paste("Total count: ",sum_count ,"\n",
+                    "Only institutions with more than 10 participants are displayed.")
+  ) +
+  geom_text(stat = 'count', aes(label = ..count..), hjust = -0.1, size = 3.5) +
+  ylim(c(0, max_count + 30)) +
+  coord_flip()
+
+#ggsave(paste0("../plots/SWiMS_responses_",date ,".pdf"), height = 7, width = 8)
+```
+
+The average duration of responding to the survey was `r round(mean(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)` minutes (SD = `r round(sd(dat[dat$duration < 2*3600,"duration"]/60, na.rm =T),2)`).
+
+<!-- ### Response Rate -->
+  
+  <!-- ```{r} -->
+  
+  <!-- institution_counts <- institution_counts %>% -->
+  <!--   left_join(dat.meta %>% select(Name, Members), by = c("inst" = "Name")) # add member numbers -->
+<!-- institution_counts$response_rate <- institution_counts$count/institution_counts$Members -->
+  
+  <!-- # Create the bar chart -->
+  <!-- ggplot(institution_counts, aes(x = reorder(inst, count))) +  -->
+  <!--   geom_bar(aes(y = Members), stat = "identity", fill = "lightgray", alpha = 0.7) +  -->
+  <!--   geom_bar(aes(y = count), stat = "identity", fill = "steelblue", alpha = 0.7) +  -->
+  <!--   geom_text(aes(y = count, label = sprintf("%.1f%%", response_rate * 100)),  -->
+                     <!--             hjust = -0.1, size = 3.5) + -->
+  <!--   labs(x = "Institution Name",  -->
+                <!--        y = "Number of estimated Members (in gray)\n and Responses (in blue)") +  -->
+  <!--   theme_minimal(base_size = 12) +  -->
+  <!--   theme( -->
+                  <!--     axis.text.x = element_text(size = 10), -->
+                  <!--     axis.text.y = element_text(size = 10), -->
+                  <!--     axis.title.x = element_text(size = 12), -->
+                  <!--     axis.title.y = element_text(size = 12), -->
+                  <!--     plot.caption = element_text(size = 8, hjust = 0.5, face = "italic") -->
+                  <!--   ) + -->
+  <!--   coord_flip() + -->
+  <!--   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) -->
+  
+  <!-- #ggsave(paste0("../plots/SWiMS_response_rate_",Sys.Date(),".pdf"), height = 7, width = 8) -->
+  
+  <!-- ``` -->
+  
+  \newpage
+
+## Demographics 
+
+The figures below summarize the key demographic characteristics of all part-taking institutions.
+
+### Age
+
+`r swims.formulation("age")`
+
+```{r age, fig.height = 4, fig.width=3}
+swims.plot.distribution("age")
+
+```
+
+
+For the subsequent analyses this variable was grouped into three categories: "18-30," "31-40," and ">41." Respondents unwilling to disclose their age were coded as missing.
+
+
+
+
+
+
+\newpage  
+
+### Gender
+
+`r swims.formulation("female", what = "item")` with answer options "male","female","non-binary", or "prefer not to say".
+
+```{r gender, fig.height = 4, fig.width=3}
+swims.plot.distribution("Gender")
+```
+
+Recoded from multiple binary selections into categories: "male," "female," or "other" (including nonbinary or multiple selections). "prefer not to say" responses were coded as missing.
+
+
+\newpage  
+
+### Research Discipline
+
+
+`r swims.formulation("researchDiscipline", what = "item")`
+
+```{r , fig.height = 5, fig.width=7}
+swims.plot.distribution("researchDiscipline") 
+
+```
+
+
+
+Subsequently referred to as "Natural Sciences and Engineering", "Medicine", "Social Sciences", and "Humanities". "Prefer not to say" responses coded as missing.
+
+
+\newpage  
+
+### Position Type
+
+`r swims.formulation("mainPosition", what = "item")`
+
+
+```{r , fig.height = 4, fig.width=9}
+swims.plot.distribution("mainPosition") # + 
+#scale_x_discrete(labels = function(x) str_wrap(x, width = 23))   # Apply text wrapping
+
+```
+
+Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postdoctoral researcher", "Other researchers with a PhD", and "Other". "Prefer not to say" responses coded as missing. The group "Other researchers with a PhD" consisted of categories "Researcher above postdoc (habilitated or equivalent)", "Other researchers with a PhD". The group "Other" consisted of categories "Supportive positions (e.g., administrative personnel, technical staff)" and "Lecturing only".
+
+
+\newpage  
+
+### Funding Source
+
+`r swims.formulation("funding", what = "item")`
+
+```{r , fig.height = 4, fig.width=7}
+swims.plot.distribution("funding")
+```
+
+
+Original funding categories simplified into three groups: "SNSF", "Non-SNSF funding", and "University/Higher education institute." Ambiguous or undisclosed funding sources coded as missing.
+
+
+\newpage  
+
+### Residence Status
+
+
+`r swims.formulation("residenceStatus", what = "item")`
+
+
+```{r , fig.height = 4, fig.width=7}
+swims.plot.distribution("residenceStatus")
+```
+
+Subsequently used with residence status reduced to two groups: "Swiss citizenship + Permit C", and "Other Permits". Non-disclosed or unclear responses coded as missing.
+
+
+\newpage  
+
+#### Employment Status
+
+
+
+`r swims.formulation("employmentStatus", what = "item")`
+
+
+```{r , fig.height =4, fig.width=5}
+
+swims.plot.distribution("employmentStatus")
+
+```
+
+
+\newpage 
+
+<!-- ### Other Demographic Variables -->
+
+<!-- These variables will not be used for group comparisons later, thus the name "other". -->
+
+### Care Work
+
+
+
+`r swims.formulation("careKids")`
+
+```{r , fig.height = 4, fig.width=3}
+swims.plot.distribution("Carework")
+```
+
+
+Simplified into "care work" (if respondents indicated caring for children and/or family) or "no care work". 
+
+\newpage
+
+### Employment Percentage
+
+
+
+`r swims.formulation("workloadMainjob", what = "item")`
+
+
+```{r,  fig.height = 4, fig.width=8.5}
+
+swims.plot.distribution("workloadMainjob")
+
+```
+
+
+\newpage 
+
+### Additional Non-Academic Job  
+
+
+`r swims.formulation("nonacademicJob", what = "item")`
+
+
+```{r, fig.height= 4 , fig.width= 4}
+
+swims.plot.distribution("nonacademicJob")
+
+```
+
+
+\newpage 
+
+<!-- # Mental Health -->
+
+# General Mental Health
+
+`r swims.formulation("mentalHealth", what = "item")`
+
+```{r mental health, fig.height= 4 , fig.width= 5}
+swims.plot.distribution("mentalHealth")
+```
+
+
+\newpage  
+
+<!-- ## General Mental Health by Age -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Age", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- \newpage   -->
+
+<!-- ## General Mental Health by Gender -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Gender", annoFontSize = 2, width_bar = width_bar_default) -->
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+
+<!-- \newpage   -->
+
+<!-- ## General Mental Health by Research Discipline -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Discipline", annoFontSize = 2, width_bar = width_bar_default) -->
+<!-- ``` -->
+
+
+<!-- \newpage   -->
+
+<!-- ## General Mental Health by Funding Source -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- \newpage   -->
+
+<!-- ## General Mental Health by Position Type -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Position", annoFontSize = 2, width_bar = width_bar_default) -->
+<!-- ``` -->
+
+
+<!-- \newpage   -->
+
+<!-- ## General Mental Health by Employment Status -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "employmentStatus", annoFontSize = 2, width_bar = width_bar_default) -->
+
+<!-- ``` -->
+
+
+<!-- \newpage   -->
+<!-- ## General Mental Health by Residence -->
+
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "mentalHealth", divider = "Residence", annoFontSize = 2, width_bar = width_bar_default) -->
+
+<!-- ``` -->
+
+
+\newpage  
+
+# Depression
+
+We computed a depression score by summing the 7 items from the DASS-21 depression subscale. In our sample, this measure showed excellent internal consistency (Cronbach’s alpha = .91), indicating that the items reliably measure the same underlying construct. A total of 62 observations were excluded from this analysis due to missing data on at least one of the depression items.
+
+Following the clinical guidelines proposed by Nilges and Essau [-@nilges_dass_2021], a sum score above 10 is considered indicative of elevated depressive symptoms and may be viewed as clinically relevant.
+
+<!-- # ```{r depression, fig.height= 4 , fig.width= 8} -->
+<!-- # swims.plot.distribution("Depression") -->
+<!-- # ``` -->
+
+```{r depression2, fig.height= 4 , fig.width= 5}
+
+swims.plot.distribution("DepressionCategory")
+```
+
+<!-- ## Depression by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Age", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- ## Depression by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Gender", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Depression by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ## Depression by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ## Depression by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ## Depression by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "employmentStatus", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+<!-- ## Depression by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "DepressionCategory", divider = "Residence", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+\newpage 
+
+
+# Burnout
+
+
+`r swims.formulation("Burnout", what = "item")` 
+
+Item developed and validated by West and colleauges [-@west_single_2009].
+
+
+```{r burnout, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("Burnout")
+
+```
+
+
+<!-- ## Burnout by Age -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Age", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- ## Burnout by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Gender", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Burnout by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ## Burnout by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ## Burnout by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ## Burnout by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "employmentStatus", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+<!-- ## Burnout by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "Burnout", divider = "Residence", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+# Awareness Resources
+
+```{r awareness resources, fig.height= 5 , fig.width= 6.5}
+swims.plot.multibar("resources")
+
+```
+
+<!-- ## Awareness Resources by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Age") -->
+<!-- ``` -->
+
+<!-- ## Awareness Resources by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Gender") -->
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Awareness Resources by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Discipline") -->
+<!-- ``` -->
+
+<!-- ## Awareness Resources by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Funding") -->
+<!-- ``` -->
+
+<!-- ## Awareness Resources by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Position") -->
+<!-- ``` -->
+
+
+<!-- ## Awareness Resources by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "resources", divider = "employmentStatus") -->
+
+<!-- ``` -->
+
+
+<!-- ## Awareness Resources by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.multibar(var = "resources", divider = "Residence") -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+# Job Satisfaction 
+
+Question formulation: 
+  
+  *Taking everything into consideration, how satisfied do you feel about your job as a whole?*
+  
+  Item developed and validated by Dolbier and colleauges [-@dolbier_reliability_2005].
+
+
+```{r jobsatis, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("jobSatisfaction")
+
+```
+
+
+<!-- ### Job Satisfaction  by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Age", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Job Satisfaction  by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Gender", annoFontSize = 2) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Job Satisfaction  by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Job Satisfaction  by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Job Satisfaction  by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ### Job Satisfaction  by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "employmentStatus", annoFontSize = 2) -->
+
+<!-- ``` -->
+
+
+<!-- ### Job Satisfaction  by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "jobSatisfaction", divider = "Residence", annoFontSize = 2) -->
+
+<!-- ``` -->
+
+\newpage
+
+## Quitting Intentions
+
+`r swims.formulation("quitting", what = "item")`
+
+```{r quitting intentions, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("quitting")
+
+```
+
+
+<!-- ### Quitting Intentions by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Age", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- ### Quitting Intentions by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Gender", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Quitting Intentions by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Quitting Intentions by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Quitting Intentions by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ### Quitting Intentions by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "employmentStatus", annoFontSize = 2) -->
+
+<!-- ``` -->
+
+
+<!-- ### Quitting Intentions by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "quitting", divider = "Residence", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+\newpage  
+
+
+# Stress 
+
+Item formulation: 
+  
+  *Stress means a situation in which a person feels tense, restless, nervous or anxious or is unable to sleep at night because their mind is troubled all the time. Do you feel this kind of stress these days?*
+  
+  Item developed and validated by Elo and colleauges [-@elo_validity_2003].
+
+
+```{r stress_item, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("stress")
+
+```
+
+
+<!-- ### Stress by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Age", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- ### Stress by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Gender", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stress  by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Stress by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Stress  by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ### Stress  by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "stress", divider = "employmentStatus", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+<!-- ### Stress by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "stress", divider = "Residence", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+\newpage
+
+# Stressors
+
+## Stressor System 
+
+`r swims.formulation("stressFunding", what = "item")`
+
+
+```{r stress system12, fig.height= 5 , fig.width= 8}
+
+multibar.fontSize = 8
+multibar.fontSizeInplot = 2.5
+
+swims.plot.multibar(c("stress_system1","stress_system2"),font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+```{r stress system3, fig.height= 6 , fig.width= 8}
+
+swims.plot.multibar(c("stress_system3"),font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+
+<!-- ### Stressor System by Age -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor System by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stressor System by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor System by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor System by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ### Stressor System by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- ### Stressor System by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system1","stress_system2"), divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = c("stress_system3"), divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+\newpage  
+
+## Stressor Supervisor
+
+
+`r swims.formulation("stressFunding", what = "item")`
+
+
+
+```{r stress supervisor, fig.height= 5.5 , fig.width= 8}
+
+swims.plot.multibar("stress_supervisor",font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+
+<!-- ### Stressor Supervisor by Age -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Supervisor by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stressor Supervisor by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Supervisor by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Supervisor by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ### Stressor Supervisor by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+
+<!-- ### Stressor Supervisor by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_supervisor", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+\newpage  
+
+## Stressor Colleagues
+
+
+`r swims.formulation("stressFunding", what = "item")`
+
+
+
+
+```{r stress colleagues, fig.height= 5.5 , fig.width= 8}
+
+swims.plot.multibar("stress_colleagues",font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+
+<!-- ### Stressor Colleagues by Age -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Colleagues by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stressor Colleagues by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Colleagues by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Colleagues by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ### Stressor Colleagues by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+
+<!-- ### Stressor Colleagues by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_colleagues", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+## Stressor Self-Management
+
+`r swims.formulation("stressFunding", what = "item")`
+
+
+
+```{r stress selfManagement, fig.height= 5 , fig.width= 8}
+
+swims.plot.multibar("stress_selfManagement",font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+
+<!-- ### Stressor Self-Management by Age -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Self-Management by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stressor Self-Management by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Self-Management by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Self-Management by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ### Stressor Self-Management by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+
+<!-- ### Stressor Self-Management by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_selfManagement", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+## Stressor Private
+
+`r swims.formulation("stressFunding", what = "item")`
+
+
+```{r stress private, fig.height= 5 , fig.width= 8}
+swims.plot.multibar("stress_private",font_size = multibar.fontSize, rev_colors_set = T)
+
+```
+
+
+<!-- ### Stressor Private by Age -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Age", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Private by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Gender", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Stressor Private by Research Discipline -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Discipline", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Private by Funding Source -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Funding", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+<!-- ### Stressor Private by Position Type -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Position", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+<!-- ``` -->
+
+
+<!-- ### Stressor Private by Employment Status -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "employmentStatus", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+
+<!-- ### Stressor Private by Residence -->
+
+<!-- ```{r, fig.height= 6, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "stress_private", divider = "Residence", font_size = multibar.fontSize, fontsize_inplot = multibar.fontSizeInplot, rev_colors_set = T) -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+# Statements Regarding Supervisor
+
+`r swims.formulation("worklifebalanceSup", what = "item")`
+
+```{r Supervisor1, fig.height= 6, fig.width= 9}
+
+swims.plot.multibar(var = c("supervisor1") , font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot+3)
+
+```
+
+```{r Supervisor2, fig.height= 6, fig.width= 9}
+
+swims.plot.multibar(var = c("supervisor2") , font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot+3)
+
+```
+
+```{r Supervisor3, fig.height= 9, fig.width= 9}
+
+swims.plot.multibar(var = c("supervisor3") , font_size = multibar.fontSize+3, fontsize_inplot = multibar.fontSizeInplot+3)
+
+```
+
+
+<!-- ## Supervisor by Age -->
+
+<!-- ```{r, fig.height= 9, fig.width= 11} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 11} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 11} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ## Supervisor by Gender -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot, legend.nrow = 1) -->
+
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot, legend.nrow = 1) -->
+
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Supervisor by Research Discipline -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Supervisor by Funding Source -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ## Supervisor by Position Type -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+
+
+<!-- ## Supervisor by Employment Status -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+
+
+<!-- ## Supervisor by Residence -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("supervisor3"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+# Statements Regarding Institution 
+
+\normalsize
+`r swims.formulation("focusInst", what = "item")`
+\normalsize
+
+```{r Institution, fig.height= 6, fig.width= 10}
+
+swims.plot.multibar(var = c("institution1"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1)
+
+```
+
+```{r Institution2, fig.height= 8, fig.width= 10}
+
+swims.plot.multibar(var = c("institution2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1)
+
+```
+
+<!-- ## Institution by Age -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Institution by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Institution by Research Discipline -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Institution by Funding Source -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ## Institution by Position Type -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+
+<!-- ## Institution by Employment Status -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+
+<!-- ## Institution by Residence -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution1"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = c("institution2"), divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+\newpage  
+
+# Statements Regarding Work-Group
+
+These workgroup-related questions were asked only if the respondents indicated to be in a working group, `r round(100*table(dat$workingGroup)/sum(table(dat$workingGroup)),2)[1]`% (n = `r table(dat$workingGroup)[1]`) of the respondents.
+
+`r swims.formulation("collabWorkinggroup", what = "item")`
+
+
+```{r Workgroup, fig.height= 4, fig.width= 10}
+
+swims.plot.multibar(var = "workgroup", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1)
+
+```
+
+
+<!-- ## Workgroup by Age -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Workgroup by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Workgroup by Research Discipline -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Workgroup by Funding Source -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+<!-- ## Workgroup by Position Type -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+<!-- ``` -->
+
+
+<!-- ## Workgroup by Employment Status -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+
+<!-- ## Workgroup by Residence -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "workgroup", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, legend.nrow = 1) -->
+
+<!-- ``` -->
+
+\newpage  
+
+
+# Discrimination
+  
+## Discrimination Experience 
+  
+`r swims.formulation("discriminationWitness", what = "item")`
+
+```{r Discrimination1, fig.height= 5, fig.width= 8}
+
+swims.plot.multibar(var = c("discrimination1"), font_size = multibar.fontSize+1, fontsize_inplot = multibar.fontSizeInplot+0, rev_colors_set = T, legend.nrow = 2)
+
+```
+
+
+```{r Discrimination2, fig.height= 9, fig.width= 10}
+
+swims.plot.multibar(var = c("discrimination2"), font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2)
+
+```
+
+
+
+<!-- ## Discrimination Experience by Age -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, wrap_legend = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+
+
+<!-- ## Discrimination Experience by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Gender", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ```{r, fig.height= 6, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Gender", font_size = multibar.fontSize+1, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+
+<!-- ## Discrimination Experience by Research Discipline -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+<!-- ## Discrimination Experience by Funding Source -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+<!-- ## Discrimination Experience by Position Type -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+<!-- ``` -->
+
+
+<!-- ## Discrimination Experience by Employment Status -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+
+<!-- ## Discrimination Experience by Residence -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination1", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 10} -->
+<!-- swims.plot.multibar(var = "discrimination2", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, rev_colors_set = T, legend.nrow = 2) -->
+
+<!-- ``` -->
+
+
+
+\newpage  
+
+## Sources of Discrimination Dimensions 
+
+
+`r swims.formulation("discrAge", what = "item")`
+
+
+```{r Discrimination Dimensions, fig.height= 6, fig.width= 8}
+
+swims.plot.aggregation(var = "discrimination_type", institution_prov = NULL,font_size = multibar.fontSize+4,annoFontSize = multibar.fontSizeInplot, 
+                       colors_set = "Set1")#, annoFontSize = multibar.fontSizeInplot)
+
+```
+
+This plot shows the responses of the subset of respondents (n = `r sum(table(dat$discrAge))`; `r round(sum(table(dat$discrAge))/sum(table(dat$discrAge, useNA = "always"))*100,1)`%), who indicated that they have experienced or witnessed bullying, discrimination, harassment, or other unfair treatment during their position in Switzerland. Each person could name multiple perceived sources of discrimination.
+
+
+<!-- ## Amount of Sources of Discrimination -->
+  <!-- \normalsize -->
+  <!-- `r swims.formulation("discrAge", what = "item")` -->
+  <!-- \normalsize -->
+  <!-- ```{r} -->
+  <!-- swims.plot.aggregation("discrimination_type", -->
+                                <!--                        font_size = (10 + 5), -->
+                                <!--                        count_votes_at_all = TRUE) -->
+  <!-- ``` -->
+  
+  
+  
+  \newpage  
+
+
+# Questionable Research Practices
+
+`r swims.formulation("qrpFalsdata", what = "item")`
+
+```{r Questionable Research Practices1, fig.height= 6, fig.width= 8}
+qrp.cols <- c("red","#66C2A5","gray69","orange","#2166AC")
+swims.plot.multibar(var = "qrp1", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, fill_color_set = qrp.cols)
+
+```
+
+```{r Questionable Research Practices2, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp2", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
+
+```
+
+```{r Questionable Research Practices3, fig.height= 9, fig.width= 9}
+swims.plot.multibar(var = "qrp3", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols)
+
+```
+
+
+<!-- ## Questionable Research Practices by Age -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp3", divider = "Age", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+
+<!-- ## Questionable Research Practices by Gender -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 6, fig.width= 8} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Gender", font_size = multibar.fontSize+2, fontsize_inplot = multibar.fontSizeInplot+0, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ## Questionable Research Practices by Research Discipline -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp3", divider = "Discipline", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ## Questionable Research Practices by Funding Source -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp3", divider = "Funding", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ## Questionable Research Practices by Position Type -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Position", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+<!-- ``` -->
+
+
+<!-- ## Questionable Research Practices by Employment Status -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp3", divider = "employmentStatus", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+
+
+<!-- ## Questionable Research Practices by Residence -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp1", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp2", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+<!-- ```{r, fig.height= 9, fig.width= 9} -->
+<!-- swims.plot.multibar(var = "qrp3", divider = "Residence", font_size = multibar.fontSize+4, fontsize_inplot = multibar.fontSizeInplot+2, fill_color_set = qrp.cols) -->
+
+<!-- ``` -->
+
+
+\newpage  
+
+## Pressures to Perform Questionable Research Practices 
+
+`r swims.formulation("pressureqrpFunder", what = "item")`
+
+```{r qrp Dimensions, fig.height= 6, fig.width= 7}
+
+swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size = multibar.fontSize+4,annoFontSize = multibar.fontSizeInplot, colors_set = "Set1")
+
+
+```
+
+\newpage  
+
+## Effects of Pressures to Perform Questionable Research Practices on Mental Health
+
+`r swims.formulation("pressureqrpMentalhealth", what = "item")`
+
+```{r qrp_mh, fig.height= 5 , fig.width= 6}
+swims.plot.distribution("pressureqrpMentalhealth")
+
+```
+
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Age -->
+
+<!-- ```{r, fig.height= 5, fig.width= 6.5} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Age", annoFontSize = 3) -->
+<!-- ``` -->
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Gender -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Gender", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+<!-- the 'other' category entails the non-binary response category or if both male and female gender were indicated -->
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Research Discipline -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Discipline", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Funding Source -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Funding", annoFontSize = 2) -->
+<!-- ``` -->
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Position Type -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Position", annoFontSize = 2) -->
+<!-- ``` -->
+
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Employment Status -->
+
+<!-- ```{r, fig.height= 5, fig.width= 8} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "employmentStatus", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+<!-- ### Effects of Pressures to Perform Questionable Research Practices on Mental Health by Residence -->
+
+<!-- ```{r, fig.height= 5, fig.width= 7} -->
+<!-- swims.plot.distribution(var = "pressureqrpMentalhealth", divider = "Residence", annoFontSize = 3) -->
+
+<!-- ``` -->
+
+
+  
+  
+  \newpage  
+
+
+# References 
+
