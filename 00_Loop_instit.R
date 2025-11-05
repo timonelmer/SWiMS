@@ -19,7 +19,24 @@ object.inst <- levels(dat$institution)
 # g <- 7
 
 # Loop über jede Gruppe
-for (g in c(11)) {
+# for (g in 6) { # 1:length(object.inst)
+#   
+#   if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
+#     obj <- "ETHZ"
+#   } else {
+#     obj <- object.inst[g]
+#   }
+#   
+#   render(
+#     input = "00_Institutional_Report.Rmd",        # dein Rmd-Dateipfad
+#     output_file = paste0("./instit_reports/report_", sub(".*,\\s*", "", obj), ".pdf"),  # individuelle Ausgabe
+#     params = list(object.inst = g),   # Übergabe des Parameters
+#     envir = new.env()            # wichtig, um Nebeneffekte zu vermeiden
+#   )
+# }
+
+
+for (g in 6) { # 1:length(object.inst)
   
   if(object.inst[g] == "Eidgenössische Technische Hochschule Zürich, ETH Zürich"){
     obj <- "ETHZ"
@@ -28,11 +45,9 @@ for (g in c(11)) {
   }
   
   render(
-    input = "00_Institutional_Report.Rmd",        # dein Rmd-Dateipfad
-    output_file = paste0("./instit_reports/report_", sub(".*,\\s*", "", obj), ".pdf"),  # individuelle Ausgabe
+    input = "00_Institutional_Report_prozente.Rmd",        # dein Rmd-Dateipfad
+    output_file = paste0("./instit_reports/report_percentage_", sub(".*,\\s*", "", obj), ".pdf"),  # individuelle Ausgabe
     params = list(object.inst = g),   # Übergabe des Parameters
     envir = new.env()            # wichtig, um Nebeneffekte zu vermeiden
   )
 }
-
-

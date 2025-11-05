@@ -1,5 +1,5 @@
 ---
-title: "Swiss-Wide Mental Health Survey (SWiMS) 2024: Institution Report"
+title: "Swiss-Wide Mental Health Survey (SWiMS) 2024: Institution Report - Percentage Version"
 subtitle: ""
 author: "a survey initiated and conducted by"
 # date: "`r Sys.Date()`"
@@ -12,6 +12,7 @@ params:
   del_small_groups: FALSE
   alpha_val: 0.4
   bar_width: 0.8
+  prozente: TRUE
 output:
   pdf_document:
     toc: false
@@ -291,7 +292,8 @@ swims.plot.distribution("age",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         small.group.delete = params$del_small_groups,
-                        width_bar = params$bar_width)
+                        width_bar = params$bar_width,
+                        proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -309,7 +311,8 @@ swims.plot.distribution("Gender",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 
 \normalsize
@@ -327,7 +330,8 @@ swims.plot.distribution("researchDiscipline",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("researchDiscipline")`
@@ -345,7 +349,8 @@ swims.plot.distribution("mainPosition",
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
                         small.group.delete = params$del_small_groups,
-                        width_text = 25)
+                        width_text = 25,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("mainPosition")`
@@ -363,7 +368,8 @@ Recoded positions into four broad groups: "Researcher aiming for a PhD,", "Postd
                          annoFontSize = (params$font_anno - 3),
                          cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                         small.group.delete = params$del_small_groups)
+                         small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("funding")`
@@ -380,7 +386,8 @@ swims.plot.distribution("residenceStatus",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("residenceStatus")`
@@ -397,7 +404,8 @@ swims.plot.distribution("Carework",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("careFamily")`
@@ -420,7 +428,8 @@ swims.plot.distribution("employmentStatus",
                           annoFontSize = (params$font_anno - 3),
                           cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                          small.group.delete = params$del_small_groups)
+                          small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -437,7 +446,8 @@ swims.plot.distribution("workloadMainjob",
                           annoFontSize = (params$font_anno - 3),
                           cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                          small.group.delete = params$del_small_groups)
+                          small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("employmentStatus", what = "item")`
@@ -453,7 +463,8 @@ swims.plot.distribution("nonacademicJob",
                           annoFontSize = (params$font_anno - 3),
                           cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                          small.group.delete = params$del_small_groups)
+                          small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r swims.formulation("nonacademicJob", what = "item")`
@@ -472,7 +483,8 @@ swims.plot.distribution("mentalHealth",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -489,7 +501,8 @@ swims.plot.distribution("mentalHealth",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -509,7 +522,8 @@ swims.plot.distribution("mentalHealth",
                          annoFontSize = (params$font_anno - 3),
                          cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                         small.group.delete = params$del_small_groups)
+                         small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -529,7 +543,8 @@ swims.plot.distribution("mentalHealth",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -549,7 +564,8 @@ swims.plot.distribution("mentalHealth",
                         annoFontSize = (params$font_anno - 3),
                          cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                         small.group.delete = params$del_small_groups)
+                         small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -569,7 +585,8 @@ swims.plot.distribution("mentalHealth",
                          annoFontSize = (params$font_anno - 3),
                          cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                         small.group.delete = params$del_small_groups)
+                         small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -589,7 +606,8 @@ swims.plot.distribution("mentalHealth",
                          annoFontSize = (params$font_anno - 3),
                          cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                         small.group.delete = params$del_small_groups)
+                         small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -636,7 +654,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -650,7 +669,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -667,7 +687,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -684,7 +705,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -701,7 +723,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -718,7 +741,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -735,7 +759,8 @@ swims.plot.distribution("DepressionCategory",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -756,7 +781,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -773,7 +799,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -793,7 +820,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -813,7 +841,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -833,7 +862,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -853,7 +883,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,  
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -873,7 +904,8 @@ swims.plot.distribution("Burnout",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,      
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -889,6 +921,7 @@ swims.plot.multibar("resources",
                     fontsize_inplot = (params$fontsize_inplot_text - 2),
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente,
                     alpha_plot = params$alpha_val)
 ```
 
@@ -906,7 +939,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -926,7 +960,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,         
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -946,7 +981,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,              
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -966,7 +1002,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,          
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -986,7 +1023,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,      
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1006,7 +1044,8 @@ swims.plot.multibar("resources",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1027,7 +1066,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,     
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -1044,7 +1084,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,           
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1064,7 +1105,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,       
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1084,7 +1126,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,      
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1104,7 +1147,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,         
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1124,7 +1168,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,        
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1144,7 +1189,8 @@ swims.plot.distribution("jobSatisfaction",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,      
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1163,7 +1209,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,  
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -1180,7 +1227,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,    
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1200,7 +1248,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,     
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1220,7 +1269,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,   
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1240,7 +1290,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,    
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1260,7 +1311,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,      
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1280,7 +1332,8 @@ swims.plot.distribution("quitting",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,   
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1299,7 +1352,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups,   
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -1316,7 +1370,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1336,7 +1391,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1356,7 +1412,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1376,7 +1433,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1396,7 +1454,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1416,7 +1475,8 @@ swims.plot.distribution("stress",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1437,6 +1497,7 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente,
                     rev_colors_set = TRUE)
 ```
 \newpage
@@ -1452,7 +1513,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \newpage
 \normalsize
@@ -1467,7 +1529,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -1488,7 +1551,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1510,7 +1574,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1532,7 +1597,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1556,7 +1622,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1578,7 +1645,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \newpage
 \normalsize
@@ -1600,7 +1668,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1624,7 +1693,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1646,7 +1716,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1668,7 +1739,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1692,7 +1764,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1714,7 +1787,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1736,7 +1810,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1760,7 +1835,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1782,7 +1858,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1804,7 +1881,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1828,7 +1906,8 @@ swims.plot.multibar("stress_system1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1850,7 +1929,8 @@ swims.plot.multibar("stress_system2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1872,7 +1952,8 @@ swims.plot.multibar("stress_system3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1892,7 +1973,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -1913,7 +1995,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1937,7 +2020,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1961,7 +2045,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -1985,7 +2070,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2009,7 +2095,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2033,7 +2120,8 @@ swims.plot.multibar("stress_supervisor",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -2054,7 +2142,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -2075,7 +2164,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2099,7 +2189,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2123,7 +2214,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2147,7 +2239,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2171,7 +2264,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2195,7 +2289,8 @@ swims.plot.multibar("stress_colleagues",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -2216,7 +2311,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     rev_colors_set = TRUE,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -2237,7 +2333,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2261,7 +2358,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2285,7 +2383,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2309,7 +2408,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2333,7 +2433,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2357,7 +2458,8 @@ swims.plot.multibar("stress_selfManagement",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -2378,7 +2480,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -2399,7 +2502,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2423,7 +2527,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2447,7 +2552,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2471,7 +2577,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2495,7 +2602,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2519,7 +2627,8 @@ swims.plot.multibar("stress_private",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -2540,7 +2649,8 @@ swims.plot.multibar("supervisor1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2558,7 +2668,8 @@ swims.plot.multibar("supervisor2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2576,7 +2687,8 @@ swims.plot.multibar("supervisor3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -2596,7 +2708,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2617,7 +2730,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2638,7 +2752,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2661,7 +2776,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2682,7 +2798,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2703,7 +2820,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2726,7 +2844,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2747,7 +2866,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2768,7 +2888,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2791,7 +2912,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2812,7 +2934,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2833,7 +2956,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2856,7 +2980,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2877,7 +3002,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2898,7 +3024,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2921,7 +3048,8 @@ swims.plot.multibar("supervisor1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2942,7 +3070,8 @@ swims.plot.multibar("supervisor2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -2963,7 +3092,8 @@ swims.plot.multibar("supervisor3",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -2984,7 +3114,8 @@ swims.plot.multibar("institution1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3002,7 +3133,8 @@ swims.plot.multibar("institution2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -3022,7 +3154,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3043,7 +3176,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3066,7 +3200,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3087,7 +3222,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3110,7 +3246,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3131,7 +3268,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3154,7 +3292,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3175,7 +3314,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3198,7 +3338,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3219,7 +3360,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3242,7 +3384,8 @@ swims.plot.multibar("institution1",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3263,7 +3406,8 @@ swims.plot.multibar("institution2",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 
 ```
 \normalsize
@@ -3286,7 +3430,8 @@ swims.plot.multibar("workgroup",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     legend.nrow = 2,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -3306,7 +3451,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3329,7 +3475,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3352,7 +3499,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3375,7 +3523,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3398,7 +3547,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3421,7 +3571,8 @@ swims.plot.multibar("workgroup",
                     wrap_legend = F,
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3442,7 +3593,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \newpage
 \normalsize
@@ -3457,7 +3609,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 
 \newpage
@@ -3478,7 +3631,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3501,7 +3655,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3525,7 +3680,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3548,7 +3704,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3572,7 +3729,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3595,7 +3753,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3619,7 +3778,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3642,7 +3802,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3666,7 +3827,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3689,7 +3851,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3713,7 +3876,8 @@ swims.plot.multibar("discrimination1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3736,7 +3900,8 @@ swims.plot.multibar("discrimination2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     rev_colors_set = TRUE,
-                    small.group.delete = params$del_small_groups)
+                    small.group.delete = params$del_small_groups, 
+                    proportion.label = params$prozente)
 ```
 \normalsize
 `r imp_mess`
@@ -3782,7 +3947,8 @@ swims.plot.distribution("discrReport",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 
 \newpage
@@ -3803,6 +3969,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                    proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3825,6 +3992,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3847,6 +4015,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3872,6 +4041,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3895,6 +4065,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3918,6 +4089,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3943,6 +4115,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3966,6 +4139,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -3989,6 +4163,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4014,6 +4189,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4037,6 +4213,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4060,6 +4237,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4085,6 +4263,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4108,6 +4287,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4131,6 +4311,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4156,6 +4337,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4179,6 +4361,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4202,6 +4385,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4227,6 +4411,7 @@ swims.plot.multibar("qrp1",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4250,6 +4435,7 @@ swims.plot.multibar("qrp2",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4273,6 +4459,7 @@ swims.plot.multibar("qrp3",
                     alpha_plot = params$alpha_val,
                     cut.small.groups = params$cut_off,
                     small.group.delete = params$del_small_groups,
+                     proportion.label = params$prozente,
                     fill_color_set = qrp.cols
                     )
 ```
@@ -4306,7 +4493,8 @@ swims.plot.distribution("pressureqrpMentalhealth",
                         annoFontSize = (params$font_anno - 3),
                         cut.small.groups = params$cut_off,
                         width_bar = params$bar_width,
-                        small.group.delete = params$del_small_groups)
+                        small.group.delete = params$del_small_groups, 
+                        proportion.label = params$prozente)
 ```
 
 \newpage

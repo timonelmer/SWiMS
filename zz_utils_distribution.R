@@ -18,7 +18,7 @@ swims.plot.distribution <- function(var,
                                     small.group.delete = NULL # TRUE = deletion of the groups, FALSE = keep the groups but alpha is set to 0
 ){
   # Example
-  # var <- "jobSatisfaction"
+  # var <- "mentalHealth"
   # institution_prov <- target_institution
   # divider <- "Gender"
   # annoFontSize <- 4
@@ -33,7 +33,7 @@ swims.plot.distribution <- function(var,
   # small.group.delete <- F
   # fct_ord <- NULL
   # individual_cut <- 1
-
+  
   # PREPARATION ####
   # Ensure var exists in the codeb
   if (!var %in% codeb$VarName) {
@@ -62,13 +62,13 @@ swims.plot.distribution <- function(var,
       divider_label <- unique(dat[,divider])
     }
   }
-
+  
   if(!is.null(cut.small.groups) && !is.null(small.group.delete)){
     
     if(cut.small.groups > 0 || small.group.delete == F){
-      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are not visible in the plot (marked in white).")
+      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are not visible in the plot.")
     } else if(cut.small.groups > 0 || small.group.delete == T){
-      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are deleted from the plot (marked in white).")
+      imp_mess <<- paste("If overall groups with less than", cut.small.groups, "responses exists, they are deleted from the plot.")
     }
   } else if((is.null(cut.small.groups) && !is.null(small.group.delete)) ||
             (!is.null(cut.small.groups) && is.null(small.group.delete))){
@@ -100,14 +100,14 @@ swims.plot.distribution <- function(var,
   # PREPROCESSING ####
   # Prepare tibble
   if(!is.null(institution_prov) & !is.null(divider)){ # with institution, no divider
-   
+    
     # Reference tibble
     tibble_obj <- expand_grid(
       group = c(institution_prov, "Other Institutions"),
       divider = divider_label,
       variable = var,
       value = input
-        )
+    )
     
     # Prepare data for plotting
     plot_data <- data %>%
@@ -121,9 +121,10 @@ swims.plot.distribution <- function(var,
              n_total = sum(count)) %>%
       ungroup()
     
+    
     # Left join
     plot_data <- left_join(tibble_obj, plot_data, by = c("group", "divider", "variable", "value"))
-
+    
     # Filter small groups
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
       
@@ -157,17 +158,19 @@ swims.plot.distribution <- function(var,
         
       } 
       
-      if(any(side_obj2$count <= individual_cut)) {
+      if(any(side_obj2$count == individual_cut)) {
         
-        problem_value <- which(side_obj2$count <= individual_cut)
+        problem_value <- which(side_obj2$count == individual_cut & !is.na(side_obj2$count))
         
         if (length(problem_value) > 0){
           
           drop_value <- side_obj2$value[problem_value]
           
-          drop_divider2 <- side_obj2$divider[problem_value]
+          drop_divider2 <- na.exclude(side_obj2$divider[problem_value])
           
           if("drop" %in% names(plot_data)){
+            
+            # plot_data$count_label <- as.character(plot_data$count) # zk v2
             
             for(kk in 1:length(drop_divider2)){
               
@@ -175,29 +178,63 @@ swims.plot.distribution <- function(var,
               
               # plot_data$drop[plot_data$divider == drop_divider2[kk]] <- "drop" # timon version
               
-              plot_data$drop[plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk]] <- "drop" # Zoran Version 2
+              # Randomly assign +1 0 -1 to the drop level of n = drop level 
+              indexy <- sapply(plot_data$group == institution_prov & plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk], isTRUE)
+              
+              if(!is.na(plot_data$count[indexy])){
+                plot_data$count[indexy] <- plot_data$count[indexy] + sample(c(-1, -1, 0), 1) # Zoran Version 3  
+                # plot_data$count[indexy] <- plot_data$count[indexy] + sample(c(-1, 0, 1), 1) # Zoran Version 2  
+                # plot_data$count_label[indexy] <- paste0(plot_data$count[indexy], "*")
+                
+                plot_data$proportion[indexy] <- plot_data$count[indexy] / plot_data$n_total[indexy]
+              }
+              
               
             }
             
             
           } else {
-          
+            
             # plot_data$drop <- ifelse(plot_data$value %in% drop_value & plot_data$divider %in% drop_divider2, "drop", "keep") # Zoran Version
             
             # plot_data$drop <- ifelse(plot_data$divider %in% drop_divider2, "drop", "keep") # timon version
-          
+            
+            # Randomly assign +1 0 -1 to the drop level of n = drop level 
+            # plot_data$count_label <- as.character(plot_data$count)
+            
+            if(!"drop" %in% names(plot_data)){
+              plot_data$drop <- "keep"
+            }
+            
+            for(kk in 1:length(drop_divider2)){
+              indexy <- sapply(plot_data$group == institution_prov & plot_data$value == drop_value[kk] & plot_data$divider == drop_divider2[kk], isTRUE)
+              
+              if(!is.na(plot_data$count[indexy])){
+                plot_data$count[indexy] <- plot_data$count[indexy] + sample(c(-1, -1, 0), 1) # Zoran Version 3  
+                # plot_data$count[indexy] <- plot_data$count[indexy] + sample(c(-1, 0, 1), 1) # Zoran Version 2  
+                # plot_data$count_label[indexy] <- paste0(plot_data$count[indexy], "*")
+                
+                plot_data$proportion[indexy] <- plot_data$count[indexy] / plot_data$n_total[indexy]
+              }
+            }
+            
           }
           
         }
         
       } else {
         
+        if(!"drop" %in% names(plot_data)){
         plot_data$drop <- "keep"
+        }
         
       } 
+      
     } else {
       
-      plot_data$drop <- "keep"
+      if(!"drop" %in% names(plot_data)){
+        plot_data$drop <- "keep"
+      }
       
     }
     
@@ -221,7 +258,7 @@ swims.plot.distribution <- function(var,
     
     # Left join
     plot_data <- left_join(tibble_obj, plot_data, by = c("group", var))
-
+    
     if(!is.null(cut.small.groups) && cut.small.groups > 0){
       
       side_obj <- plot_data %>%
@@ -327,7 +364,7 @@ swims.plot.distribution <- function(var,
       } else {
         
         plot_data$drop <- "keep"
-      
+        
       }
     } else {
       
@@ -338,7 +375,7 @@ swims.plot.distribution <- function(var,
   }
   
   # MODIFICATIONS FOR PLOT ####
-
+  
   # Ordering groups
   if("group" %in% colnames(plot_data)[1]){
     plot_data$group <- factor(plot_data$group, levels = c(institution_prov, "Other Institutions"))
@@ -352,26 +389,26 @@ swims.plot.distribution <- function(var,
     
     plot_data$divider <- factor(plot_data$divider, levels = divider_label)
     
-      if(length(colors_set) > 1){ # if it is a vector of colors
-        fill_colors <- colors_set[1:length(divider_label)]
-      }else{ # if it is the name of a colors set
-        fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
-        
-        if(length(divider_label) == 2){
-          fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
-        }
-        
-      }
-    
-  } else if(!is.null(institution_prov) && is.null(divider)){
-    
-      if(length(colors_set) > 1){ # if it is a vector of colors
-        fill_colors <- colors_set[1:2]
-      }else{ # if it is the name of a colors set
-    
+    if(length(colors_set) > 1){ # if it is a vector of colors
+      fill_colors <- colors_set[1:length(divider_label)]
+    }else{ # if it is the name of a colors set
+      fill_colors <- RColorBrewer::brewer.pal(n = length(divider_label), name = colors_set)
+      
+      if(length(divider_label) == 2){
         fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
       }
       
+    }
+    
+  } else if(!is.null(institution_prov) && is.null(divider)){
+    
+    if(length(colors_set) > 1){ # if it is a vector of colors
+      fill_colors <- colors_set[1:2]
+    }else{ # if it is the name of a colors set
+      
+      fill_colors <- RColorBrewer::brewer.pal(n = 3, name = colors_set)[c(1,3)]
+    }
+    
     
   } else if(is.null(institution_prov) && !is.null(divider)){
     
@@ -403,7 +440,7 @@ swims.plot.distribution <- function(var,
   
   # Alpha labels
   if("group" %in% colnames(plot_data)){
-  alpha_labels <- unique(plot_data$group)
+    alpha_labels <- unique(plot_data$group)
   }
   
   # Modify filling
@@ -416,13 +453,17 @@ swims.plot.distribution <- function(var,
     
     plot_data$value_fill <- ifelse(plot_data$drop == "drop", NA, as.character(plot_data$group))
     plot_data$value_fill <- factor(plot_data$value_fill, levels = levels(plot_data$group)) 
-  
+    
   }
   
   # Drop everything with "drop" if small.group.delete is TRUE
   if(!is.null(small.group.delete) && small.group.delete == T){
     plot_data <- plot_data %>%
       filter(drop == "keep")
+  } 
+  
+  if(!is.null(small.group.delete) && small.group.delete == F){
+    plot_data$proportion <- ifelse(plot_data$drop == "drop", 0, plot_data$proportion)
   }
   
   # Modificaiton of plot 
@@ -436,6 +477,16 @@ swims.plot.distribution <- function(var,
     plot_data$count <- ifelse(is.na(plot_data$count), "", plot_data$count)
     
     plot_data$count <- ifelse(plot_data$drop == "drop", "", plot_data$count)
+    
+    plot_data$count <- ifelse(plot_data$proportion == 0, "", plot_data$count)
+    
+    # if(!is.null(institution_prov) & !is.null(divider)){
+    #   # zk v2
+    #   plot_data$count_label <- ifelse(plot_data$count_label == "NA" | plot_data$count_label == "NA*" , "", plot_data$count_label)
+    #   
+    #   plot_data$count_label <- ifelse(plot_data$drop == "drop", "", plot_data$count_label)
+    # }
+    
   }
   
   # PLOT ####
@@ -457,11 +508,11 @@ swims.plot.distribution <- function(var,
                         na.value = NA,
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
+      # geom_text(aes(label = count_label), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) + #zk v2
       facet_wrap(~ group, 
                  ncol = 1,
                  axes = "all"
-                 ) +
+      ) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -478,7 +529,22 @@ swims.plot.distribution <- function(var,
       guides(alpha = "none") +
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text)) # Apply text wrapping
     
+    if (proportion.label) {
+      g <- g + geom_text(
+        aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    } else {
+      g <- g + geom_text(
+        aes(label = count), 
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    }
+    
   } else if(!is.null(institution_prov) & is.null(divider)){ # no-divider and institution
+
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion", fill = "value_fill")) +
       geom_bar(stat = "identity", position = "dodge", width = width_bar) +
@@ -493,7 +559,7 @@ swims.plot.distribution <- function(var,
       scale_fill_manual(values = setNames(fill_colors, na.omit(unique(plot_data$value_fill))),
                         breaks = unique(na.omit(plot_data$value_fill))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
+      # geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -509,8 +575,22 @@ swims.plot.distribution <- function(var,
       ) + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
-  } else if(is.null(institution_prov) & !is.null(divider)){ # divider and no-institution
+    if (proportion.label) {
+      g <- g + geom_text(
+        aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    } else {
+      g <- g + geom_text(
+        aes(label = count), 
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    }
     
+  } else if(is.null(institution_prov) & !is.null(divider)){ # divider and no-institution
+
     # Create plot
     g <- ggplot(plot_data, aes_string(x = "value", y = "proportion", fill = "value_fill")) +
       geom_bar(stat = "identity", position = "dodge", width = width_bar) +
@@ -526,7 +606,7 @@ swims.plot.distribution <- function(var,
                         na.value = "transparent",
                         breaks = unique(na.omit(plot_data$divider))
       ) +
-      geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
+      # geom_text(aes(label = count), position = position_dodge(width = width_bar), vjust = -0.5, size = annoFontSize) +
       theme_minimal() +
       theme(
         text = element_text(size = font_size),
@@ -542,10 +622,24 @@ swims.plot.distribution <- function(var,
       ) + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
+    if (proportion.label) {
+      g <- g + geom_text(
+        aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    } else {
+      g <- g + geom_text(
+        aes(label = count), 
+        position = position_dodge(width = width_bar), 
+        vjust = -0.5, 
+        size = annoFontSize) 
+    }
+    
   } else if(is.null(institution_prov) & is.null(divider)){ # no-divider and no-institution
     
     plot_data[[var]] <- as.factor(plot_data[[var]])
-    
+
     # Create plot
     g <- ggplot(plot_data, aes_string(x = var, y = "proportion")) +
       geom_bar(stat = "identity", fill = fill_colors, width = width_bar) +
@@ -570,8 +664,8 @@ swims.plot.distribution <- function(var,
       )  + 
       scale_x_discrete(labels = function(x) str_wrap(x, width = width_text))   # Apply text wrapping
     
-      if(proportion.label){g <- g + geom_text(aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
-                                              vjust = +1.5, size = annoFontSize, color = "white")}
+    if(proportion.label){g <- g + geom_text(aes(label = ifelse(proportion > 0.00, paste0(round(proportion * 100), "%"), "")),
+                                            vjust = +1.5, size = annoFontSize, color = "white")}
   }
   
   # RETURN ####
