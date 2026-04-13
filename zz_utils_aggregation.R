@@ -10,6 +10,7 @@ swims.plot.aggregation <- function(var,
                                    width_bar = 0.5,
                                    annoFontSize = 8,
                                    proportion.label = F,
+                                   show.percentages = T,
                                    count_votes_at_all = FALSE # Creates plot only showing how many did something at all
 ){
   
@@ -102,10 +103,12 @@ swims.plot.aggregation <- function(var,
         
         
         if(showCount){
-          return(g + geom_text(aes(label = paste0("N = ", count)), vjust = -0.5, size = annoFontSize, color = "black"))
-        } else {
-          return(g)
+          g <- g + geom_text(aes(label = paste0("N = ", count)), vjust = -0.5, size = annoFontSize, color = "black")
         }
+        if(show.percentages){
+          g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 0), "%")), position = position_stack(vjust = 0.5), size = annoFontSize, color = "white")
+        }
+        return(g)
       }
       
       g <- plot_function(plot_data)
@@ -166,10 +169,12 @@ swims.plot.aggregation <- function(var,
         
         
         if(showCount){
-          return(g + geom_text(aes(label = paste0("N = ", count)), vjust = -0.5, size = annoFontSize, color = "black"))
-        } else {
-          return(g)
+          g <- g + geom_text(aes(label = paste0("N = ", count)), vjust = -0.5, size = annoFontSize, color = "black")
         }
+        if(show.percentages){
+          g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 0), "%")), position = position_stack(vjust = 0.5), size = annoFontSize, color = "white")
+        }
+        return(g)
       }
         
       g <- plot_function(plot_data)
@@ -287,11 +292,14 @@ swims.plot.aggregation <- function(var,
         )  +
         scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) # Apply text wrapping
       
-      if(showCount){return(g+
-                             geom_text(aes(label = count),  position = position_fill(vjust = 0.5), size = annoFontSize, color = "white")) 
-      }else{
-        return(g)
+      if(showCount){
+        g <- g + geom_text(aes(label = count), position = position_fill(vjust = 0.5), size = annoFontSize, color = "white") 
       }
+      if(show.percentages){
+        # Note: Added vjust shift so it doesn't overlap perfectly with showCount if both are TRUE
+        g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 0), "%")), position = position_fill(vjust = 0.7), size = annoFontSize, color = "white")
+      }
+      return(g)
     }
     
   } else if(is.null(institution_prov)){
@@ -325,6 +333,10 @@ swims.plot.aggregation <- function(var,
       if (proportion.label) {
         g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 1), "%")),
                            position = position_stack(vjust = 0.5), color = "white")
+      }
+      if (show.percentages) {
+        g <- g + geom_text(aes(label = paste0(round(Percentage * 100, 0), "%")), 
+                           position = position_stack(vjust = 0.5), size = annoFontSize, color = "white")
       }
       return(g)
       
