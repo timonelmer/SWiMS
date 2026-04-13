@@ -96,7 +96,12 @@ header-includes:
         \large
           Key Takeaways:
           \begin{itemize}
-            \item placeholder
+            \item Survey of 2,518 academic mid-level staff across 13 Swiss institutions
+            \item 22\% meet criteria for problematic depressive symptoms
+            \item 53\% lack awareness of available mental health resources; 67\% doubt their effectiveness
+            \item 39\% are ''completely'' stressed about career uncertainty (59\% among postdocs)
+            \item Staff without permanent contracts show worse mental health and higher stress
+            \item 61\% are rather satisfied with their job
           \end{itemize}
         }%
       }%
@@ -146,7 +151,7 @@ width_bar_default <- 0.9
 ```
 
 \setcounter{tocdepth}{1}
-
+\setcounter{page}{1}
 
 # Executive Summary
 
@@ -169,7 +174,7 @@ width_bar_default <- 0.9
 
 Contact: \href{mailto:president@actionuni.ch}{president@actionuni.ch} or \href{mailto:survey@actionuni.ch}{survey@actionuni.ch}
 
-\textit{Version 1.0 — `r Sys.Date()`}  
+\textit{Version 1.01 — `r Sys.Date()`}  
 
 
 
@@ -1928,12 +1933,22 @@ swims.plot.multibar(var = "qrp3", divider = "Residence", font_size = multibar.fo
 
 `r swims.formulation("pressureqrpFunder", what = "item")`
 
+
 ```{r qrp Dimensions, fig.height= 6, fig.width= 7}
 
 swims.plot.aggregation(var = "qrp_pressure", institution_prov = NULL, font_size = multibar.fontSize+4,annoFontSize = multibar.fontSizeInplot, colors_set = "Set1")
 
+pressures <- dat[,codebook[codebook$Category %in% "qrp_pressure", "VarName"]]
+
+#sum(pressures$pressureNo == "quoted")
+
+pressures.only <- pressures[,!colnames(pressures) %in% c("pressureNo","pressureqrpOther2")]
+#sum(rowSums(pressures.only == "quoted") == 1)
+#sum(rowSums(pressures.only == "quoted") > 1)
 
 ```
+
+Respondents could select multiple categories. This figure presents all reported sources combined, showing the total number of different sources of pressure to engage in questionable research practices. n = `r sum(pressures$pressureNo == "quoted")` reported that no one pressured them, n = `r sum(rowSums(pressures.only == "quoted") == 1)` indicated one source, and n = `r sum(rowSums(pressures.only == "quoted") > 1)` reported multiple sources. 
 
 \newpage  
 
